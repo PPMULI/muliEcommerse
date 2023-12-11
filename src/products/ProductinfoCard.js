@@ -13,29 +13,33 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Navbar from "../genralComponent/Navbar";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../Authentaction/Config";
+import { useReducer } from "react";
 
 function ProductinfoCard(props) {
   const context = useContext(projectcontext);
-  const { product_details, handleclick, myProduct, setMyProduct, showproductDetails, setShowProductDetails } = context;
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const {
+    Buy_the_product,
+    product_details,
+    showproductDetails,
+    reducer,
+    myProduct,
+    Add_To_Cart
+  } = context;
 
   const [credentials, setCredentials] = useState({
-    email: "",
-    productcategory: "",
-    productid: "",
-    status: "",
-    productname: "",
-    quantity: "",
+    reasonofrejection: "",
+    actionby: "",
   });
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  let initialState = 1;
+  const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     // handleclick();
-    product_details(localStorage.getItem("productID"))
+    product_details(localStorage.getItem("productID"));
   }, []);
 
-  console.log(showproductDetails)
-  
+  console.log(showproductDetails);
 
   const navigate = useNavigate();
   const handle_product_details = () => {
@@ -53,180 +57,10 @@ function ProductinfoCard(props) {
     }
   };
 
-  const addData = (newBooks) => {
-    return addDoc(bookCollectionRef, newBooks);
-  };
-
-  const { email, status, productcategory, productname, quantity, productid } =
-    credentials;
-  console.log(credentials);
-  const onChange = (e) => {
-    e.preventDefault();
-    console.log(e.target.name, e.target.value);
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const bookCollectionRef = collection(db, "cart");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const newbook = {
-      email: localStorage.getItem("email"),
-      productcategory: localStorage.getItem("productcategory"),
-      productname: localStorage.getItem("productbrand"),
-      productid: localStorage.getItem("productid"),
-      status: localStorage.getItem("status"),
-      quantity,
-    };
-
-    console.log(newbook);
-
-    try {
-      await addData(newbook);
-      alert(
-        "Success",
-        localStorage.removeItem("productid"),
-        localStorage.removeItem("productname"),
-        localStorage.removeItem("productbrand"),
-        localStorage.removeItem("productcategory"),
-        localStorage.removeItem("quantity"),
-        localStorage.removeItem("status")
-      );
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
   return (
     <>
       <Navbar />
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Confirm To add Cart
-              </h1>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form onSubmit={handleSubmit}>
-                {/* <form> */}
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    value={localStorage.getItem("email")}
-                    disabled
-                    onChange={onChange}
-                    name="email"
-                    aria-describedby="emailHelp"
-                  />
-                </div>
 
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">
-                    Status
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="status"
-                    value="pending"
-                    disabled
-                    onChange={onChange}
-                    name="status"
-                    aria-describedby="emailHelp"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product Name
-                  </label>
-                  <input
-                    type="text"
-                    value={localStorage.getItem("productbrand")}
-                    class="form-control"
-                    disabled
-                    onChange={onChange}
-                    id="productname"
-                    name="productname"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product Category
-                  </label>
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control"
-                    id="productcategory"
-                    onChange={onChange}
-                    value={localStorage.getItem("productcategory")}
-                    name="productcategory"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product ID
-                  </label>
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control"
-                    id="productid"
-                    onChange={onChange}
-                    value={localStorage.getItem("productid")}
-                    name="productid"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product Quantity
-                  </label>
-                  <select
-                    class="form-select"
-                    name="quantity"
-                    id="quantity"
-                    onChange={onChange}
-                    aria-label="Default select example"
-                  >
-                    <option selected>---Select Quantity---</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  // console.log(email, productid, quantity,status,productcategory, productbrand  )
-                >
-                  Confirm
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="container product_details">
         {showproductDetails &&
           showproductDetails.map((value) => {
@@ -307,6 +141,20 @@ function ProductinfoCard(props) {
                               <button
                                 type="button"
                                 class="btn btn-outline-success productinfobuttons"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  Buy_the_product(
+                                    localStorage.getItem("email"),
+                                    value.price,
+                                    value.category,
+                                    value.id,
+                                    value.brand,
+                                    state,
+                                    credentials.reasonofrejection,
+                                    "pending",
+                                    credentials.actionby
+                                  );
+                                }}
                               >
                                 <ShoppingBag /> Buy Now
                               </button>
@@ -316,6 +164,17 @@ function ProductinfoCard(props) {
                               <button
                                 type="button"
                                 class="productinfobuttons btn btn-outline-warning"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  Add_To_Cart(
+                                    localStorage.getItem("email"),
+                                    value.price,
+                                    value.category,
+                                    value.id,
+                                    value.brand,
+                                    state
+                                  );
+                                }}
                               >
                                 <AddShoppingCartIcon /> Warning
                               </button>
@@ -414,21 +273,51 @@ function ProductinfoCard(props) {
                       </div>
                     </div>
                     <hr />
+                    <form action="">
+                      <div className="uiui">
+                        <div className="wrapper">
+                          {state == 1 ? (
+                            <span
+                              className="minus d-none"
+                              onClick={() => dispatch({ type: "DECREAMENT" })}
+                            >
+                              -
+                            </span>
+                          ) : (
+                            <span
+                              className="minus"
+                              onClick={() => dispatch({ type: "DECREAMENT" })}
+                            >
+                              -
+                            </span>
+                          )}
+
+                          <span className="num" onChange={onchange} id="num">
+                            {state}
+                          </span>
+                          <span
+                            className="plus"
+                            onClick={() => dispatch({ type: "INCREAMENT" })}
+                          >
+                            +
+                          </span>
+                        </div>
+                      </div>
+                    </form>
                     <div className="row">
                       <div className="col-lg-1"></div>
                       <div className="col-lg-5 ">
                         <button
                           type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          onClick={() => {
-                            localStorage.setItem("productid", value.id);
-                            localStorage.setItem("status", "pending");
-                            localStorage.setItem("productbrand", value.title);
-                            localStorage.setItem("quantity", 1);
-                            localStorage.setItem(
-                              "productcategory",
-                              value.category
+                          onClick={(e) => {
+                            e.preventDefault();
+                            Add_To_Cart(
+                              localStorage.getItem("email"),
+                              value.price,
+                              value.category,
+                              value.id,
+                              value.brand,
+                              state
                             );
                           }}
                           class="btn btn-outline-warning product_action_buttons"
@@ -439,9 +328,23 @@ function ProductinfoCard(props) {
                       <div className="col-lg-5">
                         <button
                           type="button"
-                          class="details_buttons btn btn-success favorite_button"
+                          class="details_buttons btn btn-success"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            Buy_the_product(
+                              localStorage.getItem("email"),
+                              value.price,
+                              value.category,
+                              value.id,
+                              value.brand,
+                              state,
+                              credentials.reasonofrejection,
+                              "pending",
+                              credentials.actionby
+                            );
+                          }}
                         >
-                          <FavoriteBorderIcon /> Add To Favourite
+                          <ShoppingBag /> Buy Now
                         </button>
                       </div>
                     </div>

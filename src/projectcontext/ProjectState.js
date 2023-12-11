@@ -19,10 +19,11 @@ function ProjectState(props) {
   const [showproductDetails, setShowProductDetails] = useState([]);
   const [myProduct, setMyProduct] = useState([]);
   const [showCategorywiseProduct, setShowCategorywiseProduct] = useState([]);
-  const [raisedticket, setRaisedticket] = useState([])
-  const [feedbackGivenByUser, setFeedbackGivenByUser] = useState([])
+  const [YourOrder, setYourOrder] = useState([]);
+  const [raisedticket, setRaisedticket] = useState([]);
+  const [feedbackGivenByUser, setFeedbackGivenByUser] = useState([]);
+  const [yourOrderByUserdetails, setyourOrderByUserdetails] = useState([]);
   const [credentials, setCredentials] = useState({
-    
     email: "",
     productcategory: "",
     productid: "",
@@ -31,7 +32,6 @@ function ProjectState(props) {
     quantity: "",
   });
 
-  
   const { email, status, productcategory, productname, quantity, productid } =
     credentials;
   const bookCollectionRef = collection(db, "cart");
@@ -140,43 +140,98 @@ function ProjectState(props) {
   const addData = (newBooks) => {
     return addDoc(bookCollectionRef, newBooks);
   };
-  
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const reducer = (state, action) => {
+    if (state >= 1) {
+      if (action.type == "INCREAMENT") {
+        return state + 1;
+      }
 
-    const newbook = {
-      email: localStorage.getItem("email"),
-      productcategory: localStorage.getItem("productcategory"),
-      productname: localStorage.getItem("productbrand"),
-      productid: localStorage.getItem("productid"),
-      status: localStorage.getItem("status"),
+      if (action.type === "DECREAMENT") {
+        return state - 1;
+      }
+    } else if (state < 1) {
+      state = state + 1;
+      return state;
+    }
+  };
+
+  const orderCollectionRef = collection(db, "orders");
+
+  const Order_product_collection = (neworder) => {
+    return addDoc(orderCollectionRef, neworder);
+  };
+  const Buy_the_product = async (
+    email,
+    price,
+    category,
+    id,
+    brand,
+    quantity,
+    reasonofrejection,
+    status,
+    actionby
+  ) => {
+    const newItem = {
+      email,
+      price,
+      category,
+      id,
+      brand,
       quantity,
+      reasonofrejection,
+      status,
+      actionby,
     };
 
-    console.log(newbook);
-
     try {
-      await addData(newbook);
-      alert(
-        "Success",
-        localStorage.removeItem("productid"),
-        localStorage.removeItem("productname"),
-        localStorage.removeItem("productbrand"),
-        localStorage.removeItem("productcategory"),
-        localStorage.removeItem("quantity"),
-        localStorage.removeItem("status")
-      );
+      await Order_product_collection(newItem);
+      toast.success(`Thank you for Purchase ${brand}`, {
+        position: "top-center",
+        theme: "colored",
+      });
     } catch (error) {
       console.log("error", error);
     }
   };
 
+  const Cancel_Your_order = (id) => {
+    const productDoc = doc(db, "orders", id);
+    return deleteDoc(productDoc);
+  };
+
+  const Cancel_order_handler = async (id) => {
+    await Cancel_Your_order(id);
+    getProductsThat_You_Buy();
+  };
+  const getAllProductsThatYouBuy = () => {
+    return getDocs(orderCollectionRef);
+  };
+
+  const getProductsThat_You_Buy = async () => {
+    const data = await getAllProductsThatYouBuy();
+    setYourOrder(
+      data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
+    );
+  };
+
+  const UserOrder_by_user_details = async (email) => {
+    console.log(YourOrder);
+    const items = YourOrder.filter((cartdishes) => {
+      return cartdishes.email == email;
+    });
+
+    setyourOrderByUserdetails(items);
+    return items;
+  };
   // function for add item in cart is end
 
   // raised ticket start
   const raisedTicketCollectionRef = collection(db, "RaisedTicket");
-  const feedbackgivenCollectionRef = collection(db, "feedback")
+  const feedbackgivenCollectionRef = collection(db, "feedback");
   const addTicket = (newticket) => {
     return addDoc(raisedTicketCollectionRef, newticket);
   };
@@ -235,38 +290,166 @@ function ProjectState(props) {
       }))
     );
   };
-  // feedback given by people section ens
-    return (
+
+  const RaisedTicket_collection = (newraisedticket) => {
+    return addDoc(raisedTicketCollectionRef, newraisedticket);
+  };
+  const Reais_ticket_from_here = async (
+    email,
+    name,
+    subject,
+    concern,
+    status,
+    reasonofissue,
+    solution,
+    actionby
+  ) => {
+    console.log(
+      email,
+      name,
+      subject,
+      concern,
+      status,
+      reasonofissue,
+      solution,
+      actionby
+    );
+    const Your_raised_ticket = {
+      email,
+      name,
+      subject,
+      concern,
+      status,
+      reasonofissue,
+      solution,
+      actionby,
+    };
+
+    try {
+      await RaisedTicket_collection(Your_raised_ticket);
+      toast.success(
+        `Your ticket is raised SuccessFully. Regfer My Raised Ticket`,
+        {
+          position: "top-center",
+          theme: "colored",
+        }
+      );
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  const updateSubjectOfRaisedTicketByUser = async (
+    documentId,
+    concern,
+    subject
+  ) => {
+    console.log(documentId, concern, subject);
+    try {
+      // Reference to the specific document
+      const orderDocRef = doc(raisedTicketCollectionRef, documentId);
+
+      // Update the status field of the specific document
+
+      const confurmaction = prompt(
+        "Are you really want to update? If tes then enter Email"
+      );
+
+      if (confurmaction == localStorage.getItem("email")) {
+        await updateDoc(orderDocRef, {
+          concern: concern,
+          subject: subject,
+        });
+        toast.success(`Congractulation! Your ticket is updated`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      } else {
+        toast.error(`UnAutherised user`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+  // Add to cart
+
+  const AddToCartCollectionRef = collection(db, "cart");
+
+  const Add_To_cart_collection = (newcart) => {
+    return addDoc(AddToCartCollectionRef, newcart);
+  };
+  const Add_To_Cart = async (
+    email,
+    price,
+    productcategory,
+    productid,
+    productname,
+    quantity
+  ) => {
+    const new_Cart = {
+      email,
+      price,
+      productcategory,
+      productid,
+      productname,
+      quantity,
+    };
+
+    try {
+      await Add_To_cart_collection(new_Cart);
+      toast.success(`${productname} is added in cart`, {
+        position: "top-center",
+        theme: "colored",
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  return (
     <>
       <Projectcontext.Provider
         value={{
+          Buy_the_product,
+          Add_To_Cart,
           getFeedbacks,
           feedbackGivenByUser,
           setFeedbackGivenByUser,
           raisedticket,
+          reducer,
           setRaisedticket,
           deleteRaisedTickethandler,
           product,
           getRaisedTicket,
+          Cancel_order_handler,
           setProduct,
           deletehandler,
-          handleSubmit,
           getProducts,
           addProduct,
           updateProduct,
           deleteProduct,
           getAllProduct,
           getIndividualProduct,
+          updateSubjectOfRaisedTicketByUser,
           timeout,
           product_category,
           showCategorywiseProduct,
           setShowCategorywiseProduct,
+          getProductsThat_You_Buy,
+          UserOrder_by_user_details,
+          YourOrder,
+          setYourOrder,
+          setyourOrderByUserdetails,
+          yourOrderByUserdetails,
           handleclick,
           restrictUser,
           myProduct,
           checkAuthority,
           setMyProduct,
           product_details,
+          Reais_ticket_from_here,
           showproductDetails,
           setShowProductDetails,
         }}

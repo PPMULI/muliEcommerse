@@ -1,42 +1,36 @@
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../genralComponent/Navbar";
 import projectcontext from "../projectcontext/projectContext";
-import ProductinfoCard from "./ProductinfoCard";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import StoreIcon from "@mui/icons-material/Store";
+import { useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import Categorybuttons from "./Categorybuttons";
-import { db } from "../Authentaction/Config";
 import Footer from "../genralComponent/Footer";
-import {
-  collection,
-  getDocs,
-  getDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
-
 function Products() {
   const context = useContext(projectcontext);
-  const { handleclick, myProduct, setMyProduct } = context;
+  const {
+    handleclick,
+    myProduct,
+    setMyProduct,
+    Buy_the_product,
+    reducer,
+    Add_To_Cart,
+  } = context;
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const [credentials, setCredentials] = useState({
-    email: "",
-    productcategory: "",
-    productid: "",
-    status: "",
-    productname: "",
-    quantity: "",
+    actionby: "",
+    reasonofrejection: "",
   });
+
+  let initialState = 1;
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     handleclick();
   }, []);
-  console.log(typeof myProduct);
 
   const navigate = useNavigate();
   const handle_product_details = () => {
@@ -54,184 +48,12 @@ function Products() {
     }
   };
 
-  const addData = (newBooks) => {
-    return addDoc(bookCollectionRef, newBooks);
-  };
-
-  const { email, status, productcategory, productname, quantity, productid } =
-    credentials;
+  const { actionby, reasonofrejection } = credentials;
   console.log(credentials);
-  const onChange = (e) => {
-    e.preventDefault();
-    console.log(e.target.name, e.target.value);
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const bookCollectionRef = collection(db, "cart");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const newbook = {
-      email: localStorage.getItem("email"),
-      productcategory: localStorage.getItem("productcategory"),
-      productname: localStorage.getItem("productbrand"),
-      productid: localStorage.getItem("productid"),
-      status: localStorage.getItem("status"),
-      quantity,
-    };
-
-    console.log(newbook);
-
-    try {
-      await addData(newbook);
-      alert(
-        "Success",
-        localStorage.removeItem("productid"),
-        localStorage.removeItem("productname"),
-        localStorage.removeItem("productbrand"),
-        localStorage.removeItem("productcategory"),
-        localStorage.removeItem("quantity"),
-        localStorage.removeItem("status")
-      );
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
 
   return (
     <>
       <Navbar />
-
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Confirm To add Cart
-              </h1>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form onSubmit={handleSubmit}>
-              {/* <form> */}
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    value={localStorage.getItem("email")}
-                    disabled
-                    onChange={onChange}
-                    name="email"
-                    aria-describedby="emailHelp"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">
-                    Status
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="status"
-                    value="pending"
-                    disabled
-                    onChange={onChange}
-                    name="status"
-                    aria-describedby="emailHelp"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product Name
-                  </label>
-                  <input
-                    type="text"
-                    value={localStorage.getItem("productbrand")}
-                    class="form-control"
-                    disabled
-                    onChange={onChange}
-                    id="productname"
-                    name="productname"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product Category
-                  </label>
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control"
-                    id="productcategory"
-                    onChange={onChange}
-                    value={localStorage.getItem("productcategory")}
-                    name="productcategory"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product ID
-                  </label>
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control"
-                    id="productid"
-                    onChange={onChange}
-                    value={localStorage.getItem("productid")}
-                    name="productid"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product Quantity
-                  </label>
-                  <select
-                    class="form-select"
-                    name="quantity"
-                    id="quantity"
-                    onChange={onChange}
-                    aria-label="Default select example"
-                  >
-                    <option selected>---Select Quantity---</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  // console.log(email, productid, quantity,status,productcategory, productbrand  )
-
-                 
-                >
-                  Confirm
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="container">
         <div className="row">
           <Categorybuttons />
@@ -276,31 +98,84 @@ function Products() {
                                   <figcaption className="card-title figure_caption">
                                     {value.title}
                                   </figcaption>
+
+                                  <form action="">
+                                    <div className="uiui">
+                                      <div className="wrapper">
+                                        {state == 1 ? (
+                                          <span
+                                            className="minus d-none"
+                                            onClick={() =>
+                                              dispatch({ type: "DECREAMENT" })
+                                            }
+                                          >
+                                            -
+                                          </span>
+                                        ) : (
+                                          <span
+                                            className="minus"
+                                            onClick={() =>
+                                              dispatch({ type: "DECREAMENT" })
+                                            }
+                                          >
+                                            -
+                                          </span>
+                                        )}
+
+                                        <span
+                                          className="num"
+                                          onChange={onchange}
+                                          id="num"
+                                        >
+                                          {state}
+                                        </span>
+                                        <span
+                                          className="plus"
+                                          onClick={() =>
+                                            dispatch({ type: "INCREAMENT" })
+                                          }
+                                        >
+                                          +
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </form>
                                 </h5>
+
                                 <button
                                   type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    Buy_the_product(
+                                      localStorage.getItem("email"),
+                                      value.price,
+                                      value.category,
+                                      value.id,
+                                      value.brand,
+                                      state,
+                                      credentials.reasonofrejection,
+                                      "pending",
+                                      credentials.actionby
+                                    );
+                                  }}
                                   class="btn btn-outline-success product_action_buttons"
                                 >
                                   <StoreIcon /> Buy
                                 </button>
                                 <button
                                   type="button"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
-                                  onClick={() => {
-                                    localStorage.setItem("productid", value.id);
-                                    localStorage.setItem("status", "pending");
-                                    localStorage.setItem(
-                                      "productbrand",
-                                      value.title
-                                    );
-                                    localStorage.setItem("quantity", 1);
-                                    localStorage.setItem(
-                                      "productcategory",
-                                      value.category
+                                  class="btn btn-outline-warning product_action_buttons"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    Add_To_Cart(
+                                      localStorage.getItem("email"),
+                                      value.price,
+                                      value.category,
+                                      value.id,
+                                      value.brand,
+                                      state
                                     );
                                   }}
-                                  class="btn btn-outline-warning product_action_buttons"
                                 >
                                   <AddShoppingCartIcon /> Add To Cart
                                 </button>

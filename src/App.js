@@ -13,9 +13,6 @@ import AuthDetails from "./Authentaction/AuthDetails";
 import Dummy from "./genralComponent/Dummy";
 import Admin from "./AdminComponents/Admin";
 import ProductCategory from "./products/ProductCategory";
-import AddBook from "./genralComponent/AddBook";
-import Bookliost from "./genralComponent/books/Bookliost";
-import Dummybook from "./genralComponent/books/Dummybook";
 import AboutUs from "./About/AboutUs";
 import RaisedTicket from "./About/RaisedTicket";
 import Feedback from "./About/Feedback";
@@ -36,10 +33,8 @@ function App() {
             <Route exact path="/yourcart" element={<YourCart />} />
             <Route exact path="/raisedticket" element={<RaisedTicket />} />
             <Route exact path="/feedback" element={<Feedback />} />
-            <Route exact path="/booklist" element={<Dummybook />} />
-            <Route exact path="/aboutus" element={<AboutUs />} />
-            <Route exact path="/addbook" element={<AddBook />} />
-            <Route exact path="/myorder" element={<MyOrder />} />
+             <Route exact path="/aboutus" element={<AboutUs />} />
+             <Route exact path="/myorder" element={<MyOrder />} />
             <Route
               exact
               path="/productcategory"
@@ -54,6 +49,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route exact path="/productdetails" element={<ProductinfoCard />} />
             <Route exact path="/products" element={<Products />} />
+            <Route exact path="/admin" element={<Admin />} />
             <Route exact path="/userlogin" element={<UserLogin />} />
           </Routes>
         </ProjectState>

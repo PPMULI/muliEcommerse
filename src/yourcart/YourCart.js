@@ -7,10 +7,11 @@ import { deletebook } from "../genralComponent/Dummy";
 import Footer from "../genralComponent/Footer";
 import projectcontext from "../projectcontext/projectContext";
 import { db } from "../Authentaction/Config";
-import { addDoc, collection } from "firebase/firestore";
+// import { addDoc, collection } from "firebase/firestore";
 
 function YourCart() {
   const [productbyEmail, setProductbyEmail] = useState([]);
+  const [credentials, setCredentials] = useState({reasonofrejection: "", actionby: ""})
   const context = useContext(projectcontext);
   const {
     handleclick,
@@ -20,19 +21,13 @@ function YourCart() {
     product,
     setProduct,
     deletehandler,
+    Buy_the_product
   } = context;
+
+  const {reasonofrejection, actionby} = credentials
   useEffect(() => {
     getProducts();
   }, []);
-
-  const [credentials, setCredentials] = useState({
-    email: "",
-    productcategory: "",
-    productid: "",
-    status: "",
-    productname: "",
-    quantity: "",
-  });
 
   useEffect(() => {
     handleclick();
@@ -55,51 +50,14 @@ function YourCart() {
     }
   };
 
-  const addData = (newBooks) => {
-    return addDoc(bookCollectionRef, newBooks);
-  };
+  // const addData = (newBooks) => {
+  //   return addDoc(bookCollectionRef, newBooks);
+  // };
 
-  const { email, status, productcategory, productname, quantity, productid } =
-    credentials;
-  console.log(credentials);
-  const onChange = (e) => {
-    e.preventDefault();
-    console.log(e.target.name, e.target.value);
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const bookCollectionRef = collection(db, "order");
+  // const bookCollectionRef = collection(db, "order");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const newbook = {
-      email: localStorage.getItem("email"),
-      productcategory: localStorage.getItem("productcategory"),
-      productname: localStorage.getItem("productbrand"),
-      productid: localStorage.getItem("productid"),
-      status: localStorage.getItem("status"),
-      quantity,
-    };
-
-    console.log(newbook);
-
-    try {
-      await addData(newbook);
-      alert(
-        "Success",
-        localStorage.removeItem("productid"),
-        localStorage.removeItem("productname"),
-        localStorage.removeItem("productbrand"),
-        localStorage.removeItem("productcategory"),
-        localStorage.removeItem("quantity"),
-        localStorage.removeItem("status")
-      );
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
   useEffect(() => {
     getCartItemsByEmail(localStorage.getItem("email"));
   }, []);
@@ -119,133 +77,6 @@ function YourCart() {
     <>
       {/* <pre>{JSON.stringify(product, undefined, 2)}</pre> */}
       <Navbar />
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Confirm To Buy
-              </h1>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form onSubmit={handleSubmit}>
-                {/* <form> */}
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    value={localStorage.getItem("email")}
-                    disabled
-                    onChange={onChange}
-                    name="email"
-                    aria-describedby="emailHelp"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">
-                    Status
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="status"
-                    value="pending"
-                    disabled
-                    onChange={onChange}
-                    name="status"
-                    aria-describedby="emailHelp"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product Name
-                  </label>
-                  <input
-                    type="text"
-                    value={localStorage.getItem("productbrand")}
-                    class="form-control"
-                    disabled
-                    onChange={onChange}
-                    id="productname"
-                    name="productname"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product Category
-                  </label>
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control"
-                    id="productcategory"
-                    onChange={onChange}
-                    value={localStorage.getItem("productcategory")}
-                    name="productcategory"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product ID
-                  </label>
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control"
-                    id="productid"
-                    onChange={onChange}
-                    value={localStorage.getItem("productid")}
-                    name="productid"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">
-                    Product Quantity
-                  </label>
-                  <select
-                    class="form-select d-none"
-                    name="quantity"
-                    id="quantity"
-                    onChange={onChange}
-                    aria-label="Default select example"
-                  >
-                    <option selected>---Select Quantity---</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  // console.log(email, productid, quantity,status,productcategory, productbrand  )
-                >
-                  Confirm
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="your_cart">
         <button
           onClick={() => {
@@ -261,6 +92,7 @@ function YourCart() {
             <div className="col-lg-6">
               {productbyEmail &&
                 productbyEmail.map((value) => {
+                  console.log(value);
                   return (
                     <>
                       <div className="col-lg-12">
@@ -272,54 +104,61 @@ function YourCart() {
                               </div>
 
                               <div className="col-lg-6">
-                                <p className="order_status">{value.status}</p>
+                                <p className="order_status">{value.id}</p>
                               </div>
 
                               <div className="col-lg-6">
-                                <b>productID:</b> {value.id}
+                                Details:
+                                <ul>
+                                  <li>Price: {value.price}</li>
+                                  <li>
+                                    Product Category: {value.productcategory}
+                                  </li>
+                                  <li>Product Name: {value.productname}</li>
+                                  <li>Product ID: {value.productid}</li>
+                                  <li>Quantity: {value.quantity}</li>
+                                </ul>
                               </div>
-                              <div className="col-lg-6">
-                                <button
-                                  className="btn btn-danger cancel_order"
-                                  onClick={(e) => {
-                                    deletehandler(value.id);
-                                  }}
-                                >
-                                  Remove
-                                </button>
-                              </div>
+                              <hr />
+                              <div className="row">
+                                <div className="col-lg-6">
+                                 </div>
 
-                              <div className="col-lg-6"></div>
-                              <div className="col-lg-6">
-                                <button
-                                  type="button"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
-                                  onClick={() => {
-                                    localStorage.setItem("productid", value.id);
-                                    localStorage.setItem("status", "pending");
-                                    localStorage.setItem(
-                                      "productbrand",
-                                      value.title
+                                <div className="col-lg-6">
+                                  <div className="row">
+                                    <div className="col-lg-6">
+                                      <button  onClick={(e) => {
+                                    e.preventDefault();
+                                    Buy_the_product(
+                                      localStorage.getItem("email"),
+                                      value.price,
+                                      value.productcategory,
+                                      value.id,
+                                      value.productname,
+                                      value.quantity,
+                                      credentials.reasonofrejection,
+                                      "pending",
+                                      credentials.actionby
                                     );
-                                    localStorage.setItem("quantity", 1);
-                                    localStorage.setItem(
-                                      "productcategory",
-                                      value.category
-                                    );
-                                  }}
-                                  class="btn btn btn-success cancel_order buy_order btn-outline-warning product_action_buttons"
-                                >
-                                  Buy Now
-                                </button>
+                                  }} className="btn btn-outline-success">
+                                        Buy Now
+                                      </button>
+                                    </div>
+
+                                    <div className="col-lg-6">
+                                      <button
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        deletehandler(value.id)
+                                      }}
+                                      className="btn btn-outline-danger">
+                                        Remove
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <h5 class="card-title">{value.productname}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">
-                              {" "}
-                              {value.productcategory}
-                            </h6>
-                            <p>{value.quantity}</p>
                           </div>
                         </div>
                       </div>
