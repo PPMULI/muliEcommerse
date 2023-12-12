@@ -11,7 +11,10 @@ import { db } from "../Authentaction/Config";
 
 function YourCart() {
   const [productbyEmail, setProductbyEmail] = useState([]);
-  const [credentials, setCredentials] = useState({reasonofrejection: "", actionby: ""})
+  const [credentials, setCredentials] = useState({
+    reasonofrejection: "",
+    actionby: "",
+  });
   const context = useContext(projectcontext);
   const {
     handleclick,
@@ -21,10 +24,10 @@ function YourCart() {
     product,
     setProduct,
     deletehandler,
-    Buy_the_product
+    Buy_the_product,
   } = context;
 
-  const {reasonofrejection, actionby} = credentials
+  const { reasonofrejection, actionby } = credentials;
   useEffect(() => {
     getProducts();
   }, []);
@@ -78,94 +81,93 @@ function YourCart() {
       {/* <pre>{JSON.stringify(product, undefined, 2)}</pre> */}
       <Navbar />
       <div className="your_cart">
-        <button
-          onClick={() => {
-            getCartItemsByEmail(localStorage.getItem("email"));
-          }}
-        >
-          Refresh the list
-        </button>
-        <h1 className="your_cart_heading">Your Cart</h1>
+      <button
+        onClick={() => {
+          getCartItemsByEmail(localStorage.getItem("email"));
+        }}
+      >
+        Refresh the list
+      </button>
+
+        <h4 className="user_orders">Your Cart</h4>
         <div className="container">
           <div className="row">
-            <div className="col-lg-3"></div>
-            <div className="col-lg-6">
-              {productbyEmail &&
-                productbyEmail.map((value) => {
-                  console.log(value);
-                  return (
-                    <>
-                      <div className="col-lg-12">
-                        <div class="card cart_items">
-                          <div class="card-body">
-                            <div className="row">
-                              <div className="col-lg-6">
-                                <p className="user_email">{value.email}</p>
-                              </div>
-
-                              <div className="col-lg-6">
-                                <p className="order_status">{value.id}</p>
-                              </div>
-
-                              <div className="col-lg-6">
-                                Details:
+            {productbyEmail &&
+              productbyEmail.map((value) => {
+                return (
+                  <>
+                    <div className="col-lg-1"></div>
+                    <div className="col-lg-10">
+                      <div class="card total_user_order">
+                        <div className="row">
+                          <div className="col-lg-2">
+                            <img
+                              src={value.imageurl}
+                              class="card-img-top ordered_product_image"
+                              alt="..."
+                            />
+                          </div>
+                          <div className="col-lg-5">
+                            <div class="card-body">
+                              <h5 class="card-title">Product Details</h5>
+                              <p class="card-text">
                                 <ul>
+                                  <li>Product name: {value.category}</li>
+                                  <li>Brand: {value.brand}</li>
                                   <li>Price: {value.price}</li>
-                                  <li>
-                                    Product Category: {value.productcategory}
-                                  </li>
-                                  <li>Product Name: {value.productname}</li>
-                                  <li>Product ID: {value.productid}</li>
-                                  <li>Quantity: {value.quantity}</li>
+                                  <li>Quantity: {value.quantity}Q</li>
                                 </ul>
-                              </div>
-                              <hr />
-                              <div className="row">
-                                <div className="col-lg-6">
-                                 </div>
-
-                                <div className="col-lg-6">
-                                  <div className="row">
-                                    <div className="col-lg-6">
-                                      <button  onClick={(e) => {
-                                    e.preventDefault();
-                                    Buy_the_product(
-                                      localStorage.getItem("email"),
-                                      value.price,
-                                      value.productcategory,
-                                      value.id,
-                                      value.productname,
-                                      value.quantity,
-                                      credentials.reasonofrejection,
-                                      "pending",
-                                      credentials.actionby
-                                    );
-                                  }} className="btn btn-outline-success">
-                                        Buy Now
-                                      </button>
-                                    </div>
-
-                                    <div className="col-lg-6">
-                                      <button
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        deletehandler(value.id)
-                                      }}
-                                      className="btn btn-outline-danger">
-                                        Remove
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                              </p>
                             </div>
                           </div>
+
+                          <div className="col-lg-2">
+                        
+                          </div>
+
+                          <div
+                            className="col-lg-3 action_buttons"
+                            id="action_button"
+                          >
+                            <button
+                              className="btn btn-outline-success accept_button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                Buy_the_product(
+                                  localStorage.getItem("email"),
+                                  value.price,
+                                  value.productcategory,
+                                  value.id,
+                                  value.productname,
+                                  value.quantity,
+                                  credentials.reasonofrejection,
+                                  "pending",
+                                  credentials.actionby,
+                                  value.imageurl
+                                );
+                              }}
+                            >
+                              Buy
+                            </button>
+
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                deletehandler(value.id);
+                              }}
+                              className="btn btn-outline-danger"
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    </>
-                  );
-                })}
-            </div>{" "}
+                      </div>{" "}
+                    </div>
+
+                    <div className="col-lg-1"></div>
+                  </>
+                );
+              })}
           </div>
         </div>
       </div>

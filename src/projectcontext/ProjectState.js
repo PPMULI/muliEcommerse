@@ -170,8 +170,10 @@ function ProjectState(props) {
     quantity,
     reasonofrejection,
     status,
-    actionby
+    actionby,
+    imageurl
   ) => {
+    console.log("imageurl", imageurl)
     const newItem = {
       email,
       price,
@@ -182,6 +184,7 @@ function ProjectState(props) {
       reasonofrejection,
       status,
       actionby,
+      imageurl
     };
 
     try {
@@ -387,7 +390,8 @@ function ProjectState(props) {
     productcategory,
     productid,
     productname,
-    quantity
+    quantity,
+    imageurl
   ) => {
     const new_Cart = {
       email,
@@ -396,6 +400,7 @@ function ProjectState(props) {
       productid,
       productname,
       quantity,
+      imageurl
     };
 
     try {
@@ -408,6 +413,58 @@ function ProjectState(props) {
       console.log("error", error);
     }
   };
+
+  // update the order
+  const Update_user_orders_ForAdmin = async (
+    docID,
+    status,
+    actionby
+  ) => {
+    console.log(docID, status, actionby)
+    try {
+      // Reference to the specific document
+      const orderDocRef = doc(orderCollectionRef, docID);
+
+      // Update the status field of the specific document
+      await updateDoc(orderDocRef, {
+        status: status,
+        actionby: actionby,  // Set the status to "deliver"
+      });
+      toast.success(`Congractulation! Your status is updated`, {
+        position: "top-center",
+        theme: "colored",
+      });
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+  const Reject_user_orders_By_Admin = async (
+    docID,
+    status,
+    actionby,
+    reasonofrejection
+  ) => {
+    console.log(docID, status, actionby, reasonofrejection)
+    try {
+      // Reference to the specific document
+      const orderDocRef = doc(orderCollectionRef, docID);
+
+      // Update the status field of the specific document
+      await updateDoc(orderDocRef, {
+        status: status,
+        actionby: actionby,
+        reasonofrejection: reasonofrejection  // Set the status to "deliver"
+      });
+      toast.success(`Congractulation! Your status is updated`, {
+        position: "top-center",
+        theme: "colored",
+      });
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
   return (
     <>
       <Projectcontext.Provider
@@ -421,6 +478,7 @@ function ProjectState(props) {
           reducer,
           setRaisedticket,
           deleteRaisedTickethandler,
+          Reject_user_orders_By_Admin,
           product,
           getRaisedTicket,
           Cancel_order_handler,
@@ -432,6 +490,7 @@ function ProjectState(props) {
           deleteProduct,
           getAllProduct,
           getIndividualProduct,
+          Update_user_orders_ForAdmin,
           updateSubjectOfRaisedTicketByUser,
           timeout,
           product_category,

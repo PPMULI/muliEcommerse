@@ -34,6 +34,7 @@ function MyOrder() {
   return (
     <>
       <Navbar />
+
       <div className="your_cart">
         <button
           onClick={() => {
@@ -42,75 +43,84 @@ function MyOrder() {
         >
           Refresh the list
         </button>
-        <h1 className="your_cart_heading">Your Orders</h1>
+        <h4 className="user_orders">User Orders</h4>
         <div className="container">
           <div className="row">
-            <div className="col-lg-3"></div>
-            <div className="col-lg-6">
-              {ProductbyEmail &&
-                ProductbyEmail.map((value) => {
-                  console.log(value);
-                  return (
-                    <>
-                      <div className="col-lg-12">
-                        <div class="card cart_items">
-                          <div class="card-body">
-                            <div className="row">
-                              <div className="col-lg-6">
-                                <p className="user_email">{value.email}</p>
-                              </div>
-
-                              <div className="col-lg-6">
-                                <p className="order_status">{value.id}</p>
-                              </div>
-
-                              <div className="col-lg-6">
-                                Details:
+            {ProductbyEmail &&
+              ProductbyEmail.map((value) => {
+                return (
+                  <>
+                    <div className="col-lg-1"></div>
+                    <div className="col-lg-10">
+                      <div class="card total_user_order">
+                        <div className="row">
+                          <div className="col-lg-2">
+                            <img
+                              src={value.imageurl}
+                              class="card-img-top ordered_product_image"
+                              alt="..."
+                            />
+                          </div>
+                          <div className="col-lg-5">
+                            <div class="card-body">
+                              <h5 class="card-title">Product Details</h5>
+                              <p class="card-text">
                                 <ul>
+                                  <li>Product name: {value.category}</li>
+                                  <li>Brand: {value.brand}</li>
                                   <li>Price: {value.price}</li>
-                                  <li>
-                                    Product Category: {value.productcategory}
-                                  </li>
-                                  <li>Product Name: {value.productname}</li>
-                                  <li>Product ID: {value.productid}</li>
-                                  <li>Quantity: {value.quantity}</li>
+                                  <li>Quantity: {value.quantity}Q</li>
                                 </ul>
-                              </div>
-                              <hr />
-                              <div className="row">
-                                <div className="col-lg-6"></div>
-
-                                <div className="col-lg-6">
-                                  <div className="row">
-                                    <div className="col-lg-6">
-                                
-                                    </div>
-
-                                    <div className="col-lg-6">
-                                      <button
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          Cancel_order_handler(value.id);
-                                        }}
-                                        className="btn btn-outline-danger"
-                                      >
-                                        Remove
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                              </p>
                             </div>
                           </div>
+
+                          <div className="col-lg-2">
+                            <ul className="product_status">
+                              <li>Status: </li>
+                              <li>{value.status}</li>
+                            </ul>
+                          </div>
+
+                          <div
+                            className="col-lg-3 action_buttons"
+                            id="action_button"
+                          >
+                            {value.status == "pending" ? (
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  Cancel_order_handler(value.id);
+                                }}
+                                className="btn btn-outline-danger"
+                              >
+                                Cancel order
+                              </button>
+                            ) : (
+                              <button
+                                disabled
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  Cancel_order_handler(value.id);
+                                }}
+                                className="btn btn-outline-danger"
+                              >
+                                Cancel Order
+                              </button>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </>
-                  );
-                })}
-            </div>{" "}
+                      </div>{" "}
+                    </div>
+
+                    <div className="col-lg-1"></div>
+                  </>
+                );
+              })}
           </div>
         </div>
       </div>
+
       <Footer />
     </>
   );

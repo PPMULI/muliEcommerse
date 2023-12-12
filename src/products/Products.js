@@ -59,6 +59,7 @@ function Products() {
           <Categorybuttons />
           {myProduct &&
             myProduct.map((value, index) => {
+              console.log(value.images[0])
               return (
                 <>
                   <div className="col-lg-3">
@@ -155,7 +156,8 @@ function Products() {
                                       state,
                                       credentials.reasonofrejection,
                                       "pending",
-                                      credentials.actionby
+                                      credentials.actionby,
+                                      value.images[0]
                                     );
                                   }}
                                   class="btn btn-outline-success product_action_buttons"
@@ -173,7 +175,8 @@ function Products() {
                                       value.category,
                                       value.id,
                                       value.brand,
-                                      state
+                                      state,
+                                      value.images[0]
                                     );
                                   }}
                                 >

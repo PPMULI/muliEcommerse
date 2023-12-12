@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import projectcontext from '../projectcontext/projectContext'
-import Navbar from '../genralComponent/Navbar'
+import AdminNav from './AdminNav'
 
 function Admin() {
     const context = useContext(projectcontext)
@@ -11,7 +11,8 @@ function Admin() {
     // }, [])
   return (
     <>
-    <Navbar />
+    <AdminNav />
+    <div className="bghomepage"></div>
     </>
   )
 }

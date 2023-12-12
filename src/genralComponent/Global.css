@@ -1,3 +1,5 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap');
 /* navbar start */
 .navbar-items {
     margin-left: 450px;
@@ -478,4 +480,50 @@ ul {
 }
 
 /* dummy css start */
+.user_orders {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: xx-large;
+}
+
+.ordered_product_image {
+    height: 175px;
+    width: 140px;
+}
+
+@media screen and (max-width: 991px) {
+    .ordered_product_image {
+        width: 500px;
+        margin-left: 100px;
+        height: 200px;
+    }
+  }
+
+.total_user_order {
+    margin: 5px 0px 5px 0px;
+    padding: 15px;
+}
+
+.product_status {
+    margin-top: 20px;
+}
+
+.action_buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.accept_button {
+    margin: 5px 0px 5px 0px;
+}
+
+.order_id {
+    color: purple;
+    text-align: end;
+}
+
+.order_id:hover {
+    color: green;
+    cursor: pointer;
+}
 /* dummy css end */

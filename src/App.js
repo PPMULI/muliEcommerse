@@ -21,6 +21,8 @@ import MyraisedTicket from "./RaisedTicket/MyraisedTicket";
 import PeopleFeedbacks from "./RaisedTicket/PeopleFeedbacks";
 import RaisedTicketComponent from "./RaisedTicket/RaisedTicketComponent";
 import MyOrder from "./yourcart/MyOrder";
+import UserOrders from "./AdminComponents/AdminServices/UserOrders";
+import UserTickets from "./AdminComponents/AdminServices/UserTickets";
 
 function App() {
   return (
@@ -46,6 +48,8 @@ function App() {
             <Route exact path="/adminsignup" element={<AdminSignup />} />
             <Route exact path="/userlogin" element={<UserLogin />} />
             <Route exact path="/adminlogin" element={<AdminLogin />} />
+            <Route exact path="/userorders" element={<UserOrders />} />
+            <Route exact path="/usertickets" element={<UserTickets />} />
             <Route exact path="/" element={<Home />} />
             <Route exact path="/productdetails" element={<ProductinfoCard />} />
             <Route exact path="/products" element={<Products />} />

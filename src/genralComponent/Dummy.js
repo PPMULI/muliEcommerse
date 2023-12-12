@@ -1,119 +1,92 @@
-// import React from "react";
-// import { db } from "../Authentaction/Config2";
-// import {
-//   collection,
-//   getDocs,
-//   getDoc,
-//   addDoc,
-//   updateDoc,
-//   deleteDoc,
-//   doc,
-// } from "firebase/firestore";
-
-// const bookCollectionRef = collection(db, "eCArt");
-// class BookDataService {
-//   addBooks = (newBooks) => {
-//     return addDoc(bookCollectionRef, newBooks);
-//   };
-
-//   updateBook = (id, updatedbook) => {
-//     const bookDoc = doc(db, "eCArt", id);
-//     return updateDoc(bookDoc, updatedbook);
-//   };
-
-//   deleteBook = (id) => {
-//     const bookDoc = doc(db, "eCArt", id);
-//     return deleteDoc(bookDoc);
-//   };
-
-//   getAllBooks = () => {
-//     return getDocs(bookCollectionRef);
-//   };
-
-//   getBook = (id) => {
-//     const bookDoc = doc(db, "eCArt", id);
-//     return getDoc(bookDoc);
-//   };
-// }
-// function Dummy() {
-//   return (
-//     <>
-//      <h1>dummy</h1>
-//     </>
-//   );
-// }
-
-// export default Dummy;
-
-import React from "react";
-import { db } from "../Authentaction/Config";
-import {
-  collection,
-  getDocs,
-  getDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
-
-// Initialize the Firestore collection reference
-const bookCollectionRef = collection(db, "eCArt");
-
-const addData = (newBooks) => {
-  return addDoc(bookCollectionRef, newBooks);
-};
-
-const getBooks = () => {
-  return getDocs(bookCollectionRef);
-};
-
-const deletebook = (id) => {
-  const bookDoc = doc(db, "eCArt", id);
-  return deleteDoc(bookDoc);
-};
-
-const updateBook = (id, updatedbook) => {
-  const bookDoc = doc(db, "eCArt", id);
-    return updateDoc(bookDoc, updatedbook);
-}
-
-const getBook = (id) => {
-      const bookDoc = doc(db, "eCArt", id);
-    return getDoc(bookDoc);
-}
-class BookDataService {
-  //  addBooks = (newBooks) => {
-  //   return addDoc(bookCollectionRef, newBooks);
-  // };
-
-  // updateBook = (id, updatedbook) => {
-  //   const bookDoc = doc(db, "eCArt", id);
-  //   return updateDoc(bookDoc, updatedbook);
-  // };
-
-  // deleteBook = (id) => {
-  //   const bookDoc = doc(db, "eCArt", id);
-  //   return deleteDoc(bookDoc);
-  // };
-
-  // getAllBooks = () => {
-  //   return getDocs(bookCollectionRef);
-  // };
-
-  // getBook = (id) => {
-  //   const bookDoc = doc(db, "eCArt", id);
-  //   return getDoc(bookDoc);
-  // };
-}
+import React, { useState, useContext } from "react";
+import AdminNav from "../AdminComponents/AdminNav";
+import image from "../Images/bghome.png";
+import projectcontext from "../projectcontext/projectContext";
+import { useEffect } from "react";
 
 function Dummy() {
+  const context = useContext(projectcontext);
+  const {
+    getProductsThat_You_Buy,
+    YourOrder,
+    Update_user_orders_ForAdmin,
+    Reject_user_orders_By_Admin,
+  } = context;
+
+  const [credentials, setCredentials] = useState({
+    reasonofrejection: "",
+  });
+
+  const { reasonofrejection } = credentials;
+  console.log(credentials);
+  useEffect(() => {
+    getProductsThat_You_Buy();
+  }, []);
   return (
     <>
-      <h1>dummy</h1>
+      <AdminNav />
+
+      <div className="your_cart">
+        <h4 className="user_orders">User Orders</h4>
+        <div className="container">
+          <div className="row">
+            {YourOrder &&
+              YourOrder.map((value) => {
+                return (
+                  <>
+                    <div className="col-lg-2"></div>
+                    <div className="col-lg-8">
+                      <div class="card total_user_order">
+                        <div className="row">
+                          <div className="col-lg-2">
+                            <img
+                              src={image}
+                              class="card-img-top ordered_product_image"
+                              alt="..."
+                            />
+                          </div>
+                          <div className="col-lg-5">
+                            <div class="card-body">
+                              <h5 class="card-title">Product Details</h5>
+                              <p class="card-text">
+                                <ul>
+                                  <li>Product name: {value.category}</li>
+                                  <li>Brand: {value.brand}</li>
+                                  <li>Price: {value.price}</li>
+                                  <li>Quantity: {value.quantity}Q</li>
+                                </ul>
+                                
+                                
+                                
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="col-lg-2">
+                            <ul className="product_status" >
+                              <li>Status: </li>
+                              <li>{value.status}</li>
+                            </ul>
+                          </div>
+
+                          <div className="col-lg-3 action_buttons">
+                            <button className="btn btn-outline-primary accept_button">Accept</button>
+                            <button className="btn btn-outline-success accept_button">Accept</button>
+                            <button className="btn btn-outline-danger accept_button">Accept</button>
+                          </div>
+                        </div>
+                      </div>{" "}
+                    </div>
+
+                    <div className="col-lg-2"></div>
+                  </>
+                );
+              })}
+          </div>
+        </div>
+      </div>
     </>
   );
 }
 
-export { getBooks,deletebook, getBook, updateBook };
-export default addData;
+export default Dummy;
