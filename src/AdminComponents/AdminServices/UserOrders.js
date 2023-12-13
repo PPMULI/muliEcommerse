@@ -145,7 +145,7 @@ function UserOrders() {
                                 id="action_button"
                               >
                                 <button
-                                  className="btn btn-outline-primary accept_button"
+                                  className=" btn btn-outline-primary accept_button"
                                   disabled
                                   onClick={() => {
                                     Update_user_orders_ForAdmin(
@@ -187,7 +187,7 @@ function UserOrders() {
                             {value.status == "deliver" ||
                             value.status == "reject" ? (
                               <div
-                                className="action_buttons"
+                                className="action_buttons d-none"
                                 id="action_button"
                               >
                                 <button

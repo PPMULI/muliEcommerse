@@ -23,6 +23,7 @@ import RaisedTicketComponent from "./RaisedTicket/RaisedTicketComponent";
 import MyOrder from "./yourcart/MyOrder";
 import UserOrders from "./AdminComponents/AdminServices/UserOrders";
 import UserTickets from "./AdminComponents/AdminServices/UserTickets";
+import Givefeedback from "./About/Givefeedback/Givefeedback";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route exact path="/productdetails" element={<ProductinfoCard />} />
             <Route exact path="/products" element={<Products />} />
+            <Route exact path="/givefeedback" element={<Givefeedback />} />
             <Route exact path="/admin" element={<Admin />} />
             <Route exact path="/userlogin" element={<UserLogin />} />
           </Routes>

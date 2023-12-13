@@ -173,7 +173,7 @@ function ProjectState(props) {
     actionby,
     imageurl
   ) => {
-    console.log("imageurl", imageurl)
+    console.log("imageurl", imageurl);
     const newItem = {
       email,
       price,
@@ -184,7 +184,7 @@ function ProjectState(props) {
       reasonofrejection,
       status,
       actionby,
-      imageurl
+      imageurl,
     };
 
     try {
@@ -377,6 +377,85 @@ function ProjectState(props) {
     }
   };
 
+  // re-open the ticket by user
+  const reopen_the_ticketBy_user = async (
+    documentId,
+    status,
+    concern,
+    subject
+  ) => {
+    console.log(documentId, status, concern, subject);
+    try {
+      // Reference to the specific document
+      const orderDocRef = doc(raisedTicketCollectionRef, documentId);
+
+      // Update the status field of the specific document
+
+      const confurmaction = prompt(
+        "Are you really want to update? If tes then enter Email"
+      );
+
+      if (confurmaction == localStorage.getItem("email")) {
+        await updateDoc(orderDocRef, {
+          concern: concern,
+          subject: subject,
+          status: status
+        });
+        toast.success(`Congractulation! Your ticket is updated`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      } else {
+        toast.error(`UnAutherised user`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+  const Give_the_solution_by_admin = async (
+    documentId,
+    status,
+    resolveby,
+    reasonofissue,
+    solutionofissue
+  ) => {
+    console.log(documentId, status, resolveby, reasonofissue, solutionofissue);
+    try {
+      // Reference to the specific document
+      const orderDocRef = doc(raisedTicketCollectionRef, documentId);
+
+      // Update the status field of the specific document
+
+      const confurmaction = prompt(
+        "Are you really want to update? If tes then enter Email"
+      );
+
+      if (confurmaction == localStorage.getItem("email")) {
+        await updateDoc(orderDocRef, {
+          status: status,
+          actionby: resolveby,
+          reasonofissue: reasonofissue,
+          solution: solutionofissue,
+        });
+        toast.success(`Congractulation! Your ticket is updated`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      } else {
+        toast.error(`UnAutherised user`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
   // Add to cart
 
   const AddToCartCollectionRef = collection(db, "cart");
@@ -400,7 +479,7 @@ function ProjectState(props) {
       productid,
       productname,
       quantity,
-      imageurl
+      imageurl,
     };
 
     try {
@@ -415,12 +494,8 @@ function ProjectState(props) {
   };
 
   // update the order
-  const Update_user_orders_ForAdmin = async (
-    docID,
-    status,
-    actionby
-  ) => {
-    console.log(docID, status, actionby)
+  const Update_user_orders_ForAdmin = async (docID, status, actionby) => {
+    console.log(docID, status, actionby);
     try {
       // Reference to the specific document
       const orderDocRef = doc(orderCollectionRef, docID);
@@ -428,7 +503,7 @@ function ProjectState(props) {
       // Update the status field of the specific document
       await updateDoc(orderDocRef, {
         status: status,
-        actionby: actionby,  // Set the status to "deliver"
+        actionby: actionby, // Set the status to "deliver"
       });
       toast.success(`Congractulation! Your status is updated`, {
         position: "top-center",
@@ -445,7 +520,7 @@ function ProjectState(props) {
     actionby,
     reasonofrejection
   ) => {
-    console.log(docID, status, actionby, reasonofrejection)
+    console.log(docID, status, actionby, reasonofrejection);
     try {
       // Reference to the specific document
       const orderDocRef = doc(orderCollectionRef, docID);
@@ -454,7 +529,7 @@ function ProjectState(props) {
       await updateDoc(orderDocRef, {
         status: status,
         actionby: actionby,
-        reasonofrejection: reasonofrejection  // Set the status to "deliver"
+        reasonofrejection: reasonofrejection, // Set the status to "deliver"
       });
       toast.success(`Congractulation! Your status is updated`, {
         position: "top-center",
@@ -465,10 +540,39 @@ function ProjectState(props) {
     }
   };
 
+  // feedback from user 
+  const Customer_feedback_collection = collection(db, "customer_feedback");
+
+  const Feedback_from_customer_collection = (newcustomerfeedback) => {
+    return addDoc(Customer_feedback_collection, newcustomerfeedback);
+  };
+  const feedback_from_user = async (userID, email, customername,feedbackreletedto, leavetherating, moreaboutservice) => {
+    console.log(userID, email, customername,feedbackreletedto, leavetherating, moreaboutservice)
+    const Customer_feedback = {
+      userID,
+      email,
+      customername,
+      feedbackreletedto,
+      leavetherating, 
+      moreaboutservice
+    }
+
+    try {
+      await  Feedback_from_customer_collection(Customer_feedback);
+      toast.success(`Your feedback is Register.`, {
+        position: "top-center",
+        theme: "colored",
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
   return (
     <>
       <Projectcontext.Provider
         value={{
+          feedback_from_user,
+          reopen_the_ticketBy_user,
           Buy_the_product,
           Add_To_Cart,
           getFeedbacks,
@@ -503,6 +607,7 @@ function ProjectState(props) {
           setyourOrderByUserdetails,
           yourOrderByUserdetails,
           handleclick,
+          Give_the_solution_by_admin,
           restrictUser,
           myProduct,
           checkAuthority,
