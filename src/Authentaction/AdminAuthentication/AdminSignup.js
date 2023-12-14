@@ -1,54 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { auth, provider } from "../Config";
 import { signInWithPopup } from "firebase/auth";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import Navbar from "../../genralComponent/Navbar";
+import projectcontext from "../../projectcontext/projectContext";
 
 function AdminSignup() {
   const [values, setValues] = useState("");
+  const context = useContext(projectcontext);
+  const { handleSignup } = context;
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
 
   const { email, password } = credentials;
-
-  const handleSignup = (e) => {
-    e.preventDefault();
-    alert("ok");
-    createUserWithEmailAndPassword(
-      auth,
-      credentials.email,
-      credentials.password
-    )
-      .then((userCredentials) => {
-        alert("ok 12");
-        console.log(userCredentials);
-      })
-      .catch((error) => {
-        alert("not ok");
-        console.log(error);
-      });
-  };
-
-  const handleClick = (e) => {
-    // e.preventDefault();
-    signInWithPopup(auth, provider).then((data) => {
-      console.log(data);
-      setValues(data.user.email);
-      localStorage.setItem("email", data.user.email);
-    });
-  };
-
   const onChange = (e) => {
     e.preventDefault();
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    console.log(e.target.value);
-  };
+   };
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div className="adminBackgroumnd">
         <div className="container">
           <div className="row">
@@ -92,28 +65,17 @@ function AdminSignup() {
                   Login
                 </Link>
                 <div className="row">
-                  <div className="col-lg-1"></div>
+                  <div className="col-lg-3"></div>
                   <div className="col-lg-5">
                     <button
                       type="submit"
-                      onClick={handleSignup}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSignup(credentials.email, credentials.password);
+                      }}
                       className="btn btn-outline-primary adminlogin_btn"
                     >
                       <LockOpenIcon /> Login
-                    </button>
-                  </div>
-
-                  <div className="col-lg-1"></div>
-
-                  <div className="col-lg-5">
-                    <button
-                      type="submit"
-                      onClick={() => {
-                        handleClick();
-                      }}
-                      className="btn btn-outline-success adminlogin_btn"
-                    >
-                      <GoogleIcon /> Login with google
                     </button>
                   </div>
                 </div>
@@ -123,14 +85,6 @@ function AdminSignup() {
           </div>
         </div>
       </div>
-
-      <button
-        onClick={() => {
-          handleClick();
-        }}
-      >
-        hello
-      </button>
     </>
     //  </>
   );

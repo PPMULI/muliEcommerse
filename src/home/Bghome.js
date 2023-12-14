@@ -1,16 +1,21 @@
-import React from "react";
+import React from 'react'
 import bggirl from "../Images/homegirl.png";
+import { useNavigate } from 'react-router-dom';
 
-function Dummy() {
+function Bghome() {
+    const navigate = useNavigate()
   return (
     <div>
+       <div>
       <div class="card homecard">
         <div className="content">
           <div className="col-lg-6">
             <p class="card-text offfer">
               <h1>Get up to 30% off</h1>
               <h1>New Arrivals</h1>
-            <button className="btn btn-primary mt-3">Shop Now</button>
+            <button className="btn btn-primary mt-3" onClick={() => {
+                navigate("/products")
+            }}>Shop Now</button>
             </p>
           </div>
           <div className="col-lg-6">
@@ -19,7 +24,8 @@ function Dummy() {
         </div>
       </div>
     </div>
-  );
+    </div>
+  )
 }
 
-export default Dummy;
+export default Bghome

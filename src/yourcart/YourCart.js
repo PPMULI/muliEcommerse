@@ -35,7 +35,6 @@ function YourCart() {
   useEffect(() => {
     handleclick();
   }, []);
-  console.log(typeof myProduct);
 
   const navigate = useNavigate();
   const handle_product_details = () => {
@@ -66,14 +65,11 @@ function YourCart() {
   }, []);
 
   const getCartItemsByEmail = async (email) => {
-    console.log(email);
-    console.log(product);
     const items = await product.filter((products) => {
       return products.email == email;
     });
 
     setProductbyEmail(items);
-    console.log(items);
     return items;
   };
   return (
@@ -81,13 +77,13 @@ function YourCart() {
       {/* <pre>{JSON.stringify(product, undefined, 2)}</pre> */}
       <Navbar />
       <div className="your_cart">
-      <button
-        onClick={() => {
-          getCartItemsByEmail(localStorage.getItem("email"));
-        }}
-      >
-        Refresh the list
-      </button>
+        <button
+          onClick={() => {
+            getCartItemsByEmail(localStorage.getItem("email"));
+          }}
+        >
+          Refresh the list
+        </button>
 
         <h4 className="user_orders">Your Cart</h4>
         <div className="container">
@@ -121,9 +117,7 @@ function YourCart() {
                             </div>
                           </div>
 
-                          <div className="col-lg-2">
-                        
-                          </div>
+                          <div className="col-lg-2"></div>
 
                           <div
                             className="col-lg-3 action_buttons"

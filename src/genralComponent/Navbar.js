@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { Logout } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import projectcontext from "../projectcontext/projectContext";
+import { Link } from "react-router-dom";
+import ecommerselogo from "../Images/ecommerselogo.jfif";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function Navbar() {
@@ -24,12 +26,9 @@ function Navbar() {
   const [authUser, setAuthUser] = useState(null);
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
-      console.log(user);
       if (user) {
-        console.log("user", user);
         setAuthUser(user);
       } else {
-        console.log("user", user);
         setAuthUser(null);
       }
     });
@@ -42,12 +41,10 @@ function Navbar() {
   const userSignOut = () => {
     signOut(auth)
       .then(() => {
-        console.log(auth);
         toast.success("Your session is log-out", {
           position: "top-center",
           theme: "colored",
         });
-        console.log("sign out successful");
         localStorage.clear();
         navigate("/adminlogin");
       })
@@ -55,24 +52,17 @@ function Navbar() {
   };
   return (
     <>
-      <nav class="navbar navbar-expand-lg fix_navbar">
+      {/* <nav class="navbar navbar-expand-lg fix_navbar"> */}
+      <nav
+        class="navbar bg-primary navbar-expand-lg navbar_design"
+        data-bs-theme="dark"
+      >
         <div class="container-fluid">
           <a class="navbar-brand navbar-heading" href="#">
             <div className="row">
-              <a class="navbar-brand muli_store" href="/">
-                Muli Store
-              </a>
-              <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-              >
-                <span class="navbar-toggler-icon"></span>
-              </button>
+              <Link class="navbar-brand" to="#">
+                <img src={ecommerselogo} className="ecommerselogo" />
+              </Link>
             </div>
           </a>
 
@@ -108,33 +98,29 @@ function Navbar() {
               </li>
 
               <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
+                <Link
+                  class="nav-link"
+                  to="/aboutus"
                   role="button"
-                  data-bs-toggle="dropdown"
+                  // data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
                   About
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item" href="/aboutus">
-                      About Us
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="/raisedticket">
-                      Raised Ticket
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="/feedback">
-                      Feedback
-                    </a>
-                  </li>
-                </ul>
+                </Link>
               </li>
+
+              <li class="nav-item dropdown">
+                <Link
+                  class="nav-link"
+                  to="/raisedticket"
+                  role="button"
+                  // data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Raise Ticket
+                </Link>
+              </li>
+
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -143,7 +129,7 @@ function Navbar() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Services
+                  My request
                 </a>
 
                 <ul class="dropdown-menu">
@@ -157,15 +143,6 @@ function Navbar() {
                       My Orders
                     </a>
                   </li>
-                 
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      href="/peoplefeedback"
-                    >
-                      Feedback from people
-                    </a>
-                  </li>
                 </ul>
               </li>
               {localStorage.getItem("email") ||
@@ -177,7 +154,7 @@ function Navbar() {
                 <div
                   className="icons_on_nav login_icon"
                   onClick={() => {
-                    navigate("/userauthentaction");
+                    navigate("/adminlogin");
                   }}
                 >
                   <LoginIcon />
@@ -191,15 +168,6 @@ function Navbar() {
                 }}
               >
                 <AddShoppingCartIcon />
-              </div>
-
-              <div
-                className="icons_on_nav cart_icon"
-                onClick={() => {
-                  navigate("/yourcart");
-                }}
-              >
-                <FavoriteIcon />
               </div>
             </ul>
           </div>

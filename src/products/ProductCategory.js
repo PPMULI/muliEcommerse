@@ -14,8 +14,7 @@ function ProductCategory() {
   const context = useContext(projectcontext);
   const navigate = useNavigate();
   const { showCategorywiseProduct, Buy_the_product, Add_To_Cart } = context;
-  console.log(showCategorywiseProduct);
-
+ 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const {
@@ -41,8 +40,7 @@ function ProductCategory() {
     product_details(localStorage.getItem("productID"));
   }, []);
 
-  console.log(showproductDetails);
-
+ 
   const handle_product_details = () => {
     navigate("/productdetails");
   };
@@ -162,7 +160,8 @@ function ProductCategory() {
                                       state,
                                       credentials.reasonofrejection,
                                       "pending",
-                                      credentials.actionby
+                                      credentials.actionby,
+                                      value.images[0]
                                     );
                                   }}
                                 >
@@ -178,7 +177,8 @@ function ProductCategory() {
                                       value.category,
                                       value.id,
                                       value.brand,
-                                      state
+                                      state,
+                                      value.images[0]
                                     );
                                   }}
                                   class="btn btn-outline-warning product_action_buttons"

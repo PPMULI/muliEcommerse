@@ -23,10 +23,8 @@ function Feedback() {
   };
 
   const { email, fullname, feedback, subject } = credentials;
-  console.log(credentials);
   const onChange = (e) => {
     e.preventDefault();
-    console.log(e.target.name, e.target.value);
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
@@ -41,8 +39,6 @@ function Feedback() {
       subject,
       feedback,
     };
-
-    console.log(newbook);
 
     try {
       await addData(newbook);

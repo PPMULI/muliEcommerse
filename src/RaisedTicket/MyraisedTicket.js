@@ -2,21 +2,21 @@ import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../genralComponent/Navbar";
 import projectcontext from "../projectcontext/projectContext";
 import Footer from "../genralComponent/Footer";
-import pending from "../Images/pending.jfif"
-import resolve from "../Images/resolve.jfif"
+import pending from "../Images/pending.jfif";
+import resolve from "../Images/resolve.jfif";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 function MyraisedTicket() {
   const context = useContext(projectcontext);
-   const [fetchyourraisedticketbyEmail, setfetchyourRaisedTicketbyEmail] =
+  const [fetchyourraisedticketbyEmail, setfetchyourRaisedTicketbyEmail] =
     useState([]);
 
   const [credentials, setCredentials] = useState({ subject: "", concern: "" });
   const [reopenTickeCredentials, setReopenTicketCredentials] = useState({
     detailaquery: "",
-    detailmessage: ""
-  })
+    detailmessage: "",
+  });
   const { concern, subject } = credentials;
-  const {detailaquery, detailmessage} = reopenTickeCredentials
+  const { detailaquery, detailmessage } = reopenTickeCredentials;
   const {
     getRaisedTicket,
     updateSubjectOfRaisedTicketByUser,
@@ -29,25 +29,25 @@ function MyraisedTicket() {
     getRaisedTicket();
   }, []);
 
-  console.log(raisedticket);
-
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
+  const onHandleChange = (e) => {
+    setReopenTicketCredentials({
+      ...reopenTickeCredentials,
+      [e.target.name]: e.target.value,
+    });
+  };
   const getRaisedTicketByEmail = async (email) => {
-    console.log(email);
-    // console.log(product);
     const items = await raisedticket.filter((products) => {
       return products.email == email;
     });
 
     setfetchyourRaisedTicketbyEmail(items);
-    console.log(items);
     return items;
   };
 
-  console.log(fetchyourraisedticketbyEmail);
   return (
     <>
       <Navbar />
@@ -62,8 +62,8 @@ function MyraisedTicket() {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Modal title
+              <h1 class="modal-title fs-5 carefully" id="exampleModalLabel">
+                Please fille the form carefully
               </h1>
               <button
                 type="button"
@@ -156,7 +156,7 @@ function MyraisedTicket() {
                       type="text"
                       class="form-control"
                       id="detailaquery"
-                      onChange={onChange}
+                      onChange={onHandleChange}
                       name="detailaquery"
                       aria-describedby="inputGroupPrepend2"
                       required
@@ -169,7 +169,7 @@ function MyraisedTicket() {
                   </label>
                   <textarea
                     class="form-control"
-                    onChange={onChange}
+                    onChange={onHandleChange}
                     id="detailmessage"
                     name="detailmessage"
                     rows="3"
@@ -200,13 +200,16 @@ function MyraisedTicket() {
       <div className="your_cart">
         <h4 className="user_orders">User Orders</h4>
         <div className="container">
-          <button onClick={() => {
-            getRaisedTicketByEmail(localStorage.getItem("email"))
-          }}>Refresh</button>
+          <button
+            onClick={() => {
+              getRaisedTicketByEmail(localStorage.getItem("email"));
+            }}
+          >
+            Refresh
+          </button>
           <div className="row">
             {fetchyourraisedticketbyEmail &&
               fetchyourraisedticketbyEmail.map((value) => {
-                console.log(value);
                 return (
                   <>
                     <div className="col-lg-1"></div>
@@ -263,8 +266,8 @@ function MyraisedTicket() {
                               <button
                                 className="btn btn-outline-danger resolve_button"
                                 onClick={(e) => {
-                                  e.preventDefault()
-                                  deleteRaisedTickethandler(value.id)
+                                  e.preventDefault();
+                                  deleteRaisedTickethandler(value.id);
                                 }}
                               >
                                 Revert
@@ -275,12 +278,11 @@ function MyraisedTicket() {
                                 data-bs-target="#exampleModal"
                                 className="btn btn-outline-warning resolve_button resolve_button_user "
                                 onClick={() => {
-                                  localStorage.setItem("ticketsID", value.id)
+                                  localStorage.setItem("ticketsID", value.id);
                                 }}
                               >
                                 Update
                               </button>
-                              
                             </div>
                           ) : (
                             <div
@@ -303,20 +305,39 @@ function MyraisedTicket() {
                                     Resolve By: {value.actionby}
                                   </h6>
                                 </div>
-                                
-                                <div className="col-lg-6" >
-                                  <button className="btn btn-warning"  data-bs-toggle="modal"
-                                data-bs-target="#reopenticket" onClick={(e) => {
-                                    e.preventDefault()
-                                    localStorage.setItem("reOpenTicketID", value.id)                             
-                                  }}>Not satisfied</button>
+
+                                <div className="col-lg-6">
+                                  <button
+                                    className="btn btn-warning"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#reopenticket"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      localStorage.setItem(
+                                        "reOpenTicketID",
+                                        value.id
+                                      );
+                                    }}
+                                  >
+                                    Not satisfied
+                                  </button>
                                 </div>
-                                <div className="col-lg-6" >
-                                <p className="satisfied">Are You Satisfied? <a href="/givefeedback" onClick={() => {
-                                  localStorage.setItem("feedbackformID", value.id)
-                                }}>Give feedback</a> </p>
+                                <div className="col-lg-6">
+                                  <p className="satisfied">
+                                    Are You Satisfied?{" "}
+                                    <a
+                                      href="/givefeedback"
+                                      onClick={() => {
+                                        localStorage.setItem(
+                                          "feedbackformID",
+                                          value.id
+                                        );
+                                      }}
+                                    >
+                                      Give feedback
+                                    </a>{" "}
+                                  </p>
                                 </div>
-                                
                               </div>
                             </div>
                           )}

@@ -30,11 +30,9 @@ function RaisedTicket() {
   const [raisedTicketId, setRaisedTicketId] = useState("")
 
   const { email, fullname, subject, concern, reasonofissue, solution, actionby } = credentials;
-  console.log(credentials);
-  const onChange = (e) => {
+   const onChange = (e) => {
     e.preventDefault();
-    console.log(e.target.name, e.target.value);
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
   return (

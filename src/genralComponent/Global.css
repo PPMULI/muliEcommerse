@@ -1,13 +1,7 @@
 
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap');
 /* navbar start */
-.navbar-items {
-    margin-left: 450px;
-}
 
-.muli_store {
-    color: orangered;
-}
 .fix_navbar {
     position: fixed;
     z-index: 60;
@@ -21,33 +15,50 @@
     letter-spacing: 3px;
     font-family: 'Courier New', Courier, monospace;
 }
+.admin_login_icon {
+    color: white;
+}
 
+.admin_login_icon:hover {
+    border-radius: 10px;
+    transform: scale(1.03);
+}
 .icons_on_nav {
     /* margin: 10px; */
     text-align: end;
     padding: 10px;
 }
 
-.login_icon {
-    margin-left: 300px;
-}
 
 .cart_icon {
     margin-left: 40px;
 }
 
+.login_icon {
+    margin-left: 400px;
+} 
+
+@media screen and (max-width: 456px) {
+    .login_icon {
+        margin-left: 10px;
+    }
+  }
+
+.carefully {
+    color: red;
+}
 .login_icon:hover {
     cursor: pointer;
     transform: scale(1.05);
-    background-color: black;
-    color: white;
+    border-radius: 10px;
+    background-color: rgb(241, 238, 238);
 }
 
 .cart_icon:hover {
     cursor: pointer;
     transform: scale(1.05);
-    background-color: black;
-    color: white;
+    background-color: rgb(241, 238, 238);
+    border-radius: 10px;
 }
 /* navbar ends */
 
@@ -115,8 +126,6 @@
     height: fit-content;
     width: 500px;
     padding: 10px;
-    position: fixed;
-    top: 70px;
 }
 
 .productinfobuttons {
@@ -203,7 +212,7 @@ ul {
 }
 
 .Our_Valuable_products {
-    margin-top: 200px;
+    margin-top: 100px;
     margin-bottom: 100px;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
@@ -490,13 +499,13 @@ ul {
     width: 140px;
 }
 
-@media screen and (max-width: 991px) {
+/* @media screen and (max-width: 991px) {
     .ordered_product_image {
         width: 500px;
         margin-left: 100px;
         height: 200px;
     }
-  }
+  } */
 
 .total_user_order {
     margin: 5px 0px 5px 0px;
@@ -558,9 +567,55 @@ ul {
     border: 2px solid black;
     margin: 15px 0px 15px 0px;
 }
-/* dummy css start */
+
+.actionby {
+    text-align: end;
+}
 .satisfied {
-     text-align: end;
+    text-align: end;
+}
+
+.cancel {
+    height: 100px;
+    width: 100px;
+    margin-left: 50px;
+}
+.ecommerselogo {
+    height: 30px;
+    width: 50px;
+    margin-left: 50px;
+}
+
+.navbar_design {
+    position: fixed;
+    top: 1px;
+    width: 100vw;
+    z-index: 60;
+} 
+
+.nav_link {
+    border: 2px solid black;
+}
+
+/* dummy css start */
+.content {
+    display: flex;
+}
+
+.bggirl {
+    height: 550px;
+    /* width: 800px; */
+}
+
+.homecard {
+    background: rgb(233, 230, 230);
+    min-height: 550px;
+}
+
+.offfer {
+    margin-top: 160px;
+    margin-left: 130px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 /* dummy css end */
 

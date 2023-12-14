@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import AdminNav from "../AdminNav";
 import projectcontext from "../../projectcontext/projectContext";
-
+import cancel from "../../Images/cancelorder.jpg";
+import resolve from "../../Images/resolve.jfif";
+import rejected from "../../Images/rejected.jfif";
 function UserOrders() {
   const context = useContext(projectcontext);
   const {
@@ -16,15 +18,13 @@ function UserOrders() {
   });
 
   const { reasonofrejection } = credentials;
-  console.log(credentials);
-  useEffect(() => {
+   useEffect(() => {
     getProductsThat_You_Buy();
   }, []);
 
   const actions_color = document.getElementById("action_button");
 
-  console.log(YourOrder);
-  const onChange = (e) => {
+   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
@@ -181,7 +181,25 @@ function UserOrders() {
                                 </button>
                               </div>
                             ) : (
+                              <div>
+                                       {value.status == "cancel" ? (
+                              <img src={cancel} className="cancel" />
+                            ) : (
                               <div></div>
+                            )}
+
+                            {value.status == "reject" ? (
+                              <img src={rejected} className="cancel" />
+                            ) : (
+                              <div></div>
+                            )}
+
+                            {value.status == "deliver" ? (
+                              <img src={resolve} className="cancel" />
+                            ) : (
+                              <div></div>
+                            )}
+                              </div>
                             )}
 
                             {value.status == "deliver" ||

@@ -49,8 +49,7 @@ function Products() {
   };
 
   const { actionby, reasonofrejection } = credentials;
-  console.log(credentials);
-
+ 
   return (
     <>
       <Navbar />
@@ -59,10 +58,9 @@ function Products() {
           <Categorybuttons />
           {myProduct &&
             myProduct.map((value, index) => {
-              console.log(value.images[0])
-              return (
+               return (
                 <>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-sm-6">
                     <div>
                       <div class="card product_list">
                         <div class="card-body">

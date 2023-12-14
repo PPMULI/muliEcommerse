@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import projectcontext from "../../projectcontext/projectContext";
+import Navbar from "../../genralComponent/Navbar";
 
 function Givefeedback() {
   const context = useContext(projectcontext);
@@ -19,13 +20,13 @@ function Givefeedback() {
     leavetherating,
     moreaboutservice,
   } = credentials;
-  console.log(credentials);
-
+ 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   return (
     <>
+    <Navbar />
       <div className="container">
         <div className="row">
           <div className="col-lg-3"></div>

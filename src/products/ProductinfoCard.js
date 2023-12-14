@@ -39,8 +39,6 @@ function ProductinfoCard(props) {
     product_details(localStorage.getItem("productID"));
   }, []);
 
-  console.log(showproductDetails);
-
   const navigate = useNavigate();
   const handle_product_details = () => {
     navigate("/productdetails");
@@ -64,8 +62,7 @@ function ProductinfoCard(props) {
       <div className="container product_details">
         {showproductDetails &&
           showproductDetails.map((value) => {
-            console.log(value.images[0]);
-            return (
+             return (
               <>
                 <div className="row">
                   <div className="col-lg-3">
@@ -152,7 +149,8 @@ function ProductinfoCard(props) {
                                     state,
                                     credentials.reasonofrejection,
                                     "pending",
-                                    credentials.actionby
+                                    credentials.actionby,
+                                    value.images[0]
                                   );
                                 }}
                               >
@@ -172,7 +170,8 @@ function ProductinfoCard(props) {
                                     value.category,
                                     value.id,
                                     value.brand,
-                                    state
+                                    state,
+                                    value.images[0]
                                   );
                                 }}
                               >
@@ -317,7 +316,8 @@ function ProductinfoCard(props) {
                               value.category,
                               value.id,
                               value.brand,
-                              state
+                              state,
+                              value.images[0]
                             );
                           }}
                           class="btn btn-outline-warning product_action_buttons"
@@ -340,7 +340,8 @@ function ProductinfoCard(props) {
                               state,
                               credentials.reasonofrejection,
                               "pending",
-                              credentials.actionby
+                              credentials.actionby,
+                              value.images[0]
                             );
                           }}
                         >

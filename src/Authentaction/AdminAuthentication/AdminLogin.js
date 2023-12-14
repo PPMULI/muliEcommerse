@@ -14,8 +14,8 @@ import Navbar from "../../genralComponent/Navbar";
 function AdminLogin() {
   const [values, setValues] = useState("");
 
-  const context = useContext(projectcontext)
-  const {timeout, restrictUser} = context
+  const context = useContext(projectcontext);
+  const { timeout, restrictUser, handleLogin } = context;
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,47 +26,14 @@ function AdminLogin() {
   };
 
   useEffect(() => {
-    restrictUser()
-  }, [])
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const { email, password } = formData;
-    const auth = getAuth();
-
-    alert("signin");
-
-    console.log(email, password);
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // Login successful
-      toast.success("Congratulations! You are logged-in", {
-        position: "top-center",
-        theme: "colored",
-      });
-      console.log(auth.currentUser.accessToken);
-      console.log(auth.currentUser.email);
-      console.log("User logged in successfully");
-      localStorage.setItem("accesstoken", auth.currentUser.accessToken);
-      localStorage.setItem("email", auth.currentUser.email);
-      const goThere = setTimeout(timeout, 3000)
-      // You can redirect the user to a different page or perform other actions here
-    } catch (error) {
-      alert(
-        toast.error("Invalid Credentials!", {
-          position: "top-center",
-          theme: "colored",
-        })
-      );
-      console.error("Error signing in:", error);
-      // Handle login error, display an error message, etc.
-    }
-  };
+    restrictUser();
+  }, []);
+  const { email, password } = formData;
 
   const navigate = useNavigate();
 
   const handleClick = (e) => {
     signInWithPopup(auth, provider).then((data) => {
-      console.log(data.user.accessToken);
       setValues(data.user.email);
       localStorage.setItem("accesstoken", data.user.accessToken);
       localStorage.setItem("email", data.user.email);
@@ -75,30 +42,22 @@ function AdminLogin() {
         theme: "colored",
       });
 
-      const goThere = setTimeout(timeout, 3000)
+      const goThere = setTimeout(timeout, 3000);
 
-
-      if(!data.user.accessToken)
-      {
+      if (!data.user.accessToken) {
         toast.error("Something Wents Wrong. Please try again", {
           position: "top-center",
           theme: "colored",
-        });  
+        });
       }
       navigate("/");
     });
   };
-  // const onChange = (e) => {
-  //   e.preventDefault();
-  //   setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  // };
-  // useEffect(() => {
 
-  // })
   return (
     <>
-    <Navbar />
-       <div className="adminBackgroumnd">
+      <Navbar />
+      <div className="adminBackgroumnd">
         <div className="container">
           <div className="row">
             <div className="col-lg-3"></div>
@@ -141,28 +100,17 @@ function AdminLogin() {
                   Signup
                 </Link>
                 <div className="row">
-                  <div className="col-lg-1"></div>
+                  <div className="col-lg-3"></div>
                   <div className="col-lg-5">
                     <button
                       type="submit"
-                      onClick={handleLogin}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleLogin(formData.email, formData.password);
+                      }}
                       className="btn btn-outline-primary adminlogin_btn"
                     >
                       <LockOpenIcon /> Login
-                    </button>
-                  </div>
-
-                  <div className="col-lg-1"></div>
-
-                  <div className="col-lg-5">
-                    <button
-                      type="submit"
-                      onClick={() => {
-                        handleClick();
-                      }}
-                      className="btn btn-outline-success adminlogin_btn"
-                    >
-                      <GoogleIcon /> Login with google
                     </button>
                   </div>
                 </div>
@@ -173,9 +121,7 @@ function AdminLogin() {
         </div>
       </div>
 
-   
       <ToastContainer />
-
     </>
   );
 }

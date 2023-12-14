@@ -7,8 +7,7 @@ function AuthDetails() {
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
-      console.log(user);
-      if (user) {
+       if (user) {
         setAuthUser(user);
       } else {
         setAuthUser(null);
@@ -22,8 +21,7 @@ function AuthDetails() {
 
   const userSignOut = () => {
     signOut(auth).then(() => {
-        console.log("sign out successful")
-    }).catch((error) => console.log(error))
+     }).catch((error) => console.log(error))
   }
   return (
     <>

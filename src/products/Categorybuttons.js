@@ -9,8 +9,7 @@ function Categorybuttons() {
     setShowCategorywiseProduct,
   } = context;
 
-  console.log(showCategorywiseProduct)
-  return (
+   return (
     <>
       <div className="row">
         <div className="col-lg-2"></div>

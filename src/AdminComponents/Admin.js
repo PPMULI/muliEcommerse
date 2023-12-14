@@ -6,9 +6,9 @@ function Admin() {
     const context = useContext(projectcontext)
     const {checkAuthority} = context
 
-    // useEffect(() => {
-    //     checkAuthority()
-    // }, [])
+    useEffect(() => {
+        checkAuthority()
+    }, [])
   return (
     <>
     <AdminNav />

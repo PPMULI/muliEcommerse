@@ -3,6 +3,8 @@ import Projectcontext from "./projectContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { db } from "../Authentaction/Config";
 import {
   collection,
@@ -13,6 +15,8 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../Authentaction/Config";
 
 function ProjectState(props) {
   const [product, setProduct] = useState([]);
@@ -40,20 +44,16 @@ function ProjectState(props) {
     // if (customer.length > 0) {
     const responce = await fetch("https://dummyjson.com/products");
     const json = await responce.json();
-    console.log(json.products);
     setMyProduct(json.products);
   };
 
   const navigate = useNavigate();
   const product_details = async (productID) => {
-    console.log(productID);
-    console.log(myProduct);
     const items = myProduct.filter((products) => {
       return products.id == productID;
     });
 
     setShowProductDetails(items);
-    console.log(items);
     return items;
   };
 
@@ -82,17 +82,14 @@ function ProjectState(props) {
     }
   };
   const product_category = async (productcategory) => {
-    console.log(productcategory);
     if (window.location.pathname != "/productcategory") {
       navigate("/productcategory");
     }
     const items = await myProduct.filter((products) => {
-      console.log(products.category);
       return products.category == productcategory;
     });
 
     setShowCategorywiseProduct(items);
-    console.log(items);
     return items;
   };
 
@@ -124,7 +121,6 @@ function ProjectState(props) {
 
   const getProducts = async () => {
     const data = await getAllProduct();
-    console.log(data.docs);
     setProduct(
       data.docs.map((doc) => ({
         ...doc.data(),
@@ -173,7 +169,6 @@ function ProjectState(props) {
     actionby,
     imageurl
   ) => {
-    console.log("imageurl", imageurl);
     const newItem = {
       email,
       price,
@@ -222,13 +217,38 @@ function ProjectState(props) {
   };
 
   const UserOrder_by_user_details = async (email) => {
-    console.log(YourOrder);
     const items = YourOrder.filter((cartdishes) => {
       return cartdishes.email == email;
     });
 
     setyourOrderByUserdetails(items);
     return items;
+  };
+
+  // cancel the user order
+  const reason_of_cancelThe_order = async (
+    docID,
+    reasontocancel,
+    detailreasontocancel,
+    status
+  ) => {
+    try {
+      // Reference to the specific document
+      const orderDocRef = doc(orderCollectionRef, docID);
+
+      // Update the status field of the specific document
+      await updateDoc(orderDocRef, {
+        reasontocancel: reasontocancel,
+        detailreasontocancel: detailreasontocancel,
+        status: status, // Set the status to "deliver"
+      });
+      toast.success(`Your order is cancel`, {
+        position: "top-center",
+        theme: "colored",
+      });
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
   };
   // function for add item in cart is end
 
@@ -260,7 +280,6 @@ function ProjectState(props) {
 
   const getRaisedTicket = async () => {
     const data = await getAllRaisedTicket();
-    console.log(data.docs);
     setRaisedticket(
       data.docs.map((doc) => ({
         ...doc.data(),
@@ -285,7 +304,6 @@ function ProjectState(props) {
 
   const getFeedbacks = async () => {
     const data = await getAllFeedback();
-    console.log(data.docs);
     setFeedbackGivenByUser(
       data.docs.map((doc) => ({
         ...doc.data(),
@@ -307,16 +325,6 @@ function ProjectState(props) {
     solution,
     actionby
   ) => {
-    console.log(
-      email,
-      name,
-      subject,
-      concern,
-      status,
-      reasonofissue,
-      solution,
-      actionby
-    );
     const Your_raised_ticket = {
       email,
       name,
@@ -346,7 +354,6 @@ function ProjectState(props) {
     concern,
     subject
   ) => {
-    console.log(documentId, concern, subject);
     try {
       // Reference to the specific document
       const orderDocRef = doc(raisedTicketCollectionRef, documentId);
@@ -366,6 +373,8 @@ function ProjectState(props) {
           position: "top-center",
           theme: "colored",
         });
+
+        localStorage.removeItem("ticketsID");
       } else {
         toast.error(`UnAutherised user`, {
           position: "top-center",
@@ -384,7 +393,6 @@ function ProjectState(props) {
     concern,
     subject
   ) => {
-    console.log(documentId, status, concern, subject);
     try {
       // Reference to the specific document
       const orderDocRef = doc(raisedTicketCollectionRef, documentId);
@@ -399,12 +407,14 @@ function ProjectState(props) {
         await updateDoc(orderDocRef, {
           concern: concern,
           subject: subject,
-          status: status
+          status: status,
         });
         toast.success(`Congractulation! Your ticket is updated`, {
           position: "top-center",
           theme: "colored",
         });
+
+        localStorage.removeItem("reOpenTicketID");
       } else {
         toast.error(`UnAutherised user`, {
           position: "top-center",
@@ -423,7 +433,6 @@ function ProjectState(props) {
     reasonofissue,
     solutionofissue
   ) => {
-    console.log(documentId, status, resolveby, reasonofissue, solutionofissue);
     try {
       // Reference to the specific document
       const orderDocRef = doc(raisedTicketCollectionRef, documentId);
@@ -495,7 +504,6 @@ function ProjectState(props) {
 
   // update the order
   const Update_user_orders_ForAdmin = async (docID, status, actionby) => {
-    console.log(docID, status, actionby);
     try {
       // Reference to the specific document
       const orderDocRef = doc(orderCollectionRef, docID);
@@ -520,7 +528,6 @@ function ProjectState(props) {
     actionby,
     reasonofrejection
   ) => {
-    console.log(docID, status, actionby, reasonofrejection);
     try {
       // Reference to the specific document
       const orderDocRef = doc(orderCollectionRef, docID);
@@ -540,37 +547,91 @@ function ProjectState(props) {
     }
   };
 
-  // feedback from user 
+  // feedback from user
   const Customer_feedback_collection = collection(db, "customer_feedback");
 
   const Feedback_from_customer_collection = (newcustomerfeedback) => {
     return addDoc(Customer_feedback_collection, newcustomerfeedback);
   };
-  const feedback_from_user = async (userID, email, customername,feedbackreletedto, leavetherating, moreaboutservice) => {
-    console.log(userID, email, customername,feedbackreletedto, leavetherating, moreaboutservice)
+  const feedback_from_user = async (
+    userID,
+    email,
+    customername,
+    feedbackreletedto,
+    leavetherating,
+    moreaboutservice
+  ) => {
     const Customer_feedback = {
       userID,
       email,
       customername,
       feedbackreletedto,
-      leavetherating, 
-      moreaboutservice
-    }
+      leavetherating,
+      moreaboutservice,
+    };
 
     try {
-      await  Feedback_from_customer_collection(Customer_feedback);
+      await Feedback_from_customer_collection(Customer_feedback);
       toast.success(`Your feedback is Register.`, {
         position: "top-center",
         theme: "colored",
       });
+      localStorage.removeItem("feedbackformID");
     } catch (error) {
       console.log("error", error);
     }
-  }
+  };
+
+  // user/admin signup
+  const handleSignup = (email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        toast.success(`Your account is created successfully.`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(`Something wents wrong`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      });
+  };
+
+  // login the user
+  const handleLogin = async (email, password) => {
+    const auth = getAuth();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // Login successful
+      toast.success("Congratulations! You are logged-in", {
+        position: "top-center",
+        theme: "colored",
+      });
+      localStorage.setItem("accesstoken", auth.currentUser.accessToken);
+      localStorage.setItem("email", auth.currentUser.email);
+      const goThere = setTimeout(timeout, 3000);
+      // You can redirect the user to a different page or perform other actions here
+    } catch (error) {
+      alert(
+        toast.error("Invalid Credentials!", {
+          position: "top-center",
+          theme: "colored",
+        })
+      );
+      console.error("Error signing in:", error);
+      // Handle login error, display an error message, etc.
+    }
+  };
+
   return (
     <>
       <Projectcontext.Provider
         value={{
+          handleSignup,
+          handleLogin,
           feedback_from_user,
           reopen_the_ticketBy_user,
           Buy_the_product,
@@ -615,6 +676,7 @@ function ProjectState(props) {
           product_details,
           Reais_ticket_from_here,
           showproductDetails,
+          reason_of_cancelThe_order,
           setShowProductDetails,
         }}
       >

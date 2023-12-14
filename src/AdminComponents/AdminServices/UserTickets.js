@@ -19,12 +19,10 @@ function UserTickets() {
     getRaisedTicket();
   }, []);
 
-  console.log(raisedticket);
-
+ 
   const onChange = (e) => {
     e.preventDefault();
-    console.log(e.target.name, e.target.value);
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   return (
     <>
@@ -102,13 +100,12 @@ function UserTickets() {
         </div>
       </div>
       <div className="your_cart">
-        <h4 className="user_orders">User Orders</h4>
+        <h4 className="user_orders">User Tickets</h4>
         <div className="container">
           <div className="row">
             {raisedticket &&
               raisedticket.map((value) => {
-                console.log(value);
-                return (
+                 return (
                   <>
                     <div className="col-lg-1"></div>
                     <div className="col-lg-10">

@@ -9,7 +9,6 @@ function PeopleFeedbacks() {
   useEffect(() => {
     getFeedbacks();
   }, []);
-  console.log(feedbackGivenByUser);
   return (
     <>
       <Navbar />
@@ -21,7 +20,6 @@ function PeopleFeedbacks() {
             <div className="col-lg-6">
               {feedbackGivenByUser &&
                 feedbackGivenByUser.map((value) => {
-                  console.log(value);
                   return (
                     <>
                       <div className="col-lg-12">

@@ -1,7 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import UserLogin from "./loginComponents/UserLogin";
 import { useContext, useEffect } from "react";
 import ProjectState from "./projectcontext/ProjectState";
 import Products from "./products/Products";
@@ -19,7 +18,6 @@ import Feedback from "./About/Feedback";
 import YourCart from "./yourcart/YourCart";
 import MyraisedTicket from "./RaisedTicket/MyraisedTicket";
 import PeopleFeedbacks from "./RaisedTicket/PeopleFeedbacks";
-import RaisedTicketComponent from "./RaisedTicket/RaisedTicketComponent";
 import MyOrder from "./yourcart/MyOrder";
 import UserOrders from "./AdminComponents/AdminServices/UserOrders";
 import UserTickets from "./AdminComponents/AdminServices/UserTickets";
@@ -36,8 +34,8 @@ function App() {
             <Route exact path="/yourcart" element={<YourCart />} />
             <Route exact path="/raisedticket" element={<RaisedTicket />} />
             <Route exact path="/feedback" element={<Feedback />} />
-             <Route exact path="/aboutus" element={<AboutUs />} />
-             <Route exact path="/myorder" element={<MyOrder />} />
+            <Route exact path="/aboutus" element={<AboutUs />} />
+            <Route exact path="/myorder" element={<MyOrder />} />
             <Route
               exact
               path="/productcategory"
@@ -47,7 +45,6 @@ function App() {
             <Route exact path="/dummy" element={<Dummy />} />
             <Route exact path="/authdetails" element={<AuthDetails />} />
             <Route exact path="/adminsignup" element={<AdminSignup />} />
-            <Route exact path="/userlogin" element={<UserLogin />} />
             <Route exact path="/adminlogin" element={<AdminLogin />} />
             <Route exact path="/userorders" element={<UserOrders />} />
             <Route exact path="/usertickets" element={<UserTickets />} />
@@ -56,7 +53,6 @@ function App() {
             <Route exact path="/products" element={<Products />} />
             <Route exact path="/givefeedback" element={<Givefeedback />} />
             <Route exact path="/admin" element={<Admin />} />
-            <Route exact path="/userlogin" element={<UserLogin />} />
           </Routes>
         </ProjectState>
       </Router>
