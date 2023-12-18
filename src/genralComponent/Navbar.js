@@ -122,6 +122,17 @@ function Navbar() {
               </li>
 
               <li class="nav-item dropdown">
+                <Link
+                  class="nav-link"
+                  to="/admin"
+                  role="button"
+                  // data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Admin
+                </Link>
+              </li>
+              <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   href="#"

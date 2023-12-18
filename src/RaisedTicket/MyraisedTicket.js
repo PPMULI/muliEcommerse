@@ -198,7 +198,7 @@ function MyraisedTicket() {
         </div>
       </div>
       <div className="your_cart">
-        <h4 className="user_orders">User Orders</h4>
+        <h4 className="user_orders">User Tickets</h4>
         <div className="container">
           <button
             onClick={() => {
@@ -213,19 +213,19 @@ function MyraisedTicket() {
                 return (
                   <>
                     <div className="col-lg-1"></div>
-                    <div className="col-lg-10">
+                    <div className="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-10">
                       <div class="card total_user_order">
                         <div className="row">
-                          <div className="col-lg-6">
+                          <div className="col-lg-6 col-sm-6 col-md-6 col-6 col-xl-6">
                             <p className="user_email">{value.email}</p>
                           </div>
 
-                          <div className="col-lg-6">
+                          <div className="col-lg-6 col-sm-6 col-md-6 col-6 col-xl-6">
                             <p className="order_id">Order ID: {value.id}</p>
                           </div>
 
                           {value.status == "resolve" ? (
-                            <div className="col-lg-2">
+                            <div className="col-lg-2 col-sm-4 col-md-3 col-2 col-xl-2">
                               <img
                                 src={resolve}
                                 class="card-img-top raised_ticket_image"
@@ -233,7 +233,7 @@ function MyraisedTicket() {
                               />
                             </div>
                           ) : (
-                            <div className="col-lg-2">
+                            <div className="col-lg-2 col-sm-4 col-md-3 col-2 col-xl-2">
                               <img
                                 src={pending}
                                 class="card-img-top raised_ticket_image"
@@ -242,27 +242,28 @@ function MyraisedTicket() {
                             </div>
                           )}
 
-                          <div className="col-lg-5">
+                          <div className="col-lg-5 col-sm-8 col-md-8 col-10 col-xl-5">
                             <div class="card-body">
-                              <h5 class="card-title">Ticket Details</h5>
                               <p class="card-text">
                                 <ul>
+                                  <h5 class="card-title">Ticket Details</h5>
                                   <li>Name: {value.name}</li>
                                   <li>Subject: {value.concern}</li>
                                   <li>Message: {value.subject}</li>
+                                  <li>Status: {value.status}</li>
                                 </ul>
                               </p>
                             </div>
                           </div>
 
-                          <div className="col-lg-2">
+                          {/* <div className="col-lg-2 col-sm-2 col-md-2 col-2 col-xl-2">
                             <ul className="product_status">
                               <li>Status: </li>
                               <li>{value.status}</li>
                             </ul>
-                          </div>
+                          </div> */}
                           {value.status != "resolve" ? (
-                            <div className="col-lg-3">
+                            <div className="col-lg-5 col-sm-8 col-md-12 col-12 col-xl-3">
                               <button
                                 className="btn btn-outline-danger resolve_button"
                                 onClick={(e) => {
@@ -291,7 +292,7 @@ function MyraisedTicket() {
                             >
                               <hr />
                               <div className="row">
-                                <div className="col-lg-6">
+                                <div className="col-lg-6 col-sm-6 col-md-6 col-6 col-xl-6">
                                   <h6 className="reason">
                                     Reason: {value.reasonofissue}
                                   </h6>
@@ -300,13 +301,13 @@ function MyraisedTicket() {
                                   </h6>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-6 col-sm-6 col-md-6 col-6 col-xl-6">
                                   <h6 className="user_email">
                                     Resolve By: {value.actionby}
                                   </h6>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-6 col-sm-6 col-md-6 col-6 col-xl-6">
                                   <button
                                     className="btn btn-warning"
                                     data-bs-toggle="modal"
@@ -322,7 +323,7 @@ function MyraisedTicket() {
                                     Not satisfied
                                   </button>
                                 </div>
-                                <div className="col-lg-6">
+                                <div className="col-lg-6 col-sm-6 col-md-6 col-6 col-xl-6">
                                   <p className="satisfied">
                                     Are You Satisfied?{" "}
                                     <a

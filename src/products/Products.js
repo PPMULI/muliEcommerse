@@ -60,7 +60,7 @@ function Products() {
             myProduct.map((value, index) => {
                return (
                 <>
-                  <div className="col-lg-3 col-sm-6">
+                  <div className="col-lg-3">
                     <div>
                       <div class="card product_list">
                         <div class="card-body">
@@ -164,7 +164,7 @@ function Products() {
                                 </button>
                                 <button
                                   type="button"
-                                  class="btn btn-outline-warning product_action_buttons"
+                                  class="btn btn-outline-warning add_to_cart product_action_buttons"
                                   onClick={(e) => {
                                     e.preventDefault();
                                     Add_To_Cart(

@@ -1,24 +1,78 @@
-import React from "react";
-import bggirl from "../Images/homegirl.png";
+import React, { useContext } from "react";
+import projectcontext from "../projectcontext/projectContext";
 
 function Dummy() {
-  return (
-    <div>
-      <div class="card homecard">
-        <div className="content">
-          <div className="col-lg-6">
-            <p class="card-text offfer">
-              <h1>Get up to 30% off</h1>
-              <h1>New Arrivals</h1>
-            <button className="btn btn-primary mt-3">Shop Now</button>
-            </p>
-          </div>
-          <div className="col-lg-6">
-            <img src={bggirl} class="card-img-top bggirl" alt="..." />
+  const context = useContext(projectcontext);
+  const {
+    product_category,
+    showCategorywiseProduct,
+    setShowCategorywiseProduct,
+  } = context;
+
+   return (
+    <>
+      <div className="row">
+        {/* <div className="col-lg-2"></div> */}
+        <div className="col-lg-12 col-md-12 col-sm-12 col-12">
+          <div className="filter_section">
+            <button
+              type="button"
+              class="btn btn-success filter_section_buttons"
+              onClick={() => {
+                product_category("laptops");
+              }}
+            >
+              Laptop
+            </button>
+            <button
+              type="button"
+              class="btn btn-success filter_section_buttons"
+              onClick={() => {
+                product_category("smartphones");
+              }}
+            >
+              Smartphones
+            </button>
+            <button
+              type="button"
+              class="btn btn-success filter_section_buttons"
+              onClick={() => {
+                product_category("fragrances");
+              }}
+            >
+              Fragrances
+            </button>
+            <button
+              type="button"
+              class="btn btn-success filter_section_buttons"
+              onClick={() => {
+                product_category("skincare");
+              }}
+            >
+              Skincare
+            </button>
+            <button
+              type="button"
+              class="btn btn-success filter_section_buttons"
+              onClick={() => {
+                product_category("groceries");
+              }}
+            >
+              Groceries
+            </button>
+            <button
+              type="button"
+              class="btn btn-success filter_section_buttons"
+              onClick={() => {
+                product_category("home-decoration");
+              }}
+            >
+              Home-decoration
+            </button>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

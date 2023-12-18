@@ -20,7 +20,7 @@ function Home() {
     {/* <Dummy /> */}
       <Bghome />
 
-      <h1 className="Our_Valuable_products">Our Valuable products</h1>
+      <h1 className="Our_Valuable_products">products</h1>
 
       <div className="container">
         <div className="row">

@@ -131,7 +131,7 @@ function MyOrder() {
             getCartItemsByEmail(localStorage.getItem("email"));
           }}
         >
-          Refresh the list
+          Click for the order
         </button>
         <h4 className="user_orders">User Orders</h4>
         <div className="container">
@@ -140,40 +140,43 @@ function MyOrder() {
               ProductbyEmail.map((value) => {
                 return (
                   <>
-                    <div className="col-lg-1"></div>
-                    <div className="col-lg-10">
+                    {/* <div className="col-lg-1"></div> */}
+                    <div className="col-lg-11 col-md-12 col-sm-12 col-12">
                       <div class="card total_user_order">
                         <div className="row">
-                          <div className="col-lg-2">
+                          <div className="col-lg-4 col-xl-3 col-md-3 col-sm-12 col-12">
                             <img
                               src={value.imageurl}
-                              class="card-img-top ordered_product_image"
+                              class="img-fluid ordered_product_image"
                               alt="..."
                             />
                           </div>
-                          <div className="col-lg-5">
+                          <div className="col-xl-5 col-md-5 col-lg-5 col-sm-7 col-12">
                             <div class="card-body">
-                              <h5 class="card-title">Product Details</h5>
                               <p class="card-text">
-                                <ul>
+                                <ul className="product_more_deails">
+                                  <h5 class="card-title">Product Details</h5>
                                   <li>Product name: {value.category}</li>
                                   <li>Brand: {value.brand}</li>
                                   <li>Price: {value.price}</li>
                                   <li>Quantity: {value.quantity}Q</li>
+                                  <li className="status">
+                                    Status: {value.status}
+                                  </li>
                                 </ul>
                               </p>
                             </div>
                           </div>
-
-                          <div className="col-lg-2">
+                          {/* 
+                          {/* <div className="col-xl-2 col-md-2 col-lg-2 col-sm-3 col-12">
                             <ul className="product_status">
-                              <li>Status: </li>
-                              <li>{value.status}</li>
+                              <li className="status">Status: {value.status}</li>
                             </ul>
-                          </div>
+                          </div>  */}
 
+                          {/* <div className="col-sm-8"></div> */}
                           <div
-                            className="col-lg-3 action_buttons"
+                            className="col-xl-4 col-md-4 col-lg-3 col-sm-5 col-12"
                             id="action_button"
                           >
                             {value.status == "pending" ? (
@@ -195,19 +198,25 @@ function MyOrder() {
                             )}
 
                             {value.status == "cancel" ? (
-                              <img src={cancel} className="cancel" />
+                              <img src={cancel} className="cancel img-fluid" />
                             ) : (
                               <div></div>
                             )}
 
                             {value.status == "reject" ? (
-                              <img src={rejected} className="cancel" />
+                              <img
+                                src={rejected}
+                                className="cancel img-fluid"
+                              />
                             ) : (
                               <div></div>
                             )}
 
                             {value.status == "deliver" ? (
-                              <img src={resolve} className="cancel" />
+                              <img
+                                src={resolve}
+                                className="cancel  img-fluid"
+                              />
                             ) : (
                               <div></div>
                             )}
@@ -216,7 +225,7 @@ function MyOrder() {
 
                         {value.status != "reject" ? (
                           <div
-                            className="col-lg-3 action_buttons"
+                            className="col-xl-3 col-md-3 col-lg-3 col-sm-3 col-12 action_buttons"
                             id="action_button"
                           >
                             <button
@@ -237,20 +246,20 @@ function MyOrder() {
                             >
                               <hr />
                               <div className="row">
-                                <div className="col-lg-6">
+                                <div className="col-xl-6 col-md-6 col-lg-6 col-sm-4 col-12">
                                   <h6 className="reason">
                                     Reason: {value.reasonofrejection}
                                   </h6>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-xl-6 col-md-6 col-lg-6 col-sm-12 col-12">
                                   <h6 className="user_email actionby">
                                     {value.status}ed by: {value.actionby}
                                   </h6>
                                 </div>
 
-                                <div className="col-lg-6"></div>
-                                <div className="col-lg-6">
+                                <div className="col-xl-6 col-md-6 col-lg-6 col-sm-6 col-12"></div>
+                                <div className="col-xl-6 col-md-6 col-lg-6 col-sm-6 col-12">
                                   <p className="satisfied">
                                     Are You Satisfied?{" "}
                                     <a
@@ -278,16 +287,16 @@ function MyOrder() {
                           >
                             <hr />
                             <div className="row">
-                              <div className="col-lg-6"></div>
+                              <div className="col-xl-6 col-md-6 col-lg-6 col-sm-6 col-12"></div>
 
-                              <div className="col-lg-6">
+                              <div className="col-xl-6 col-md-6 col-lg-6 col-sm-6 col-12">
                                 <h6 className="user_email actionby">
                                   {value.status}ed by: {value.actionby}
                                 </h6>
                               </div>
 
-                              <div className="col-lg-6"></div>
-                              <div className="col-lg-6">
+                              <div className="col-xl-6 col-md-6 col-lg-6 col-sm-6 col-12"></div>
+                              <div className="col-xl-6 col-md-6 col-lg-6 col-sm-6 col-12">
                                 <p className="satisfied">
                                   Are You Satisfied?{" "}
                                   <a
@@ -307,7 +316,7 @@ function MyOrder() {
                           </div>
                         ) : (
                           <div
-                            className="col-lg-3 action_buttons"
+                            className="col-xl-3 col-md-3 col-lg-3 col-sm-3 col-12 action_buttons"
                             id="action_button"
                           >
                             <button
