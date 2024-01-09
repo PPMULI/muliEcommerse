@@ -40,10 +40,6 @@ function ProductCategory() {
     product_details(localStorage.getItem("productID"));
   }, []);
 
- 
-  const handle_product_details = () => {
-    navigate("/productdetails");
-  };
   const nextImage = () => {
     if (currentImageIndex < myProduct.length - 1) {
       setCurrentImageIndex(currentImageIndex + 1);
@@ -58,7 +54,7 @@ function ProductCategory() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="container">
         <Categorybuttons />
@@ -67,7 +63,7 @@ function ProductCategory() {
             showCategorywiseProduct.map((value, index) => {
               return (
                 <>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-5 col-sm-5 col-5">
                     <div>
                       <div class="card product_list">
                         <div class="card-body">
@@ -192,7 +188,7 @@ function ProductCategory() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-1"></div>
+                  <div className="col-lg-1 col-md-1 col-sm-1 col-1"></div>
                 </>
               );
             })}

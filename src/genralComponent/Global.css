@@ -88,10 +88,8 @@
 }
 
 .product_action_buttons {
-  width: 90%;
-  margin-left: 5%;
-  margin-right: 5%;
-  /* position: relative; */
+  width: 100%;
+  margin-top: 10px;
 }
 
 .add_to_cart {
@@ -673,5 +671,131 @@ ul {
   color: blue;
   text-shadow: 1px 1px 0px gray;
 }
+
+/* product sidebar start */
+.side_nav {
+  z-index: 50;
+  background-color: purple;
+}
+
+
+
+.icons {
+  color: white;
+}
+.icons:hover {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 576px) {
+  .icons_name:hover {
+    background-color: blue;
+    /* width: 25%; */
+  }
+  .icons {
+    margin: 10px 10px 0 20px;
+  }
+  
+  .side_nav {
+     min-height: 60px;
+  }
+  .icon_title {
+    color: white;
+    display: none;
+    text-align: center;
+    margin: 1px 0 0 1px;
+  }
+  .icons_name {
+    /* margin: 0 2px 0 2px; */
+     padding: 5px;
+    display: flex;
+    flex-direction: column;
+  }  
+
+  .icons_images:hover {
+    border: 2px solid black;
+    transform: scale(1.05); 
+    cursor: pointer;
+  }
+  .icons_images {
+    border: 2px solid black;
+    height: 40px;
+    width: 40px;
+    margin-left: 20px;
+    border-radius: 50px;
+  }
+  .icons_images:hover ~ .icon_title {
+    display: block;
+    /* margin-right: 10px; */
+  }
+
+  .side_nav {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    display: flex;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  .icons_name:hover {
+    background-color: blue;
+    width: 100%;
+    padding: 2px;
+  }
+  .service_sector {
+    border-bottom: 5px solid white;
+  }
+  .icon_title {
+    color: white;
+    display: none;
+    margin: 10px 0 0 5px;
+  }
+
+  .icons_images {
+    border: 2px solid black;
+    height: 50px;
+    width: 50px;
+    margin-left: 20px;
+    border-radius: 50px;
+    margin: 5px 0 5px 10px;
+  }
+  
+  .icons_images:hover {
+    cursor: pointer;
+    transform: scale(0.8);
+  }
+  .icons {
+    margin: 15px 10px 15px 20px;
+  }
+  .icons_name {
+    display: flex;
+  }
+  
+  .icons_images:hover ~ .icon_title {
+    display: block;
+    margin-right: 10px;
+  }
+
+  .side_nav {
+    height: 100vh;
+    margin-top: 10px;
+    border-radius: 10px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    min-width: 70px;
+    width: fit-content;
+    left: 0;
+  }
+}
+/* product sidebar ends */
 /* dummy css start */
+.left_side {
+  border: 2px solid black;
+  height: 300px;
+  margin-top: 500px;
+  position: sticky;
+  top: 100px;
+}
 /* dummy css end */

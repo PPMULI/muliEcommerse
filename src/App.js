@@ -22,6 +22,8 @@ import MyOrder from "./yourcart/MyOrder";
 import UserOrders from "./AdminComponents/AdminServices/UserOrders";
 import UserTickets from "./AdminComponents/AdminServices/UserTickets";
 import Givefeedback from "./About/Givefeedback/Givefeedback";
+import UserTicketStatus from "./AdminComponents/AdminServices/UserTicketStatus";
+import UserOrderStatus from "./AdminComponents/AdminServices/UserOrderStatus";
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
       <Router>
         <ProjectState>
           <Routes>
+            <Route exact path="/userorderstatus" element={<UserOrderStatus />} />
             <Route exact path="/peoplefeedback" element={<PeopleFeedbacks />} />
             <Route exact path="/myraisedticket" element={<MyraisedTicket />} />
             <Route exact path="/yourcart" element={<YourCart />} />
@@ -41,6 +44,7 @@ function App() {
               path="/productcategory"
               element={<ProductCategory />}
             />
+            <Route exact path="/userticketstatus" element={<UserTicketStatus />} />
             <Route exact path="/admin" element={<Admin />} />
             <Route exact path="/dummy" element={<Dummy />} />
             <Route exact path="/authdetails" element={<AuthDetails />} />

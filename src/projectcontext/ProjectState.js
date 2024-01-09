@@ -20,6 +20,8 @@ import { auth } from "../Authentaction/Config";
 
 function ProjectState(props) {
   const [product, setProduct] = useState([]);
+  const [updatedOrderStatus, setUpdatedOrderStatus] = useState([])
+  const [updatedticketStatus, setupdatedticketStatus] = useState([]);
   const [showproductDetails, setShowProductDetails] = useState([]);
   const [myProduct, setMyProduct] = useState([]);
   const [showCategorywiseProduct, setShowCategorywiseProduct] = useState([]);
@@ -626,11 +628,35 @@ function ProjectState(props) {
     }
   };
 
+  const Ticket_Status_Fot_the_Admin = async (status) => {
+    navigate("/userticketstatus")
+    const updated_tickets_by_admin = await raisedticket.filter((tickerts) => {
+      return tickerts.status == status;
+    });
+    setupdatedticketStatus(updated_tickets_by_admin)
+  }
+
+  const Order_status_for_the_admin = async (orderStatus) => {
+    navigate("/userorderstatus")
+    console.log(orderStatus)
+    const updated_order_status_by_admin = await YourOrder.filter((status) => {
+      return status.status == orderStatus
+    })
+
+    console.log(updated_order_status_by_admin)
+    setUpdatedOrderStatus(updated_order_status_by_admin)
+  }
+
+  console.log(updatedOrderStatus)
   return (
     <>
       <Projectcontext.Provider
         value={{
+          Order_status_for_the_admin,
+          updatedOrderStatus,
           handleSignup,
+          Ticket_Status_Fot_the_Admin,
+          updatedticketStatus,
           handleLogin,
           feedback_from_user,
           reopen_the_ticketBy_user,
