@@ -9,6 +9,7 @@ function UserOrders() {
   const context = useContext(projectcontext);
   const {
     getProductsThat_You_Buy,
+    checkAuthority,
     YourOrder,
     Update_user_orders_ForAdmin,
     Reject_user_orders_By_Admin,
@@ -20,6 +21,7 @@ function UserOrders() {
 
   const { reasonofrejection } = credentials;
   useEffect(() => {
+    checkAuthority()
     getProductsThat_You_Buy();
   }, []);
 

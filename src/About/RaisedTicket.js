@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import Navbar from "../genralComponent/Navbar";
 import {
@@ -16,7 +16,7 @@ import MyraisedTicket from "../RaisedTicket/MyraisedTicket";
 import projectcontext from "../projectcontext/projectContext";
 function RaisedTicket() {
   const context = useContext(projectcontext)
-  const {Reais_ticket_from_here} = context
+  const {Reais_ticket_from_here, confirm_login} = context
   const [credentials, setCredentials] = useState({
     email: localStorage.getItem("email"),
     fullname: "",
@@ -26,6 +26,10 @@ function RaisedTicket() {
     solution: "",
     actionby: "",
   });
+
+  useEffect(() => {
+    confirm_login()
+  }, [])
 
   const [raisedTicketId, setRaisedTicketId] = useState("")
 

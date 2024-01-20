@@ -23,9 +23,11 @@ function MyraisedTicket() {
     raisedticket,
     setRaisedticket,
     reopen_the_ticketBy_user,
+    confirm_login,
     deleteRaisedTickethandler,
   } = context;
   useEffect(() => {
+    confirm_login();
     getRaisedTicket();
   }, []);
 

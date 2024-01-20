@@ -145,7 +145,7 @@ function ProductinfoCard(props) {
                                     value.price,
                                     value.category,
                                     value.id,
-                                    value.brand,
+                                    value.title,
                                     state,
                                     credentials.reasonofrejection,
                                     "pending",
@@ -169,7 +169,7 @@ function ProductinfoCard(props) {
                                     value.price,
                                     value.category,
                                     value.id,
-                                    value.brand,
+                                    value.title,
                                     state,
                                     value.images[0]
                                   );
@@ -315,7 +315,7 @@ function ProductinfoCard(props) {
                               value.price,
                               value.category,
                               value.id,
-                              value.brand,
+                              value.title,
                               state,
                               value.images[0]
                             );
@@ -336,7 +336,7 @@ function ProductinfoCard(props) {
                               value.price,
                               value.category,
                               value.id,
-                              value.brand,
+                              value.title,
                               state,
                               credentials.reasonofrejection,
                               "pending",

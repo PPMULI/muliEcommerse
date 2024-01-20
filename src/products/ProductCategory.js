@@ -152,7 +152,7 @@ function ProductCategory() {
                                       value.price,
                                       value.category,
                                       value.id,
-                                      value.brand,
+                                      value.title,
                                       state,
                                       credentials.reasonofrejection,
                                       "pending",
@@ -172,7 +172,7 @@ function ProductCategory() {
                                       value.price,
                                       value.category,
                                       value.id,
-                                      value.brand,
+                                      value.title,
                                       state,
                                       value.images[0]
                                     );

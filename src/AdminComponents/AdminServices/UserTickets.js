@@ -7,7 +7,7 @@ import AdminSideBar from "../AdminSideBar";
 
 function UserTickets() {
   const context = useContext(projectcontext);
-  const { raisedticket, getRaisedTicket, Give_the_solution_by_admin } = context;
+  const { raisedticket, checkAuthority, getRaisedTicket, Give_the_solution_by_admin } = context;
 
   const [credentials, setCredentials] = useState({
     reasonofissue: "",
@@ -17,6 +17,7 @@ function UserTickets() {
   const { reasonofissue, solutionofissue } = credentials;
 
   useEffect(() => {
+    checkAuthority()
     getRaisedTicket();
   }, []);
 

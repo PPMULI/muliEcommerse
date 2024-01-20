@@ -13,12 +13,17 @@ function MyOrder() {
     YourOrder,
     setYourOrder,
     Cancel_order_handler,
+    confirm_login,
     getProductsThat_You_Buy,
     setyourOrderByUserdetails,
     yourOrderByUserdetails,
     reason_of_cancelThe_order,
   } = context;
 
+
+  useEffect(() => {
+    confirm_login()
+  }, [])
   const [credentials, setCredentials] = useState({
     reasontocancel: "notappropiateProduct",
     detailreasontocancel: "",
@@ -156,8 +161,8 @@ function MyOrder() {
                               <p class="card-text">
                                 <ul className="product_more_deails">
                                   <h5 class="card-title">Product Details</h5>
-                                  <li>Product name: {value.category}</li>
-                                  <li>Brand: {value.brand}</li>
+                                  <li>Product name: {value.productname}</li>
+                                  <li>category: {value.category}</li>
                                   <li>Price: {value.price}</li>
                                   <li>Quantity: {value.quantity}Q</li>
                                   <li className="status">

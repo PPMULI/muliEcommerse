@@ -20,7 +20,7 @@ import { auth } from "../Authentaction/Config";
 
 function ProjectState(props) {
   const [product, setProduct] = useState([]);
-  const [updatedOrderStatus, setUpdatedOrderStatus] = useState([])
+  const [updatedOrderStatus, setUpdatedOrderStatus] = useState([]);
   const [updatedticketStatus, setupdatedticketStatus] = useState([]);
   const [showproductDetails, setShowProductDetails] = useState([]);
   const [myProduct, setMyProduct] = useState([]);
@@ -63,12 +63,22 @@ function ProjectState(props) {
     navigate("/");
   };
   const checkAuthority = () => {
-    if (localStorage.getItem("email")) {
+    if(!localStorage.getItem("email"))
+    {
+      toast.error("login first", {
+        position: "top-center",
+        theme: "colored",
+      });
+
+      navigate("/")
+    }
+    else if (localStorage.getItem("email")) {
       if (localStorage.getItem("email").endsWith("@gmail.com")) {
         toast.error("Entry restricted", {
           position: "top-center",
           theme: "colored",
         });
+        navigate("/")
         const myTimeOut = setTimeout(timeout, 5000);
       }
     }
@@ -164,7 +174,7 @@ function ProjectState(props) {
     price,
     category,
     id,
-    brand,
+    productname,
     quantity,
     reasonofrejection,
     status,
@@ -176,7 +186,7 @@ function ProjectState(props) {
       price,
       category,
       id,
-      brand,
+      productname,
       quantity,
       reasonofrejection,
       status,
@@ -185,11 +195,19 @@ function ProjectState(props) {
     };
 
     try {
-      await Order_product_collection(newItem);
-      toast.success(`Thank you for Purchase ${brand}`, {
-        position: "top-center",
-        theme: "colored",
-      });
+      if (!localStorage.getItem("email")) {
+        toast.error(`Please login first`, {
+          position: "top-center",
+          theme: "colored",
+        });
+        navigate("/adminlogin");
+      } else {
+        await Order_product_collection(newItem);
+        toast.success(`Thank you for Purchase ${productname}`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -468,6 +486,16 @@ function ProjectState(props) {
   };
 
   // Add to cart
+  const confirm_login = () => {
+    if (!localStorage.getItem("email")) {
+      toast.error(`Please login first`, {
+        position: "top-center",
+        theme: "colored",
+      });
+
+      navigate("/")
+    }
+  };
 
   const AddToCartCollectionRef = collection(db, "cart");
 
@@ -494,11 +522,19 @@ function ProjectState(props) {
     };
 
     try {
-      await Add_To_cart_collection(new_Cart);
-      toast.success(`${productname} is added in cart`, {
-        position: "top-center",
-        theme: "colored",
-      });
+      if (!localStorage.getItem("email")) {
+        toast.error(`Please login first`, {
+          position: "top-center",
+          theme: "colored",
+        });
+        navigate("/adminlogin");
+      } else {
+        await Add_To_cart_collection(new_Cart);
+        toast.success(`${productname} is added in cart`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -629,25 +665,25 @@ function ProjectState(props) {
   };
 
   const Ticket_Status_Fot_the_Admin = async (status) => {
-    navigate("/userticketstatus")
+    navigate("/userticketstatus");
     const updated_tickets_by_admin = await raisedticket.filter((tickerts) => {
       return tickerts.status == status;
     });
-    setupdatedticketStatus(updated_tickets_by_admin)
-  }
+    setupdatedticketStatus(updated_tickets_by_admin);
+  };
 
   const Order_status_for_the_admin = async (orderStatus) => {
-    navigate("/userorderstatus")
-    console.log(orderStatus)
+    navigate("/userorderstatus");
+    console.log(orderStatus);
     const updated_order_status_by_admin = await YourOrder.filter((status) => {
-      return status.status == orderStatus
-    })
+      return status.status == orderStatus;
+    });
 
-    console.log(updated_order_status_by_admin)
-    setUpdatedOrderStatus(updated_order_status_by_admin)
-  }
+    console.log(updated_order_status_by_admin);
+    setUpdatedOrderStatus(updated_order_status_by_admin);
+  };
 
-  console.log(updatedOrderStatus)
+  console.log(updatedOrderStatus);
   return (
     <>
       <Projectcontext.Provider
@@ -661,7 +697,7 @@ function ProjectState(props) {
           feedback_from_user,
           reopen_the_ticketBy_user,
           Buy_the_product,
-          Add_To_Cart,
+           Add_To_Cart,
           getFeedbacks,
           feedbackGivenByUser,
           setFeedbackGivenByUser,
@@ -679,6 +715,7 @@ function ProjectState(props) {
           addProduct,
           updateProduct,
           deleteProduct,
+          confirm_login,
           getAllProduct,
           getIndividualProduct,
           Update_user_orders_ForAdmin,

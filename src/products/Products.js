@@ -63,6 +63,7 @@ function Products() {
             <div className="row">
               {myProduct &&
                 myProduct.map((value, index) => {
+                  console.log(value.title)
                   return (
                     <>
                       <div className="col-lg-4 col-md-4 col-sm-6 col-6">
@@ -155,21 +156,21 @@ function Products() {
 
                                     <button
                                       type="button"
-                                      //   onClick={(e) => {
-                                      //     e.preventDefault();
-                                      //     Buy_the_product(
-                                      //       localStorage.getItem("email"),
-                                      //       value.price,
-                                      //       value.category,
-                                      //       value.id,
-                                      //       value.brand,
-                                      //       state,
-                                      //       credentials.reasonofrejection,
-                                      //       "pending",
-                                      //       credentials.actionby,
-                                      //       value.images[0]
-                                      //     );
-                                      //   }}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          Buy_the_product(
+                                            localStorage.getItem("email"),
+                                            value.price,
+                                            value.category,
+                                            value.id,
+                                            value.title,
+                                            state,
+                                            credentials.reasonofrejection,
+                                            "pending",
+                                            credentials.actionby,
+                                            value.images[0]
+                                          );
+                                        }}
                                       class="btn btn-outline-success product_action_buttons"
                                     >
                                       <StoreIcon /> Buy
@@ -177,18 +178,18 @@ function Products() {
                                     <button
                                       type="button"
                                       class="btn btn-outline-warning add_to_cart product_action_buttons"
-                                      //   onClick={(e) => {
-                                      //     e.preventDefault();
-                                      //     Add_To_Cart(
-                                      //       localStorage.getItem("email"),
-                                      //       value.price,
-                                      //       value.category,
-                                      //       value.id,
-                                      //       value.brand,
-                                      //       state,
-                                      //       value.images[0]
-                                      //     );
-                                      //   }}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          Add_To_Cart(
+                                            localStorage.getItem("email"),
+                                            value.price,
+                                            value.category,
+                                            value.id,
+                                            value.title,
+                                            state,
+                                            value.images[0]
+                                          );
+                                        }}
                                     >
                                       <AddShoppingCartIcon /> Add To Cart
                                     </button>

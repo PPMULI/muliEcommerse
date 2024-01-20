@@ -19,6 +19,7 @@ function YourCart() {
   const {
     handleclick,
     myProduct,
+    confirm_login,
     setMyProduct,
     getProducts,
     product,
@@ -27,6 +28,9 @@ function YourCart() {
     Buy_the_product,
   } = context;
 
+  useEffect(() => {
+    confirm_login()
+  }, [])
   const { reasonofrejection, actionby } = credentials;
   useEffect(() => {
     getProducts();
@@ -114,9 +118,9 @@ function YourCart() {
                                   <ul className="product_details_list">
                                     <h5 class="card-title">Product Details</h5>
                                     <li>
-                                      Product name: {value.productcategory}
+                                      Product name: {value.productname}
                                     </li>
-                                    <li>Brand: {value.productname}</li>
+                                    <li>Category: {value.productcategory}</li>
                                     <li>Price: {value.price}</li>
                                     <li>Quantity: {value.quantity}Q</li>
                                   </ul>

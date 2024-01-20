@@ -676,6 +676,8 @@ ul {
 .side_nav {
   z-index: 50;
   background-color: purple;
+  overflow: auto;
+  border: 2px solid black;
 }
 
 
@@ -787,15 +789,10 @@ ul {
     min-width: 70px;
     width: fit-content;
     left: 0;
-  }
+    overflow: auto;
+   }
 }
 /* product sidebar ends */
-/* dummy css start */
-.left_side {
-  border: 2px solid black;
-  height: 300px;
-  margin-top: 500px;
-  position: sticky;
-  top: 100px;
-}
-/* dummy css end */
+
+
+/* dummy css */

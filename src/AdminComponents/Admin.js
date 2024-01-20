@@ -7,7 +7,7 @@ function Admin() {
     const {checkAuthority} = context
 
     useEffect(() => {
-        checkAuthority()
+        // checkAuthority()
     }, [])
   return (
     <>

@@ -9,8 +9,12 @@ import laptop from "../Images/laptop.jpg";
 import home from "../Images/home.jpg";
 import phone from "../Images/phone.jpg";
 import allproduct from "../Images/allproduct.jpg";
-import homedecoration  from "../Images/home-decoration.jpg"
+import homedecoration from "../Images/home-decoration.jpg";
 import perfumes from "../Images/fregrences'.jpg";
+import myorders from "../Images/myorders.jpeg";
+import mycart from "../Images/th.jpeg";
+import feedback from "../Images/feedback.jpeg";
+import myfeebback from "../Images/myfeedback.jpeg";
 function Categorybuttons() {
   const context = useContext(projectcontext);
   const {
@@ -50,7 +54,7 @@ function Categorybuttons() {
             }}
           >
             <img src={laptop} alt="" className="icons_images" />
-             <p className="icon_title">Laptop</p>
+            <p className="icon_title">Laptop</p>
           </div>
 
           <div
@@ -63,9 +67,6 @@ function Categorybuttons() {
             {/* <SmartphoneIcon className="icons" /> */}
             <p className="icon_title">Smartphones</p>
           </div>
-
-        
-
           <div
             className="icons_name col-3"
             onClick={() => {
@@ -93,6 +94,46 @@ function Categorybuttons() {
           >
             <img src={homedecoration} className="icons_images" />
             <p className="icon_title">Home decoration</p>
+          </div>
+
+          <div
+            className="icons_name col-3"
+            onClick={() => {
+              navigate("/yourcart");
+            }}
+          >
+            <img src={mycart} className="icons_images" />
+            <p className="icon_title">My Cart</p>
+          </div>
+
+          <div
+            className="icons_name col-3"
+            onClick={() => {
+              navigate("/myorder");
+            }}
+          >
+            <img src={myorders} className="icons_images" />
+            <p className="icon_title">My Orders</p>
+          </div>
+
+          <div
+            className="icons_name col-3"
+            onClick={() => {
+              navigate("/raisedticket");
+            }}
+          >
+            <img src={feedback} className="icons_images" />
+            <p className="icon_title">Raised Ticket</p>
+          </div>
+
+          <div
+            className="icons_name col-3"
+            onClick={() => {
+              navigate("/myraisedticket");
+            }}
+          >
+            <img src={myfeebback} className="icons_images" />
+            <p className="icon_title">My Raised Ticket</p>
           </div>
         </div>
       </div>
