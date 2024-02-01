@@ -7,35 +7,40 @@ import { useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import Categorybuttons from "./Categorybuttons";
 import Footer from "../genralComponent/Footer";
+import ProductFilters from "./ProductFilters";
 function Products() {
   const context = useContext(projectcontext);
   const {
     handleclick,
+    handleSortByRatings,
     myProduct,
     setMyProduct,
     Buy_the_product,
     reducer,
+    handleSortByPrice,
+    sortByPrice,
     Add_To_Cart,
   } = context;
 
-  
   const [credentials, setCredentials] = useState({
     actionby: "",
     reasonofrejection: "",
   });
-  
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  let initialState = 1;
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, 1);
 
   useEffect(() => {
     handleclick();
   }, []);
 
   const navigate = useNavigate();
+
+
   const handle_product_details = () => {
     navigate("/productdetails");
   };
+
   const nextImage = () => {
     if (currentImageIndex < myProduct.length - 1) {
       setCurrentImageIndex(currentImageIndex + 1);
@@ -49,21 +54,30 @@ function Products() {
   };
 
   const { actionby, reasonofrejection } = credentials;
- 
+  
   return (
     <>
       {/* <Navbar /> */}
+      <button
+        type="button"
+        onClick={handleSortByRatings}
+        className="btn btn-primary"
+      >
+        Sort by Price (High to Low)
+      </button>
+ 
       <div className="row">
-        <div className="col-lg-1">
+        <div className="col-lg-1 col-md-1">
           <Categorybuttons />
         </div>
- 
-        <div className="col-lg-10">
+
+        <div className="col-lg-11 col-md-11">
+          <ProductFilters />
           <div className="container all_products">
             <div className="row">
               {myProduct &&
                 myProduct.map((value, index) => {
-                  console.log(value.title)
+                  console.log(value.title, "  ", value.rating);
                   return (
                     <>
                       <div className="col-lg-4 col-md-4 col-sm-6 col-6">
@@ -156,21 +170,21 @@ function Products() {
 
                                     <button
                                       type="button"
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          Buy_the_product(
-                                            localStorage.getItem("email"),
-                                            value.price,
-                                            value.category,
-                                            value.id,
-                                            value.title,
-                                            state,
-                                            credentials.reasonofrejection,
-                                            "pending",
-                                            credentials.actionby,
-                                            value.images[0]
-                                          );
-                                        }}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        Buy_the_product(
+                                          localStorage.getItem("email"),
+                                          value.price,
+                                          value.category,
+                                          value.id,
+                                          value.title,
+                                          state,
+                                          credentials.reasonofrejection,
+                                          "pending",
+                                          credentials.actionby,
+                                          value.images[0]
+                                        );
+                                      }}
                                       class="btn btn-outline-success product_action_buttons"
                                     >
                                       <StoreIcon /> Buy
@@ -178,18 +192,18 @@ function Products() {
                                     <button
                                       type="button"
                                       class="btn btn-outline-warning add_to_cart product_action_buttons"
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          Add_To_Cart(
-                                            localStorage.getItem("email"),
-                                            value.price,
-                                            value.category,
-                                            value.id,
-                                            value.title,
-                                            state,
-                                            value.images[0]
-                                          );
-                                        }}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        Add_To_Cart(
+                                          localStorage.getItem("email"),
+                                          value.price,
+                                          value.category,
+                                          value.id,
+                                          value.title,
+                                          state,
+                                          value.images[0]
+                                        );
+                                      }}
                                     >
                                       <AddShoppingCartIcon /> Add To Cart
                                     </button>
@@ -203,7 +217,7 @@ function Products() {
                     </>
                   );
                 })}
-                <div className="col-lg-1 col-md-1"></div>
+              <div className="col-lg-1 col-md-1"></div>
             </div>
           </div>
         </div>

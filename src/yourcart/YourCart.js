@@ -10,7 +10,7 @@ import { db } from "../Authentaction/Config";
 // import { addDoc, collection } from "firebase/firestore";
 
 function YourCart() {
-  const [productbyEmail, setProductbyEmail] = useState([]);
+  // const [productbyEmail, setProductbyEmail] = useState([]);
   const [credentials, setCredentials] = useState({
     reasonofrejection: "",
     actionby: "",
@@ -26,6 +26,8 @@ function YourCart() {
     setProduct,
     deletehandler,
     Buy_the_product,
+     getCartItemsByEmail,
+          productbyEmail
   } = context;
 
   useEffect(() => {
@@ -68,14 +70,7 @@ function YourCart() {
     getCartItemsByEmail(localStorage.getItem("email"));
   }, []);
 
-  const getCartItemsByEmail = async (email) => {
-    const items = await product.filter((products) => {
-      return products.email == email;
-    });
 
-    setProductbyEmail(items);
-    return items;
-  };
   return (
     <>
       {/* <pre>{JSON.stringify(product, undefined, 2)}</pre> */}

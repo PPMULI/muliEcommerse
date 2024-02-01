@@ -639,15 +639,12 @@ ul {
   .product_details_list {
     margin-left: 35px;
   }
-
-  
 }
 
 @media screen and (max-width: 378px) and (min-width: 200px) {
   .product_details_list {
     margin-left: 35px;
   }
- 
 }
 
 @media screen and (max-width: 577px) {
@@ -660,8 +657,7 @@ ul {
   .product_details_list {
     margin: 0px;
   }
-  
-  
+
   .action_buttons {
     margin-left: 0px;
   }
@@ -673,15 +669,6 @@ ul {
 }
 
 /* product sidebar start */
-.side_nav {
-  z-index: 50;
-  background-color: purple;
-  overflow: auto;
-  border: 2px solid black;
-}
-
-
-
 .icons {
   color: white;
 }
@@ -689,17 +676,13 @@ ul {
   cursor: pointer;
 }
 
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 767px) {
   .icons_name:hover {
     background-color: blue;
     /* width: 25%; */
   }
   .icons {
-    margin: 10px 10px 0 20px;
-  }
-  
-  .side_nav {
-     min-height: 60px;
+    margin: 5px 5px 0 5px;
   }
   .icon_title {
     color: white;
@@ -709,14 +692,14 @@ ul {
   }
   .icons_name {
     /* margin: 0 2px 0 2px; */
-     padding: 5px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
-  }  
+  }
 
   .icons_images:hover {
     border: 2px solid black;
-    transform: scale(1.05); 
+    transform: scale(1.05);
     cursor: pointer;
   }
   .icons_images {
@@ -732,14 +715,33 @@ ul {
   }
 
   .side_nav {
+    z-index: 50;
     position: fixed;
+    overflow-y: hidden;
     bottom: 0;
-    width: 100vw;
+    background-color: rgb(243, 214, 243);
+    flex-wrap: nowrap;
+    width: 95vw; /* Set the height of the navbar to 100vh */
     display: flex;
+    overflow: auto;
+    max-height: 90px;
+    height: fit-content;
+     border: 2px solid black; /* Hide vertical scrollbar in the navbar */
+  }
+
+  .side_nav::-webkit-scrollbar {
+    background-color: red;
+    height: 10px;
+    border-radius: 10px;
+  }
+
+  .side_nav::-webkit-scrollbar-thumb {
+    background-color: rgb(126, 233, 126);
+    border-radius: 50px;
   }
 }
 
-@media only screen and (min-width: 576px) {
+@media only screen and (min-width: 767px) {
   .icons_name:hover {
     background-color: blue;
     width: 100%;
@@ -755,14 +757,12 @@ ul {
   }
 
   .icons_images {
-    border: 2px solid black;
     height: 50px;
     width: 50px;
-    margin-left: 20px;
     border-radius: 50px;
     margin: 5px 0 5px 10px;
   }
-  
+
   .icons_images:hover {
     cursor: pointer;
     transform: scale(0.8);
@@ -772,27 +772,63 @@ ul {
   }
   .icons_name {
     display: flex;
+    flex-direction: column;
+    text-align: center;
   }
-  
+
   .icons_images:hover ~ .icon_title {
     display: block;
-    margin-right: 10px;
   }
 
   .side_nav {
-    height: 100vh;
-    margin-top: 10px;
-    border-radius: 10px;
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    min-width: 70px;
+    z-index: 20;
+    background-color: rgb(243, 214, 243);
+    flex-wrap: wrap;
+    height: 100vh; /* Set the height of the navbar to 100vh */
+    display: block;
+    max-width: 130px;
     width: fit-content;
+    overflow-y: scroll;
+    position: fixed;
+    top: 0;
     left: 0;
-    overflow: auto;
-   }
+    /* flex-direction: column; */
+    border: 5px solid black; /* Hide vertical scrollbar in the navbar */
+  }
+
+  .side_nav::-webkit-scrollbar {
+    background-color: red;
+    border-radius: 10px;
+    width: 8px;
+  }
+
+  .side_nav::-webkit-scrollbar-thumb {
+    background-color: rgb(126, 233, 126);
+    border-radius: 50px;
+  }
 }
 /* product sidebar ends */
 
-
 /* dummy css */
+
+.icons_name {
+  /* Optional: Set styles for individual icons in the sidebar */
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.icons_images {
+  /* Optional: Set styles for icon images */
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.icon_title {
+  /* Optional: Set styles for icon titles */
+  margin: 0;
+  font-size: 14px;
+}

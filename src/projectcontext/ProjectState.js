@@ -19,6 +19,9 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Authentaction/Config";
 
 function ProjectState(props) {
+  const [sortByPrice, setSortByPrice] = useState(null);
+  const [sortByRating, setSortByRating] = useState(null)
+  const [productbyEmail, setProductbyEmail] = useState([]);
   const [product, setProduct] = useState([]);
   const [updatedOrderStatus, setUpdatedOrderStatus] = useState([]);
   const [updatedticketStatus, setupdatedticketStatus] = useState([]);
@@ -684,10 +687,42 @@ function ProjectState(props) {
   };
 
   console.log(updatedOrderStatus);
+
+  const getCartItemsByEmail = async (email) => {
+    console.log("email", email)
+    const items = await product.filter((products) => {
+      return products.email == email;
+    });
+
+    setProductbyEmail(items);
+
+    console.log("items", items)
+    return items;
+  };
+
+  // Function to handle sorting by price
+  const handleSortByPrice = () => {
+    const sortedProducts = [...myProduct];
+    sortedProducts.sort((a, b) => b.price - a.price); // Sort from high to low
+    setMyProduct(sortedProducts);
+    setSortByPrice("highToLow");
+  };
+
+  const handleSortByRatings = () => {
+    const sortedProductsByRaings = [...myProduct];
+    sortedProductsByRaings.sort((a, b) => b.rating - a.rating);
+    setMyProduct(sortedProductsByRaings)
+    setSortByRating("highToLow")
+  }
   return (
     <>
       <Projectcontext.Provider
         value={{
+          handleSortByRatings,
+          getCartItemsByEmail,
+          handleSortByPrice,
+          sortByPrice,
+          productbyEmail,
           Order_status_for_the_admin,
           updatedOrderStatus,
           handleSignup,

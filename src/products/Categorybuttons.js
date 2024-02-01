@@ -27,7 +27,7 @@ function Categorybuttons() {
   return (
     <>
       <div id="navbarNav">
-        <div className="side_nav row">
+        <div className="side_nav">
           <div
             className="icons_name col-lg-3 col-3"
             onClick={() => {
