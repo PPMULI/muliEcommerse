@@ -14,6 +14,7 @@ import perfumes from "../Images/fregrences'.jpg";
 import myorders from "../Images/myorders.jpeg";
 import mycart from "../Images/th.jpeg";
 import feedback from "../Images/feedback.jpeg";
+import skincare from "../Images/skincare.jpg"
 import myfeebback from "../Images/myfeedback.jpeg";
 function Categorybuttons() {
   const context = useContext(projectcontext);
@@ -83,7 +84,7 @@ function Categorybuttons() {
               product_category("skincare");
             }}
           >
-            <img src={perfumes} className="icons_images" />
+            <img src={skincare} className="icons_images" />
             <p className="icon_title">Skincare</p>
           </div>
           <div

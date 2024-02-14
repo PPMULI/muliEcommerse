@@ -9,11 +9,12 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Footer from "../genralComponent/Footer";
 import { db } from "../Authentaction/Config";
 import { addDoc, collection } from "firebase/firestore";
+import ProductFilters from "./ProductFilters";
 
 function ProductCategory() {
   const context = useContext(projectcontext);
   const navigate = useNavigate();
-  const { showCategorywiseProduct, Buy_the_product, Add_To_Cart } = context;
+  const { showCategorywiseProduct, Buy_the_product, Add_To_Cart, proceed_To_pay } = context;
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -24,6 +25,7 @@ function ProductCategory() {
     setMyProduct,
     showproductDetails,
     setShowProductDetails,
+    handleProductBySortedCategory,
     reducer,
   } = context;
 
@@ -61,6 +63,7 @@ function ProductCategory() {
       </div>
 
       <div className="col-lg-11 col-md-11">
+        <ProductFilters />
         <div className="container all_products">
           <div className="row">
             {showCategorywiseProduct &&
@@ -160,12 +163,12 @@ function ProductCategory() {
                                     type="button"
                                       onClick={(e) => {
                                         e.preventDefault();
-                                        Buy_the_product(
+                                        proceed_To_pay(
                                           localStorage.getItem("email"),
                                           value.price,
                                           value.category,
                                           value.id,
-                                          value.title,
+                                          value.brand,
                                           state,
                                           credentials.reasonofrejection,
                                           "pending",

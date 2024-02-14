@@ -19,6 +19,7 @@ function Products() {
     reducer,
     handleSortByPrice,
     sortByPrice,
+    proceed_To_pay,
     Add_To_Cart,
   } = context;
 
@@ -35,7 +36,6 @@ function Products() {
   }, []);
 
   const navigate = useNavigate();
-
 
   const handle_product_details = () => {
     navigate("/productdetails");
@@ -54,18 +54,9 @@ function Products() {
   };
 
   const { actionby, reasonofrejection } = credentials;
-  
+
   return (
     <>
-      {/* <Navbar /> */}
-      <button
-        type="button"
-        onClick={handleSortByRatings}
-        className="btn btn-primary"
-      >
-        Sort by Price (High to Low)
-      </button>
- 
       <div className="row">
         <div className="col-lg-1 col-md-1">
           <Categorybuttons />
@@ -77,7 +68,7 @@ function Products() {
             <div className="row">
               {myProduct &&
                 myProduct.map((value, index) => {
-                  console.log(value.title, "  ", value.rating);
+                  console.log(value);
                   return (
                     <>
                       <div className="col-lg-4 col-md-4 col-sm-6 col-6">
@@ -172,12 +163,13 @@ function Products() {
                                       type="button"
                                       onClick={(e) => {
                                         e.preventDefault();
-                                        Buy_the_product(
+                                        // navigate("/paymentconfiramtion");
+                                        proceed_To_pay(
                                           localStorage.getItem("email"),
                                           value.price,
                                           value.category,
                                           value.id,
-                                          value.title,
+                                          value.brand,
                                           state,
                                           credentials.reasonofrejection,
                                           "pending",

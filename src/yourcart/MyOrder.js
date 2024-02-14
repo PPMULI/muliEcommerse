@@ -14,6 +14,7 @@ function MyOrder() {
     setYourOrder,
     Cancel_order_handler,
     confirm_login,
+    // getCartItemsByEmail,
     getProductsThat_You_Buy,
     setyourOrderByUserdetails,
     yourOrderByUserdetails,
@@ -35,6 +36,7 @@ function MyOrder() {
   useEffect(() => {
     getProductsThat_You_Buy();
   }, []);
+
 
   const getCartItemsByEmail = async (email) => {
     const items = await YourOrder.filter((products) => {
@@ -132,6 +134,7 @@ function MyOrder() {
 
       <div className="your_cart">
         <button
+        className="btn btn-outline-warning"
           onClick={() => {
             getCartItemsByEmail(localStorage.getItem("email"));
           }}
@@ -172,14 +175,7 @@ function MyOrder() {
                               </p>
                             </div>
                           </div>
-                          {/* 
-                          {/* <div className="col-xl-2 col-md-2 col-lg-2 col-sm-3 col-12">
-                            <ul className="product_status">
-                              <li className="status">Status: {value.status}</li>
-                            </ul>
-                          </div>  */}
-
-                          {/* <div className="col-sm-8"></div> */}
+               
                           <div
                             className="col-xl-4 col-md-4 col-lg-3 col-sm-5 col-12"
                             id="action_button"
