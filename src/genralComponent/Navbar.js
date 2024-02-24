@@ -83,6 +83,8 @@ function Navbar() {
                 <a class="nav-link active" aria-current="page" href="/">
                   Home
                 </a>
+
+                <Link href="/adminhome" />
               </li>
 
               <li class="nav-item dropdown">

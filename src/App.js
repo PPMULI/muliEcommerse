@@ -9,7 +9,6 @@ import Home from "./home/Home";
 import AdminLogin from "./Authentaction/AdminAuthentication/AdminLogin";
 import AdminSignup from "./Authentaction/AdminAuthentication/AdminSignup";
 import AuthDetails from "./Authentaction/AuthDetails";
-import Dummy from "./genralComponent/Dummy";
 import Admin from "./AdminComponents/Admin";
 import ProductCategory from "./products/ProductCategory";
 import AboutUs from "./About/AboutUs";
@@ -24,6 +23,9 @@ import UserTickets from "./AdminComponents/AdminServices/UserTickets";
 import Givefeedback from "./About/Givefeedback/Givefeedback";
 import UserTicketStatus from "./AdminComponents/AdminServices/UserTicketStatus";
 import UserOrderStatus from "./AdminComponents/AdminServices/UserOrderStatus";
+import PaymentConfirmation from "./yourcart/PaymentConfirmation";
+import Confirmation from "./yourcart/Confirmation";
+import Adminhome from "./AdminComponents/AdminDashboard/Adminhome";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
       <Router>
         <ProjectState>
           <Routes>
+            <Route exact path="/adminhome" element={<Adminhome />} />
+            <Route exact path="/paymentconfiramtion" element={<PaymentConfirmation />} />
             <Route exact path="/userorderstatus" element={<UserOrderStatus />} />
             <Route exact path="/peoplefeedback" element={<PeopleFeedbacks />} />
             <Route exact path="/myraisedticket" element={<MyraisedTicket />} />
@@ -39,6 +43,7 @@ function App() {
             <Route exact path="/feedback" element={<Feedback />} />
             <Route exact path="/aboutus" element={<AboutUs />} />
             <Route exact path="/myorder" element={<MyOrder />} />
+            <Route exact path="/confirmation" element={<Confirmation />} />
             <Route
               exact
               path="/productcategory"
@@ -46,8 +51,7 @@ function App() {
             />
             <Route exact path="/userticketstatus" element={<UserTicketStatus />} />
             <Route exact path="/admin" element={<Admin />} />
-            <Route exact path="/dummy" element={<Dummy />} />
-            <Route exact path="/authdetails" element={<AuthDetails />} />
+             <Route exact path="/authdetails" element={<AuthDetails />} />
             <Route exact path="/adminsignup" element={<AdminSignup />} />
             <Route exact path="/adminlogin" element={<AdminLogin />} />
             <Route exact path="/userorders" element={<UserOrders />} />

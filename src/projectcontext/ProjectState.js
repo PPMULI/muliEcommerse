@@ -19,6 +19,10 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Authentaction/Config";
 
 function ProjectState(props) {
+  const [sortByPrice, setSortByPrice] = useState(null);
+  const [sortByRating, setSortByRating] = useState(null);
+  const [deliveryProducts, setdeliveryProducts] = useState([]);
+  const [productbyEmail, setProductbyEmail] = useState([]);
   const [product, setProduct] = useState([]);
   const [updatedOrderStatus, setUpdatedOrderStatus] = useState([]);
   const [updatedticketStatus, setupdatedticketStatus] = useState([]);
@@ -63,22 +67,20 @@ function ProjectState(props) {
     navigate("/");
   };
   const checkAuthority = () => {
-    if(!localStorage.getItem("email"))
-    {
+    if (!localStorage.getItem("email")) {
       toast.error("login first", {
         position: "top-center",
         theme: "colored",
       });
 
-      navigate("/")
-    }
-    else if (localStorage.getItem("email")) {
+      navigate("/");
+    } else if (localStorage.getItem("email")) {
       if (localStorage.getItem("email").endsWith("@gmail.com")) {
         toast.error("Entry restricted", {
           position: "top-center",
           theme: "colored",
         });
-        navigate("/")
+        navigate("/");
         const myTimeOut = setTimeout(timeout, 5000);
       }
     }
@@ -179,38 +181,50 @@ function ProjectState(props) {
     reasonofrejection,
     status,
     actionby,
-    imageurl
+    imageurl,
+    cardnumber,
+    nameoncard,
+    expirydate,
+    CVV,
+    country
   ) => {
-    const newItem = {
-      email,
-      price,
-      category,
-      id,
-      productname,
-      quantity,
-      reasonofrejection,
-      status,
-      actionby,
-      imageurl,
-    };
+  
+      const newItem = {
+        email,
+        price,
+        category,
+        id,
+        productname,
+        quantity,
+        reasonofrejection,
+        status,
+        actionby,
+        imageurl,
+        cardnumber,
+        nameoncard,
+        country,
+        expirydate,
+        CVV,
+      };
 
-    try {
-      if (!localStorage.getItem("email")) {
-        toast.error(`Please login first`, {
-          position: "top-center",
-          theme: "colored",
-        });
-        navigate("/adminlogin");
-      } else {
-        await Order_product_collection(newItem);
-        toast.success(`Thank you for Purchase ${productname}`, {
-          position: "top-center",
-          theme: "colored",
-        });
+       try {
+        if (!localStorage.getItem("email")) {
+          toast.error(`Please login first`, {
+            position: "top-center",
+            theme: "colored",
+          });
+          navigate("/adminlogin");
+        } else {
+          await Order_product_collection(newItem);
+          toast.success(`Thank you for Purchase ${productname}`, {
+            position: "top-center",
+            theme: "colored",
+          });
+        }
+      } catch (error) {
+        console.log("error", error);
       }
-    } catch (error) {
-      console.log("error", error);
-    }
+    
   };
 
   const Cancel_Your_order = (id) => {
@@ -493,7 +507,7 @@ function ProjectState(props) {
         theme: "colored",
       });
 
-      navigate("/")
+      navigate("/");
     }
   };
 
@@ -684,10 +698,131 @@ function ProjectState(props) {
   };
 
   console.log(updatedOrderStatus);
+
+  const getCartItemsByEmail = async (email) => {
+    console.log("email", email);
+    const items = await product.filter((products) => {
+      return products.email == email;
+    });
+
+    setProductbyEmail(items);
+
+    console.log("items", items);
+    return items;
+  };
+
+  // Function to handle sorting by price
+  const handleSortByPrice = () => {
+    alert("ok");
+    const sortedProducts = [...myProduct];
+    sortedProducts.sort((a, b) => b.price - a.price); // Sort from high to low
+    setMyProduct(sortedProducts);
+    setSortByPrice("highToLow");
+  };
+
+  const handleProductBySortedCategory = () => {
+    alert("category");
+    const sortedByCategory = [...showCategorywiseProduct];
+    sortedByCategory.sort((a, b) => b.price - a.price);
+    setShowCategorywiseProduct(sortedByCategory);
+    setSortByPrice("highToLow");
+  };
+
+  const handleSortByRatingsByCategory = () => {
+    alert("ok22");
+    const sortedProductsCategoryByRaings = [...showCategorywiseProduct];
+    sortedProductsCategoryByRaings.sort((a, b) => b.rating - a.rating);
+    setShowCategorywiseProduct(sortedProductsCategoryByRaings);
+    setSortByRating("highToLow");
+  };
+  const handleSortByRatings = () => {
+    alert("ok2");
+    const sortedProductsByRaings = [...myProduct];
+    sortedProductsByRaings.sort((a, b) => b.rating - a.rating);
+    setMyProduct(sortedProductsByRaings);
+    setSortByRating("highToLow");
+  };
+
+  let arr = [];
+
+  const proceed_To_pay = (
+    email,
+    price,
+    category,
+    id,
+    productname,
+    quantity,
+    reasonofrejection,
+    status,
+    actionby,
+    imageurl
+  ) => {
+    navigate("/paymentconfiramtion");
+    console.log(
+      email,
+      price,
+      category,
+      id,
+      productname,
+      quantity,
+      reasonofrejection,
+      status,
+      actionby,
+      imageurl
+    );
+    arr.push({
+      email: email,
+      price: price,
+      category: category,
+      id: id,
+      productname: productname,
+      quantity: quantity,
+      reasonofrejection: reasonofrejection,
+      status: status,
+      actionby: actionby,
+      imageUrl: imageurl,
+    });
+
+    setdeliveryProducts(arr);
+  };
+
+  const handleSortChange = (e) => {
+    const selectedOption = e.target.value;
+
+    if (selectedOption === "highToLow") {
+      handleSortByPrice();
+    } else if (selectedOption == "byRating") {
+      handleSortByRatings();
+    } else {
+      // Handle other sorting options (e.g., by rating)
+    }
+  };
+
+  const handleSortChangeByCategory = (e) => {
+    const selectedOption = e.target.value;
+
+    if (selectedOption === "highToLow") {
+      handleProductBySortedCategory();
+    } else if (selectedOption == "byRating") {
+      handleSortByRatingsByCategory();
+    } else {
+      // Handle other sorting options (e.g., by rating)
+    }
+  };
   return (
     <>
       <Projectcontext.Provider
         value={{
+          handleSortChange,
+          handleSortChangeByCategory,
+          handleProductBySortedCategory,
+          handleSortByRatings,
+          getCartItemsByEmail,
+          handleSortByPrice,
+          sortByPrice,
+          productbyEmail,
+          proceed_To_pay,
+          deliveryProducts,
           Order_status_for_the_admin,
           updatedOrderStatus,
           handleSignup,
@@ -697,7 +832,7 @@ function ProjectState(props) {
           feedback_from_user,
           reopen_the_ticketBy_user,
           Buy_the_product,
-           Add_To_Cart,
+          Add_To_Cart,
           getFeedbacks,
           feedbackGivenByUser,
           setFeedbackGivenByUser,

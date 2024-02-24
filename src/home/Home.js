@@ -6,7 +6,6 @@ import Footer from "../genralComponent/Footer";
 import Navbar from "../genralComponent/Navbar";
 import projectcontext from "../projectcontext/projectContext";
 import { useNavigate } from "react-router-dom";
-import Dummy from "../genralComponent/Dummy";
 import Bghome from "./Bghome";
 
 function Home() {
