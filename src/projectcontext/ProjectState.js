@@ -21,6 +21,7 @@ import { signInWithPopup } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, provider } from "../Authetication/Config";
 function ProjectState(props) {
+<<<<<<< HEAD
   const [errorLogin, setErrorLogin] = useState({
     email: false,
     password: false,
@@ -66,6 +67,8 @@ function ProjectState(props) {
   const [google_loginValue, setGoogleLoginValue] = useState("");
 
   const [newfeatured, setNewfeatured] = useState([]);
+=======
+>>>>>>> 2826a80f6addf8b887ccab8c876beaed72617ab3
   const [sortByPrice, setSortByPrice] = useState(null);
   const [sortByRating, setSortByRating] = useState(null);
   const [deliveryProducts, setdeliveryProducts] = useState([]);
@@ -245,6 +248,7 @@ function ProjectState(props) {
     CVV,
     country
   ) => {
+<<<<<<< HEAD
     const newItem = {
       email,
       price,
@@ -262,24 +266,45 @@ function ProjectState(props) {
       expirydate,
       CVV,
     };
+=======
+  
+      const newItem = {
+        email,
+        price,
+        category,
+        id,
+        productname,
+        quantity,
+        reasonofrejection,
+        status,
+        actionby,
+        imageurl,
+        cardnumber,
+        nameoncard,
+        country,
+        expirydate,
+        CVV,
+      };
+>>>>>>> 2826a80f6addf8b887ccab8c876beaed72617ab3
 
-    try {
-      if (!localStorage.getItem("email")) {
-        toast.error(`Please login first`, {
-          position: "top-center",
-          theme: "colored",
-        });
-        navigate("/adminlogin");
-      } else {
-        await Order_product_collection(newItem);
-        toast.success(`Thank you for Purchase ${productname}`, {
-          position: "top-center",
-          theme: "colored",
-        });
+       try {
+        if (!localStorage.getItem("email")) {
+          toast.error(`Please login first`, {
+            position: "top-center",
+            theme: "colored",
+          });
+          navigate("/adminlogin");
+        } else {
+          await Order_product_collection(newItem);
+          toast.success(`Thank you for Purchase ${productname}`, {
+            position: "top-center",
+            theme: "colored",
+          });
+        }
+      } catch (error) {
+        console.log("error", error);
       }
-    } catch (error) {
-      console.log("error", error);
-    }
+    
   };
 
   const Cancel_Your_order = (id) => {
@@ -732,13 +757,24 @@ function ProjectState(props) {
     setUpdatedOrderStatus(updated_order_status_by_admin);
   };
 
+<<<<<<< HEAD
   const getCartItemsByEmail = async (email) => {
+=======
+  console.log(updatedOrderStatus);
+
+  const getCartItemsByEmail = async (email) => {
+    console.log("email", email);
+>>>>>>> 2826a80f6addf8b887ccab8c876beaed72617ab3
     const items = await product.filter((products) => {
       return products.email == email;
     });
 
     setProductbyEmail(items);
 
+<<<<<<< HEAD
+=======
+    console.log("items", items);
+>>>>>>> 2826a80f6addf8b887ccab8c876beaed72617ab3
     return items;
   };
 
@@ -789,6 +825,21 @@ function ProjectState(props) {
     imageurl
   ) => {
     navigate("/paymentconfiramtion");
+<<<<<<< HEAD
+=======
+    console.log(
+      email,
+      price,
+      category,
+      id,
+      productname,
+      quantity,
+      reasonofrejection,
+      status,
+      actionby,
+      imageurl
+    );
+>>>>>>> 2826a80f6addf8b887ccab8c876beaed72617ab3
     arr.push({
       email: email,
       price: price,
@@ -828,6 +879,7 @@ function ProjectState(props) {
       // Handle other sorting options (e.g., by rating)
     }
   };
+<<<<<<< HEAD
 
   const fetctNewFeatured = async () => {
     const responce = await fetch("https://dummyjson.com/products");
@@ -1134,10 +1186,13 @@ function ProjectState(props) {
       });
     }
   };
+=======
+>>>>>>> 2826a80f6addf8b887ccab8c876beaed72617ab3
   return (
     <>
       <Projectcontext.Provider
         value={{
+<<<<<<< HEAD
           Update_user_Information,
           onSubmit,
           fetchAadharfromStorage,
@@ -1174,6 +1229,8 @@ function ProjectState(props) {
           categoriesproduct,
           newfeatured,
           fetctNewFeatured,
+=======
+>>>>>>> 2826a80f6addf8b887ccab8c876beaed72617ab3
           handleSortChange,
           handleSortChangeByCategory,
           handleProductBySortedCategory,
