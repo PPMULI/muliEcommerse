@@ -3,7 +3,7 @@ import { getAnalytics } from "firebase/analytics";
 import {getAuth, GoogleAuthProvider} from "firebase/auth"
 import {getFirestore} from "firebase/firestore"
 import { getDatabase } from "firebase/database";
-
+import { getStorage } from "firebase/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyDL13DN_tNNrsLdLrWSsVsl_VlE1eoA64g",
   authDomain: "muli-e-commerse.firebaseapp.com",
@@ -17,12 +17,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
-const firestore = getFirestore(app)
 const provider = new GoogleAuthProvider()
 
 const analytics = getAnalytics(app);
 const database = getDatabase(app); 
 const db = getFirestore(app)
+const storage = getStorage(app)
 
-export {auth, provider, getFirestore, db}
+export {auth, provider, getFirestore, storage, db}
 

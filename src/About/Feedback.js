@@ -9,7 +9,7 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { db } from "../Authentaction/Config";
+import { db } from "../Authetication/Config";
 import Footer from "../genralComponent/Footer";
 function Feedback() {
   const [credentials, setCredentials] = useState({

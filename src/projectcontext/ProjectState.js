@@ -3,9 +3,11 @@ import Projectcontext from "./projectContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getAuth } from "firebase/auth";
-import { db } from "../Authentaction/Config";
+import { db, storage } from "../Authetication/Config";
+import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+
 import {
   collection,
   getDocs,
@@ -15,10 +17,55 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import { signInWithPopup } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Authentaction/Config";
-
+import { auth, provider } from "../Authetication/Config";
 function ProjectState(props) {
+  const [errorLogin, setErrorLogin] = useState({
+    email: false,
+    password: false,
+  });
+  const [errorInregestration, setErrorInregestration] = useState({
+    fullname: false,
+    email: false,
+    password: false,
+    cpassword: false,
+    dateofbirth: false,
+    contactnumber: false,
+    nationality: false,
+    employedstatus: false,
+    applyingasacourseowner: false,
+  });
+
+  const [countryname, setCountrname] = useState([]);
+
+  const [usercredentials, setUserCredentials] = useState({
+    fullname: "",
+    email: "",
+    password: "",
+    cpassword: "",
+    dateofbirth: "",
+    contactnumber: "",
+    nationality: "India",
+    employedstatus: "unemployed",
+    applyingasacourseowner: "no",
+    applyasadmin: "no",
+    isadmin: "no",
+    isCourseowner: "no",
+  });
+
+  const [imageUpload, setImageUpload] = useState(null);
+  const [aadharupload, setAadharUpload] = useState(null);
+  const [resumeupload, setResumeUpload] = useState(null);
+
+  const [yourProfilePhoto, setYourProfilePhoto] = useState([]);
+  const [yourAadhar, setYourAadhar] = useState([])
+  const [yourUser, setYourUser] = useState([])
+  const [errorInAadharUpload, seterrorInAadharUpload] = useState(false);
+   const [errorInphotoUpload, seterrorInphotoUpload] = useState(false);
+  const [google_loginValue, setGoogleLoginValue] = useState("");
+
+  const [newfeatured, setNewfeatured] = useState([]);
   const [sortByPrice, setSortByPrice] = useState(null);
   const [sortByRating, setSortByRating] = useState(null);
   const [deliveryProducts, setdeliveryProducts] = useState([]);
@@ -41,6 +88,16 @@ function ProjectState(props) {
     productname: "",
     quantity: "",
   });
+
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isComplete, setIscomplete] = useState(false);
+
+  const [margin, setMargin] = useState({
+    marginLeft: 0,
+    marginRight: 0,
+  });
+
+  const [value, setValue] = useState("");
 
   const { email, status, productcategory, productname, quantity, productid } =
     credentials;
@@ -87,7 +144,7 @@ function ProjectState(props) {
   };
 
   const restrictUser = () => {
-    if (localStorage.getItem("email") || localStorage.getItem("accesstoken")) {
+    if (localStorage.getItem("email") && localStorage.getItem("accesstoken")) {
       toast.error("Another session is going on! Please log-out first", {
         position: "top-center",
         theme: "colored",
@@ -188,45 +245,41 @@ function ProjectState(props) {
     CVV,
     country
   ) => {
-    console.log(email.length)
- 
-      const newItem = {
-        email,
-        price,
-        category,
-        id,
-        productname,
-        quantity,
-        reasonofrejection,
-        status,
-        actionby,
-        imageurl,
-        cardnumber,
-        nameoncard,
-        country,
-        expirydate,
-        CVV,
-      };
+    const newItem = {
+      email,
+      price,
+      category,
+      id,
+      productname,
+      quantity,
+      reasonofrejection,
+      status,
+      actionby,
+      imageurl,
+      cardnumber,
+      nameoncard,
+      country,
+      expirydate,
+      CVV,
+    };
 
-      console.log(newItem);
-      try {
-        if (!localStorage.getItem("email")) {
-          toast.error(`Please login first`, {
-            position: "top-center",
-            theme: "colored",
-          });
-          navigate("/adminlogin");
-        } else {
-          await Order_product_collection(newItem);
-          toast.success(`Thank you for Purchase ${productname}`, {
-            position: "top-center",
-            theme: "colored",
-          });
-        }
-      } catch (error) {
-        console.log("error", error);
+    try {
+      if (!localStorage.getItem("email")) {
+        toast.error(`Please login first`, {
+          position: "top-center",
+          theme: "colored",
+        });
+        navigate("/adminlogin");
+      } else {
+        await Order_product_collection(newItem);
+        toast.success(`Thank you for Purchase ${productname}`, {
+          position: "top-center",
+          theme: "colored",
+        });
       }
-    
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   const Cancel_Your_order = (id) => {
@@ -636,24 +689,6 @@ function ProjectState(props) {
     }
   };
 
-  // user/admin signup
-  const handleSignup = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        toast.success(`Your account is created successfully.`, {
-          position: "top-center",
-          theme: "colored",
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error(`Something wents wrong`, {
-          position: "top-center",
-          theme: "colored",
-        });
-      });
-  };
-
   // login the user
   const handleLogin = async (email, password) => {
     const auth = getAuth();
@@ -690,26 +725,20 @@ function ProjectState(props) {
 
   const Order_status_for_the_admin = async (orderStatus) => {
     navigate("/userorderstatus");
-    console.log(orderStatus);
     const updated_order_status_by_admin = await YourOrder.filter((status) => {
       return status.status == orderStatus;
     });
 
-    console.log(updated_order_status_by_admin);
     setUpdatedOrderStatus(updated_order_status_by_admin);
   };
 
-  console.log(updatedOrderStatus);
-
   const getCartItemsByEmail = async (email) => {
-    console.log("email", email);
     const items = await product.filter((products) => {
       return products.email == email;
     });
 
     setProductbyEmail(items);
 
-    console.log("items", items);
     return items;
   };
 
@@ -760,18 +789,6 @@ function ProjectState(props) {
     imageurl
   ) => {
     navigate("/paymentconfiramtion");
-    console.log(
-      email,
-      price,
-      category,
-      id,
-      productname,
-      quantity,
-      reasonofrejection,
-      status,
-      actionby,
-      imageurl
-    );
     arr.push({
       email: email,
       price: price,
@@ -811,10 +828,352 @@ function ProjectState(props) {
       // Handle other sorting options (e.g., by rating)
     }
   };
+
+  const fetctNewFeatured = async () => {
+    const responce = await fetch("https://dummyjson.com/products");
+    const json = await responce.json();
+    setNewfeatured(json.products);
+  };
+
+  const [categoriesproduct, setCategoriesproduct] = useState([]);
+
+  const handle_category = (category) => {
+    const items = newfeatured.filter((categoriesProduct) => {
+      return categoriesProduct.category == category;
+    });
+
+    setCategoriesproduct(items);
+    return items;
+  };
+  const userSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        toast.success("Your session is log-out", {
+          position: "top-center",
+          theme: "colored",
+        });
+        localStorage.clear();
+        navigate("/");
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handlegoogleSignIn = () => {
+    signInWithPopup(auth, provider).then((data) => {
+      setGoogleLoginValue(data.user.email);
+      localStorage.setItem("email", data.user.email);
+      localStorage.setItem("accesstoken", auth.currentUser.accessToken);
+      setGoogleLoginValue(localStorage.getItem("email"));
+      toast.success(`You are signin`, {
+        position: "top-center",
+        theme: "colored",
+      });
+      navigate("/");
+    });
+  };
+
+  const onChange = (e) => {
+    setUserCredentials({ ...usercredentials, [e.target.name]: e.target.value });
+  };
+
+  const handleSignup = async (
+    email,
+    password,
+    fullname,
+    dateofbirth,
+    contactnumber,
+    nationality,
+    employedstatus,
+    applyingasacourseowner,
+    applyasadmin
+  ) => {
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      registeruser(
+        fullname,
+        email,
+        dateofbirth,
+        contactnumber,
+        nationality,
+        employedstatus,
+        applyingasacourseowner,
+        applyasadmin,
+        userCredentials.isCourseowner,
+        userCredentials.isadmin
+      );
+     } catch (error) {
+      toast.error(`email is already in use`, {
+        position: "top-center",
+        theme: "colored",
+      });
+    }
+  };
+
+  const new_user_regestration_collection = collection(db, "new_user");
+
+  const new_user_regestration = (newuser) => {
+    return addDoc(new_user_regestration_collection, newuser);
+  };
+
+  const Update_user_Information = async (docID, status) => {
+    console.log(docID)
+    try {
+      // Reference to the specific document
+      const userDocRef = doc(new_user_regestration_collection, docID);
+
+      // Update the status field of the specific document
+      await updateDoc(userDocRef, {
+        status: status,
+      });
+      toast.success(`Congractulation! Your status is updated`, {
+        position: "top-center",
+        theme: "colored",
+      });
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+  const getAllregisteredUser = () => {
+    return getDocs(new_user_regestration_collection);
+  };
+
+  const getUserForShop = async () => {
+    const data = await getAllregisteredUser();
+    setYourUser(
+      data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
+    );
+  };
+
+  const fetChUserImage = ref(storage, `docs/muli.pritam@gmail.com/images`);
+  const fetchUserAadhar = ref(storage, `docs/muli.pritam@gmail.com/aadhar`);
+
+  const fetchImagesfromStorage = () => {
+    listAll(fetChUserImage).then((response) => {
+      console.log(fetChUserImage);
+      console.log(response)
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setYourProfilePhoto((prev) => [...prev, url]);
+        });
+      });
+    });
+  };
+
+  const fetchAadharfromStorage = () => {
+    listAll(fetchUserAadhar).then((response) => {
+      console.log(response);
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setYourAadhar((prev) => [...prev, url]);
+        });
+      });
+    });
+  };
+  const registeruser = async (
+    fullname,
+    email,
+    dateofbirth,
+    contactnumber,
+    nationality,
+    employedstatus,
+    applyasadmin,
+    isCourseowner,
+    isAdmin
+  ) => {
+    uploadImage(email);
+    const new_user = {
+      fullname,
+      email,
+      dateofbirth,
+      contactnumber,
+      nationality,
+      employedstatus,
+      applyasadmin,
+    };
+
+    try {
+      await new_user_regestration(new_user);
+      toast.success(`Thank You for regestration`, {
+        position: "top-center",
+        theme: "colored",
+      });
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  const uploadImage = (email) => {
+    if (imageUpload == null || aadharupload == null) {
+      alert("Plese upload the file");
+      return;
+    }
+
+    const imageRef = ref(storage, `docs/${email}/images/profilePhoto`);
+    const aadharRef = ref(storage, `docs/${email}/aadhar/aadharCard`);
+   
+    uploadBytes(imageRef, imageUpload);
+     uploadBytes(aadharRef, aadharupload);
+  };
+  const validateNewUser = (
+    fullname,
+    email,
+    password,
+    cpassword,
+    dateofbirth,
+    contactnumber,
+    nationality,
+    employedstatus,
+    applyasadmin,
+    aadharupload,
+    imageupload,
+  ) => {
+    const emailError = email.trim() == "";
+    const passwordShouldcontail = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+    const passwordError = password.trim() == "";
+    const cpasswordError = cpassword.trim() == "";
+    const fullnameError = fullname.trim() == "";
+    const dateofbirthError = dateofbirth.trim() == "";
+    const contactnumberError = contactnumber.trim() == "";
+
+    const contactnumberLengthError = contactnumber.trim().length != "10";
+    const dateofbirthLengthError = dateofbirth.trim().length != "10";
+
+    const errorinaadhar = aadharupload == null;
+    const errorInImage = imageUpload == null;
+
+    seterrorInAadharUpload(errorinaadhar);
+     seterrorInphotoUpload(errorInImage);
+
+    setErrorInregestration({
+      email: emailError,
+      password: passwordError,
+      fullname: fullnameError,
+      contactnumber: contactnumberError,
+    });
+
+    if (
+      !dateofbirthLengthError &&
+      !contactnumberLengthError &&
+      !errorInregestration.email &&
+      !errorInregestration.password &&
+      !errorInregestration.contactnumber &&
+      !errorInregestration.cpassword &&
+      !errorInAadharUpload &&
+      !errorInphotoUpload
+    ) {
+      if (password == cpassword && passwordShouldcontail.test(password)) {
+        handleSignup(
+          email,
+          password,
+          fullname,
+          dateofbirth,
+          contactnumber,
+          nationality,
+          employedstatus,
+          applyasadmin
+        );
+      } else {
+        toast.error(
+          "Password is not matching or not matching the password policy",
+          {
+            position: "top-center",
+            theme: "colored",
+          }
+        );
+      }
+    } else {
+      toast.error("Something went wrong", {
+        position: "top-center",
+        theme: "colored",
+      });
+    }
+  };
+
+  const country = async () => {
+    await fetch("https://restcountries.com/v3.1/all")
+      .then((response) => response.json())
+      .then((data) => {
+        // Extract country names
+        const countryNames = data.map((country) => country.name.common);
+
+        // Sort the country names alphabetically
+        const sortedCountryNames = countryNames.sort((a, b) =>
+          a.localeCompare(b)
+        );
+
+        // Log the sorted country names
+        setCountrname(sortedCountryNames);
+      })
+      .catch((error) => console.error("Error fetching country data:", error));
+  };
+
+  const onSubmit = (email, password) => {
+    const emailError = email.trim() == "";
+    const passwordShouldcontail = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+    passwordShouldcontail.test(password);
+    const passwordError = password.trim() == "";
+    const passwordContain = passwordShouldcontail;
+
+    setErrorLogin({ email: emailError, password: passwordError });
+
+    if (!emailError && !passwordError && passwordShouldcontail) {
+      handleLogin(email, password);
+    } else {
+      toast.error("Every filed is important or Check password length", {
+        position: "top-center",
+        theme: "colored",
+      });
+    }
+  };
   return (
     <>
       <Projectcontext.Provider
         value={{
+          Update_user_Information,
+          onSubmit,
+          fetchAadharfromStorage,
+          fetchImagesfromStorage,
+          yourProfilePhoto,
+          yourAadhar,
+          getUserForShop,
+          yourUser,
+          validateNewUser,
+          imageUpload,
+          setImageUpload,
+          resumeupload,
+          setResumeUpload,
+          aadharupload,
+          setAadharUpload,
+          onChange,
+          country,
+          countryname,
+          usercredentials,
+          setUserCredentials,
+          errorInregestration,
+          setErrorInregestration,
+          margin,
+          setMargin,
+          setIscomplete,
+          currentStep,
+          setCurrentStep,
+          isComplete,
+          errorLogin,
+          setErrorLogin,
+          handlegoogleSignIn,
+          handle_category,
+          userSignOut,
+          categoriesproduct,
+          newfeatured,
+          fetctNewFeatured,
           handleSortChange,
           handleSortChangeByCategory,
           handleProductBySortedCategory,
@@ -827,7 +1186,6 @@ function ProjectState(props) {
           deliveryProducts,
           Order_status_for_the_admin,
           updatedOrderStatus,
-          handleSignup,
           Ticket_Status_Fot_the_Admin,
           updatedticketStatus,
           handleLogin,

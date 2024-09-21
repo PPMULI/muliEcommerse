@@ -2,11 +2,9 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../genralComponent/Navbar";
-import { getBooks } from "../genralComponent/Dummy";
-import { deletebook } from "../genralComponent/Dummy";
 import Footer from "../genralComponent/Footer";
 import projectcontext from "../projectcontext/projectContext";
-import { db } from "../Authentaction/Config";
+import { db } from "../Authetication/Config";
 // import { addDoc, collection } from "firebase/firestore";
 
 function YourCart() {

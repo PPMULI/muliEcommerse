@@ -1,192 +1,119 @@
-import React, { useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import "./Global.css";
-import { auth } from "../Authentaction/Config";
-import { signOut } from "firebase/auth";
-import LoginIcon from "@mui/icons-material/Login";
+import React, { useContext } from "react";
+import logo from "../Images/apnaLogo.jpg";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useNavigate } from "react-router-dom";
-import { Logout } from "@mui/icons-material";
-import { ToastContainer, toast } from "react-toastify";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import ContactPageIcon from "@mui/icons-material/ContactPage";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import projectcontext from "../projectcontext/projectContext";
-import { Link } from "react-router-dom";
-import ecommerselogo from "../Images/ecommerselogo.jfif";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-
 function Navbar() {
   const navigate = useNavigate();
-  // const [authUser, setAuthUser] = useState(null);
   const context = useContext(projectcontext);
-  const {
-    product_category,
-    showCategorywiseProduct,
-    setShowCategorywiseProduct,
-  } = context;
-
-  const [authUser, setAuthUser] = useState(null);
-  useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAuthUser(user);
-      } else {
-        setAuthUser(null);
-      }
-    });
-
-    return () => {
-      listen();
-    };
-  }, []);
-
-  const userSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        toast.success("Your session is log-out", {
-          position: "top-center",
-          theme: "colored",
-        });
-        localStorage.clear();
-        navigate("/adminlogin");
-      })
-      .catch((error) => console.log(error));
-  };
+  const { userSignOut, product } = context;
   return (
     <>
-      {/* <nav class="navbar navbar-expand-lg fix_navbar"> */}
       <nav
-        class="navbar bg-primary navbar-expand-lg navbar_design"
+        class="navbar navbar_sticky navbar-expand-lg bg-dark mb-3 border-body"
         data-bs-theme="dark"
       >
-        <div class="container-fluid">
-          <a class="navbar-brand navbar-heading" href="#">
-            <div className="row">
-              <Link class="navbar-brand" to="#">
-                <img src={ecommerselogo} className="ecommerselogo" />
-              </Link>
-            </div>
-          </a>
-
+        {/* <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3"> */}
+        <div class="container-fluid navbar_cred">
+          <img
+            src={logo}
+            alt="Logo"
+            width="30"
+            onClick={() => {
+              navigate("/");
+            }}
+            height="24"
+            class="d-inline-block align-text-top"
+          />
           <button
             class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav navbar-items">
-              <li class="nav-item navbar-links">
-                <a class="nav-link active" aria-current="page" href="/">
-                  Home
-                </a>
-
-                <Link href="/adminhome" />
-              </li>
-
-              <li class="nav-item dropdown">
+          <div
+            class="collapse navbar-collapse navbar_items"
+            id="navbarSupportedContent"
+          >
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
                 <a
-                  class="nav-link"
-                  href="/products"
-                  role="button"
-                  // data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Products
-                </a>
-              </li>
-
-              <li class="nav-item dropdown">
-                <Link
-                  class="nav-link"
-                  to="/aboutus"
-                  role="button"
-                  // data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  About
-                </Link>
-              </li>
-
-              <li class="nav-item dropdown">
-                <Link
-                  class="nav-link"
-                  to="/raisedticket"
-                  role="button"
-                  // data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Raise Ticket
-                </Link>
-              </li>
-
-              <li class="nav-item dropdown">
-                <Link
-                  class="nav-link"
-                  to="/admin"
-                  role="button"
-                  // data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Admin
-                </Link>
-              </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
+                  class="nav-link active"
+                  aria-current="page"
                   href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  My request
-                </a>
-
-                <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item" href="/myraisedticket">
-                      My Raised Ticket
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="/myorder">
-                      My Orders
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              {localStorage.getItem("email") ||
-              localStorage.getItem("accesstoken") ? (
-                <div className="icons_on_nav login_icon" onClick={userSignOut}>
-                  <Logout />
-                </div>
-              ) : (
-                <div
-                  className="icons_on_nav login_icon"
                   onClick={() => {
-                    navigate("/adminlogin");
+                    navigate("/productcategory");
                   }}
                 >
-                  <LoginIcon />
-                </div>
-              )}
-
-              <div
-                className="icons_on_nav cart_icon"
-                onClick={() => {
-                  navigate("/yourcart");
-                }}
-              >
-                <AddShoppingCartIcon />
-              </div>
+                  Product
+                </a>
+              </li>
             </ul>
+            <AddShoppingCartIcon
+              className="shopping_cart_icon"
+              onClick={() => {
+                navigate("/addtocart");
+              }}
+            />{" "}
+            <span></span>
+            {localStorage.getItem("email") ? (
+              <>
+                <div class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <AccountCircleIcon /> {localStorage.getItem("email")}
+                  </a>
+                  <div class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <BookmarkBorderIcon /> User Order
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" onClick={() => {navigate("/myprofile")}}>
+                        <ContactPageIcon /> Profile
+                      </a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" onClick={() => {userSignOut()}}>
+                        <LockOpenIcon /> Logout
+                      </a>
+                    </li>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <button
+                  className="btn btn-outline-secondary login_button"
+                  onClick={() => {
+                    navigate("/userlogin");
+                  }}
+                >
+                  Login
+                </button>
+              </>
+            )}
           </div>
         </div>
       </nav>
-      <ToastContainer />
     </>
   );
 }
