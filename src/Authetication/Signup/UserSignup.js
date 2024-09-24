@@ -8,7 +8,6 @@ function UserSignup({ stepConfig = [] }) {
   const {
     margin,
     currentStep,
-    restrictUser,
     isComplete,
     setCurrentStep,
     setIscomplete,
@@ -22,10 +21,6 @@ function UserSignup({ stepConfig = [] }) {
       marginRight: stepRef.current[stepConfig.length - 1].offsetWidth / 2,
     });
   }, [stepRef]);
-
-  useEffect(() => {
-    restrictUser()
-  }, [])
 
   if (!stepConfig.length) {
     return <></>;

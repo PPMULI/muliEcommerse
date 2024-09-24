@@ -9,13 +9,13 @@ function Preview() {
     validateNewUser,
     onChange,
     country,
-    countryname,
+    countrname,
     imageUpload,
     setImageUpload,
     resumeupload,
-    setResumeUpload,
+    setresumeUpload,
     aadharupload,
-    setAadharUpload,
+    setAadharupload,
     errorInregestration,
   } = context;
  
@@ -156,7 +156,7 @@ function Preview() {
                       >
                         <option selected>Open this select menu</option>
 
-                        {countryname.map((value, index) => {
+                        {countrname.map((value, index) => {
                           return (
                             <>
                               <option value={value} key={index} defaultValue="india">
@@ -190,8 +190,8 @@ function Preview() {
                     </div>
                   </div>
 
-                  <div className="col-lg-6">
-                  <div class="mb-3">
+               <div className="col-lg-6">
+               <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">
                     Applying as a admin
                   </label>
@@ -204,7 +204,7 @@ function Preview() {
                     aria-describedby="emailHelp"
                   />
                 </div>
-                  </div>
+               </div>
                 </div>
 
                 <div className="row">
@@ -235,7 +235,7 @@ function Preview() {
                         name="aadharcard"
                         id="aadharcard"
                         onChange={(e) => {
-                          setAadharUpload(e.target.files[0]);
+                          setAadharupload(e.target.files[0]);
                         }}
                       />
                     </div>
@@ -404,24 +404,9 @@ function Preview() {
                   </div>
                 </div>
 
-                <div className="col-lg-4">
-                  <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">
-                      Applying as a course owner
-                    </label>
-                    <input
-                      type="text"
-                      value={usercredentials.applyingasacourseowner}
-                      disabled
-                      class="form-control preview-input-filled"
-                      id="dateofbirth"
-                      name="dateofbirth"
-                      aria-describedby="emailHelp"
-                    />
-                  </div>
-                </div>
+        
 
-                <div className="col-lg-4">
+                <div className="col-lg-6">
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">
                       Applying as a admin
@@ -438,7 +423,7 @@ function Preview() {
                   </div>
                 </div>
               </div>
- 
+           
               <div className="row">
                 <div className="col-lg-6">
                   <div
@@ -494,11 +479,10 @@ function Preview() {
                     usercredentials.contactnumber,
                     usercredentials.nationality,
                     usercredentials.employedstatus,
-                    usercredentials.applyingasacourseowner,
                     usercredentials.applyasadmin,
                     aadharupload,
                     imageUpload,
-                   );
+                  );
                 }}
                 class="btn user-registartion-button check_out"
               >

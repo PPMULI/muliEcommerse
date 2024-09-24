@@ -14,15 +14,16 @@ function Myprofile() {
   const context = useContext(projectContext);
   const {
     getUserForShop,
-    yourUser,
-    fetchAadharfromStorage,
+    userforshop,
+    // fetchAadharfromStorage,
     country,
-    fetchImagesfromStorage,
-    yourProfilePhoto,
+    // yourProfilePhoto,
     yourAadhar,
     Update_user_Information,
-    countryname,
-    usercredentials
+    countrname,
+    imageList,
+    usercredentials,
+    fetchImagesfromStorage
   } = context;
 
   console.log(usercredentials)
@@ -31,9 +32,11 @@ function Myprofile() {
   useEffect(() => {
     getUserForShop();
     fetchImagesfromStorage();
-    fetchAadharfromStorage();
+    // fetchAadharfromStorage();
     country();
   }, []);
+
+  console.log(imageList)
   
   useEffect(() => {
     filterYourUser(localStorage.getItem("email"));
@@ -57,18 +60,19 @@ function Myprofile() {
     updatednationality,
   } = UpdateTheInfo;
   const filterYourUser = async (email) => {
-    const yourFetchedUser = await yourUser.filter((user) => {
+    const yourFetchedUser = await userforshop.filter((user) => {
       return user.email == email;
     });
     setFilterUser(yourFetchedUser);
   };
 
+  console.log(filterUser)
   const onUpdateEmail = (e) => {
     setUpdateTheInfo({ ...setUpdateTheInfo, [e.target.name]: e.target.value });
   };
   return (
     <>
-      {filterUser.length == 0 ? (
+       {filterUser.length == 0 ? (
         <div>Please create the profile - <button onClick={() => {filterYourUser(localStorage.getItem("email"));}}>Click me</button></div>
       ) : (
         filterUser.map((value) => {
@@ -165,7 +169,7 @@ function Myprofile() {
                           >
                             <option selected>Open this select menu</option>
 
-                            {countryname.map((value) => {
+                            {countrname.map((value) => {
                               return (
                                 <>
                                   <option value={value} defaultValue="india">
@@ -199,7 +203,7 @@ function Myprofile() {
                         <div className="col-lg-3 col-md-3 col-sm-3 col-3">
                           <div className="profile_card">
                             <img
-                              src={yourProfilePhoto}
+                              src={imageList}
                               className="img-fluid profile_card_image"
                               alt="..."
                             />{" "}
@@ -228,7 +232,27 @@ function Myprofile() {
                       </div>
                       <hr />
                       <div className="row">
-                        <div id="accordionExample">
+                      <div className="col-lg-3 d-flex justify-content-center">
+                          <div className="profile_card">
+                            <FolderIcon className="my-order-icon" />
+                          </div>
+                        </div>
+
+                        <div className="col-lg-9 d-flex justify-content-between">
+                          {/* <h4 className="my-order">My Document</h4>
+                          <ArrowForwardIosIcon className="my-order mt-2" /> */}
+
+<div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <h4 className="my-order">My Document</h4>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+          </ul>
+        </div>
+                        </div>
+                        {/* <div id="accordionExample">
                           <div class="accordion-item accordion-body">
                             <h2 class="accordion-header">
                               <button
@@ -264,7 +288,7 @@ function Myprofile() {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -295,8 +319,7 @@ function Myprofile() {
                               id="exampleInputPassword1"
                             />
                           </div>
-                          {/* <div className="col-lg-1"></div> */}
-                          <div className="col-lg-6 col-12 col-sm-6 col-md-6">
+                           <div className="col-lg-6 col-12 col-sm-6 col-md-6">
                             <input
                               type="text"
                               value={value.fullname}
@@ -496,223 +519,6 @@ function Myprofile() {
           );
         })
       )}
-      {/* <div className="container mt-5">
-        <div className="row">
-          <div className="col-lg-4 col-12">
-            <div className="card" id="card">
-              <div className="row">
-                <div className="col-lg-3 col-md-3 col-sm-3 col-3">
-                  <div className="profile_card">
-                    <img
-                      src={yourProfilePhoto}
-                      className="img-fluid profile_card_image"
-                      alt="..."
-                    />{" "}
-                  </div>
-                </div>
-
-                <div className="col-lg-9 col-md-9 col-sm-9 col-9">
-                  <h6 className="welcome_message">Hello,</h6>
-                  <h2 className="user_name">Sarwesh Bansode</h2>
-                </div>
-              </div>
-            </div>
-
-            <div className="card mt-4 p-1" id="card">
-              <div className="row">
-                <div className="col-lg-3 d-flex justify-content-center">
-                  <div className="profile_card">
-                    <BookmarkBorderIcon className="my-order-icon" />
-                  </div>
-                </div>
-
-                <div className="col-lg-9 d-flex justify-content-between">
-                  <h4 className="my-order">My Order</h4>
-                  <ArrowForwardIosIcon className="my-order mt-2" />
-                </div>
-              </div>
-              <hr />
-              <div className="row">
-                <div id="accordionExample">
-                  <div class="accordion-item accordion-body">
-                    <h2 class="accordion-header">
-                      <button
-                        class="accordion-button"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne"
-                        aria-expanded="true"
-                        aria-controls="collapseOne"
-                      >
-                        <FolderIcon className="my-order-icon my-doc-icon" />
-                        <h4 className="my-order my-doc">My Document</h4>
-                      </button>
-                    </h2>
-                    <div
-                      id="collapseOne"
-                      class="accordion-collapse collapse show"
-                      data-bs-parent="#accordionExample"
-                    >
-                      <div class="accordion-body mt-3">
-                        <div className="d-flex justify-content-between">
-                          <strong><a className="my-doc-name" href={yourAadhar} target="_blank">Your aadhar</a></strong>
-                          <strong className="update_btn">Update</strong>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-8 mt-2 col-12">
-            <div className="card" id="card">
-              <div className="d-flex">
-                <h3 className="personame_inforamtion_heading">
-                  Personal Information
-                </h3>
-                <p className="edit_button">Edit</p>
-              </div>
-
-              <div className="d-flex">
-                <div className="row">
-                  <div className="col-lg-6 col-12 col-sm-6 col-md-6">
-                    <input
-                      type="text"
-                      value="Sarwesh"
-                      disabled
-                      class="form-control input_box"
-                      id="exampleInputPassword1"
-                    />
-                  </div>
-                  {/* <div className="col-lg-1"></div> *
-                  <div className="col-lg-6 col-12 col-sm-6 col-md-6">
-                    <input
-                      type="text"
-                      value="Bansode"
-                      disabled
-                      class="form-control input_box"
-                      id="exampleInputPassword1"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <h5 className="personame_inforamtion_heading">Your Gender</h5>
-              <div className="d-flex">
-                <div class="form-check gender-input">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    disabled
-                    id="form-check-input"
-                    checked
-                  />
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    Male
-                  </label>
-                </div>
-                <div class="form-check gender-input">
-                  <input
-                    class="form-check-input"
-                    disabled
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="form-check-input"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    Female
-                  </label>
-                </div>
-              </div>
-
-              <div className="d-flex">
-                <h3 className="personame_inforamtion_heading">Email</h3>
-                <p className="edit_button">Edit</p>
-              </div>
-
-              <div className="d-flex">
-                <input
-                  type="text"
-                  value="sarwesh@gmail.com"
-                  disabled
-                  class="form-control input_box"
-                  id="exampleInputPassword1"
-                />
-              </div>
-
-              <div className="d-flex">
-                <h3 className="personame_inforamtion_heading">
-                  Contact number
-                </h3>
-                <p className="edit_button">Edit</p>
-              </div>
-
-              <div className="d-flex">
-                <input
-                  type="text"
-                  value="9765129019"
-                  disabled
-                  class="form-control input_box"
-                  id="exampleInputPassword1"
-                />
-              </div>
-
-              <h4 className="personame_inforamtion_heading">FAQs</h4>
-              <div className="faq-info-coontainer">
-                <h6 className="faq-info">
-                  What happens when I update my email address (or mobile
-                  number)?
-                </h6>
-
-                <p className="faq-info">
-                  Your login email id (or mobile number) changes, likewise.
-                  You'll receive all your account related communication on your
-                  updated email address (or mobile number). <hr />
-                </p>
-              </div>
-              <div className="faq-info-coontainer">
-                <h6 className="faq-info">
-                  What happens when I update my email address (or mobile
-                  number)?
-                </h6>
-
-                <p className="faq-info">
-                  Your login email id (or mobile number) changes, likewise.
-                  You'll receive all your account related communication on your
-                  updated email address (or mobile number). <hr />
-                </p>
-              </div>
-              <div className="faq-info-coontainer">
-                <h6 className="faq-info">
-                  What happens when I update my email address (or mobile
-                  number)?
-                </h6>
-
-                <p className="faq-info">
-                  Your login email id (or mobile number) changes, likewise.
-                  You'll receive all your account related communication on your
-                  updated email address (or mobile number). <hr />
-                </p>
-              </div>
-              <div className="faq-info-coontainer">
-                <h6 className="faq-info">
-                  What happens when I update my email address (or mobile
-                  number)?
-                </h6>
-
-                <p className="faq-info">
-                  Your login email id (or mobile number) changes, likewise.
-                  You'll receive all your account related communication on your
-                  updated email address (or mobile number). <hr />
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   );
 }

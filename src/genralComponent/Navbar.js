@@ -40,26 +40,12 @@ function Navbar() {
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-<<<<<<< HEAD
           <div
             class="collapse navbar-collapse navbar_items"
             id="navbarSupportedContent"
           >
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-=======
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav navbar-items">
-              <li class="nav-item navbar-links">
-                <a class="nav-link active" aria-current="page" href="/">
-                  Home
-                </a>
-
-                <Link href="/adminhome" />
-              </li>
-
-              <li class="nav-item dropdown">
->>>>>>> 2826a80f6addf8b887ccab8c876beaed72617ab3
                 <a
                   class="nav-link active"
                   aria-current="page"
@@ -81,7 +67,7 @@ function Navbar() {
             <span></span>
             {localStorage.getItem("email") ? (
               <>
-                <div class="nav-item dropdown">
+                <div class="nav-item dropdown active_user_email">
                   <a
                     class="nav-link dropdown-toggle"
                     href="#"

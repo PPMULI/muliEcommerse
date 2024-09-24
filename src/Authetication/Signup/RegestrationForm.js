@@ -5,10 +5,11 @@ import projectcontext from "../../projectcontext/projectContext";
 
 function RegestrationForm() {
   const context = useContext(projectcontext)
-  const { usercredentials, setUserCredentials, onChange,  errorInregestration, 
+  const { usercredentials,
+    setusercredentials, onChange,  errorInregestration, 
     setErrorInregestration} = context
 
-  const { fullname, email, password, cpassword } = usercredentials;
+  const { fullname, email, password, cpassword, dob } = usercredentials;
 
   console.log(usercredentials)
 

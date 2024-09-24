@@ -7,19 +7,18 @@ import projectcontext from "../../projectcontext/projectContext";
 function PersonalInfo() {
   const context = useContext(projectcontext);
   const {
-    usercredentials,
+    usercredentials, setUserCredentials,
     registeruser,
     validateNewUser,
-    setUserCredentials,
     onChange,
     country,
-    countryname,
+    countrname,
     imageUpload,
     setImageUpload,
     resumeupload,
-    setResumeUpload,
+    setresumeUpload,
     aadharupload,
-    setAadharUpload,
+    setAadharupload,
     errorInregestration,
     setErrorInregestration,
   } = context;
@@ -38,7 +37,7 @@ function PersonalInfo() {
     country();
   }, []);
 
-  return (
+   return (
     <>
       <div className="container">
         <div className="row">
@@ -51,6 +50,7 @@ function PersonalInfo() {
                   errorInregestration.contactnumber ? "has-error" : ""
                 }`}
               >
+              {/* <div> */}
                 {" "}
                 <label for="exampleInputEmail1" class="form-label">
                   Contact Number
@@ -116,7 +116,7 @@ function PersonalInfo() {
                     >
                       <option selected>Open this select menu</option>
 
-                      {countryname.map((value) => {
+                      {countrname.map((value) => {
                         return (
                           <>
                             <option value={value} defaultValue="india">
@@ -129,7 +129,7 @@ function PersonalInfo() {
                   </div>
                 </div>
 
-                <div className="col-lg-6">
+                <div className="col-lg-4">
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">
                       Civil Status
@@ -148,9 +148,29 @@ function PersonalInfo() {
                     </select>
                   </div>
                 </div>
- 
 
-                <div className="col-lg-6">
+                <div className="col-lg-4">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">
+                      Applying as a course owner
+                    </label>
+                    <select
+                      class="form-select input-filed"
+                      onChange={onChange}
+                      name="applyingasacourseowner"
+                      id="applyingasacourseowner"
+                      aria-label="Default select example"
+                    >
+                      <option selected>Open this select menu</option>
+                      <option value="yes">Yes</option>
+                      <option value="no" selected>
+                        no
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="col-lg-4">
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">
                       Applying as Admin
@@ -198,9 +218,8 @@ function PersonalInfo() {
                       class="form-control input-filed"
                       name="aadharcard"
                       id="aadharcard"
-                      accept=".pdf"
                       onChange={(e) => {
-                        setAadharUpload(e.target.files[0]);
+                        setAadharupload(e.target.files[0]);
                       }}
                     />
                   </div>

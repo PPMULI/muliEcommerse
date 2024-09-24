@@ -9,9 +9,9 @@ function Featured() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const navigate = useNavigate();
-  useEffect(() => {
-    fetctNewFeatured();
-  }, []);
+  // useEffect(() => {
+    // fetctNewFeatured();
+  // }, []);
 
   const nextImage = () => {
     if (currentImageIndex < newfeatured.length - 1) {
@@ -30,7 +30,7 @@ function Featured() {
       <h1 className="featured_heading">Featured</h1>
       <div className="containe featured">
         <div className="row">
-          {newfeatured &&
+          {/* {newfeatured &&
             newfeatured.slice(0, 12).map((value, index) => {
               console.log(value);
               return (
@@ -86,7 +86,7 @@ function Featured() {
                   
                 </>
               );
-            })}
+            })} */}
          
         </div>
       </div>
