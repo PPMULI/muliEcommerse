@@ -29,6 +29,15 @@ function MyOrder() {
     // productbyEmail,
   } = context;
 
+  // const proceed_To_pay = (
+    // email,
+    // totalBillToPay,
+    // your_product,
+    // status,
+    // actionby
+  // ) => {
+  //   console.log(email, totalBillToPay, your_product, status, actionby);
+  // };
   useEffect(() => {
     confirm_login();
   }, []);
@@ -73,8 +82,19 @@ function MyOrder() {
     return items;
   };
 
-  console.log(productbyEmail);
-  console.log(product);
+  let totalBill = 0;
+  let total = (sum) => {
+    totalBill = totalBill + sum;
+    return totalBill;
+  };
+
+  let platformFee = 30;
+  let yourTotalBill = 0;
+  const totalBillToPay = (totalBill, platformFee) => {
+    yourTotalBill = totalBill + platformFee;
+    return yourTotalBill;
+  };
+
   return (
     <>
       <Navbar />
@@ -111,21 +131,23 @@ function MyOrder() {
                   <div className="row">
                     {productbyEmail.length == 0 ? (
                       <>
-                      <div className="empty-basket-image">
+                        <div className="empty-basket-image">
+                          <img
+                            src={emptybasket}
+                            className="empty-baset-image"
+                            alt=""
+                          />
+                          <p>Your Basket is empty</p>
 
-                        <img src={emptybasket} className="empty-baset-image" alt="" />
-                        <p>Your Basket is empty</p>
-
-                        <div className="cart_buttons">
-                          <button className="shop_now">Shop Now</button>
-                          <button className="refesh_button">Refresh</button>
+                          <div className="cart_buttons">
+                            <button className="shop_now">Shop Now</button>
+                            <button className="refesh_button">Refresh</button>
+                          </div>
                         </div>
-                      </div>
                       </>
                     ) : (
                       productbyEmail.map((value) => {
-                        console.log(value);
-                        return (
+                         return (
                           <>
                             <div className="col-lg-3 text-center">
                               <img src={value.imageurl} alt="" />
@@ -147,7 +169,7 @@ function MyOrder() {
                                   REMOVE
                                 </button>
                               </div>
-
+                              {total(value.price)}
                               <div className="items-end">Fastest Deliver</div>
                             </div>
 
@@ -156,6 +178,23 @@ function MyOrder() {
                         );
                       })
                     )}
+
+                    <div className="place_order">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          proceed_To_pay(
+                            localStorage.getItem("email"),
+                            yourTotalBill,
+                            productbyEmail,
+                            "pending",
+                            credentials.actionby
+                          );
+                        }}
+                      >
+                        Place Order
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -171,7 +210,7 @@ function MyOrder() {
             <div id="payment_description">
               <div className="payment_description">
                 <div>Product Price (7 item)</div>
-                <div>-729</div>
+                <div>{totalBill}</div>
               </div>
 
               <div className="payment_description">
@@ -184,10 +223,13 @@ function MyOrder() {
                 <div>-free</div>
               </div>
             </div>
+            <div className="d-none">
+              {totalBillToPay(totalBill, platformFee)}
+            </div>
 
             <div className="total_payment">
               <h3>Total Payment</h3>
-              <h3>-1000</h3>
+              <h3>{yourTotalBill}</h3>
             </div>
           </div>
         </div>

@@ -207,6 +207,7 @@ function ProjectState(props) {
       }))
     );
   };
+  
 
   const deletehandler = async (id) => {
     await deleteProduct(id);
@@ -240,34 +241,54 @@ function ProjectState(props) {
   const Order_product_collection = (neworder) => {
     return addDoc(orderCollectionRef, neworder);
   };
+
+  const proceed_To_pay = (
+    email,
+    totalBillToPay,
+    your_product,
+    status,
+    actionby
+  ) => {
+    navigate("/paymentconfiramtion");
+    arr.push({
+      email: email,
+      totalBillToPay: totalBillToPay,
+      your_product: your_product,
+      status: status,
+      actionby: actionby,
+    });
+
+    setdeliveryProducts(arr);
+  };
+
   const Buy_the_product = async (
     email,
-    price,
-    category,
-    id,
-    productname,
-    quantity,
-    reasonofrejection,
+    totalBillToPay,
+    your_ptoduct,
     status,
     actionby,
-    imageurl,
     cardnumber,
     nameoncard,
     expirydate,
     CVV,
     country
   ) => {
-    const newItem = {
-      email,
-      price,
-      category,
-      id,
-      productname,
-      quantity,
-      reasonofrejection,
+    console.log(  email,
+      totalBillToPay,
+      your_ptoduct,
       status,
       actionby,
-      imageurl,
+      cardnumber,
+      nameoncard,
+      expirydate,
+      CVV,
+      country)
+    const newItem = {
+      email,
+      totalBillToPay,
+      your_ptoduct,
+      status,
+      actionby,
       cardnumber,
       nameoncard,
       country,
@@ -789,46 +810,6 @@ function ProjectState(props) {
 
   let arr = [];
 
-  const proceed_To_pay = (
-    email,
-    price,
-    category,
-    id,
-    productname,
-    quantity,
-    reasonofrejection,
-    status,
-    actionby,
-    imageurl
-  ) => {
-    navigate("/paymentconfiramtion");
-    console.log(
-      email,
-      price,
-      category,
-      id,
-      productname,
-      quantity,
-      reasonofrejection,
-      status,
-      actionby,
-      imageurl
-    );
-    arr.push({
-      email: email,
-      price: price,
-      category: category,
-      id: id,
-      productname: productname,
-      quantity: quantity,
-      reasonofrejection: reasonofrejection,
-      status: status,
-      actionby: actionby,
-      imageUrl: imageurl,
-    });
-
-    setdeliveryProducts(arr);
-  };
 
   const handleSortChange = (e) => {
     const selectedOption = e.target.value;

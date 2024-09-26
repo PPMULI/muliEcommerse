@@ -1144,6 +1144,19 @@ ul {
   margin-right: 10px;
   border-radius: 0px;
 }
+
+.place_order {
+  text-align: end;
+ }
+
+.place_order button {
+  padding: 10px;
+  min-width: 200px;
+  background-color: #FB641B;
+  color: #ffffff;
+  max-width: 200px;
+  font-weight: bold;
+}
 /* Your order new end */
 /* dummy css */
 
