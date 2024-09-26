@@ -7,7 +7,8 @@ import projectcontext from "../../projectcontext/projectContext";
 function PersonalInfo() {
   const context = useContext(projectcontext);
   const {
-    usercredentials, setUserCredentials,
+    usercredentials,
+    setUserCredentials,
     registeruser,
     validateNewUser,
     onChange,
@@ -23,21 +24,21 @@ function PersonalInfo() {
     setErrorInregestration,
   } = context;
 
+  console.log(errorInregestration)
   const {
     dateofbirth,
     contactnumber,
     nationality,
     employedstatus,
     applyingasacourseowner,
-    applyasadmin
+    applyasadmin,
   } = usercredentials;
 
-  console.log(usercredentials)
-  useEffect(() => {
+   useEffect(() => {
     country();
   }, []);
 
-   return (
+  return (
     <>
       <div className="container">
         <div className="row">
@@ -50,8 +51,7 @@ function PersonalInfo() {
                   errorInregestration.contactnumber ? "has-error" : ""
                 }`}
               >
-              {/* <div> */}
-                {" "}
+                {/* <div> */}{" "}
                 <label for="exampleInputEmail1" class="form-label">
                   Contact Number
                 </label>
@@ -129,7 +129,7 @@ function PersonalInfo() {
                   </div>
                 </div>
 
-                <div className="col-lg-4">
+                <div className="col-lg-6">
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">
                       Civil Status
@@ -149,28 +149,9 @@ function PersonalInfo() {
                   </div>
                 </div>
 
-                <div className="col-lg-4">
-                  <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">
-                      Applying as a course owner
-                    </label>
-                    <select
-                      class="form-select input-filed"
-                      onChange={onChange}
-                      name="applyingasacourseowner"
-                      id="applyingasacourseowner"
-                      aria-label="Default select example"
-                    >
-                      <option selected>Open this select menu</option>
-                      <option value="yes">Yes</option>
-                      <option value="no" selected>
-                        no
-                      </option>
-                    </select>
-                  </div>
-                </div>
+            
 
-                <div className="col-lg-4">
+                <div className="col-lg-6">
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">
                       Applying as Admin
@@ -191,6 +172,90 @@ function PersonalInfo() {
                   </div>
                 </div>
               </div>
+
+              <h5>Address Details</h5>
+              <div className="row">
+                <div
+                  className={`mb-3 ${
+                    errorInregestration.addressline1 ? "has-error" : ""
+                  }`}
+                >
+                  <label for="exampleInputPassword1" class="form-label">
+                    Address Line 1
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control input-filed"
+                    name="addressline1"
+                    id="addressline1"
+                    onChange={onChange}
+                  />
+
+                  {errorInregestration.addressline1 && (
+                    <small className="text-danger">
+                      Address is required
+                    </small>
+                  )}
+                </div>
+
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">
+                    Address Line 2
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control input-filed"
+                    name="addressline2"
+                    id="addressline2"
+                    onChange={onChange}
+                  />
+                </div>
+
+                <div className="col-lg-4">
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">
+                      Landmark
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control input-filed"
+                      name="landmark"
+                      id="landmark"
+                      onChange={onChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-lg-4">
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control input-filed"
+                      name="city"
+                      id="city"
+                      onChange={onChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-lg-4">
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">
+                      Pincode
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control input-filed"
+                      name="pincode"
+                      id="pincode"
+                      onChange={onChange}
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className="row">
                 <div className="col-lg-6">
                   <div class="mb-3">

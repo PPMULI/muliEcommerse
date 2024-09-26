@@ -47,7 +47,8 @@ function ProjectState(props) {
     quantity: "",
   });
 
-  const [imageList, setImageList] = useState([])
+  const [imageList, setImageList] = useState([]);
+  const [yourAadhar, setYourAadhar] = useState([])
 
   const [countrname, setCountrname] = useState([]);
   const [errorLogin, setErrorLogin] = useState({
@@ -65,6 +66,11 @@ function ProjectState(props) {
     nationality: false,
     employedstatus: false,
     applyingasacourseowner: false,
+    addressline1: false,
+    addressline2: false,
+    landmark: false,
+    city: false,
+    pincode: false,
   });
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -85,6 +91,11 @@ function ProjectState(props) {
     employedstatus: "unemployed",
     applyingasacourseowner: "no",
     applyasadmin: "no",
+    addressline1: "",
+    addressline2: "",
+    landmark: "",
+    city: "",
+    pincode: "",
     isadmin: false,
     isCourseowner: false,
   });
@@ -93,7 +104,7 @@ function ProjectState(props) {
     marginRight: 0,
   });
 
-  const [userforshop, setUserforshop] = useState([])
+  const [userforshop, setUserforshop] = useState([]);
   const [value, setValue] = useState("");
 
   const { email, status, productcategory, productname, quantity, productid } =
@@ -188,7 +199,7 @@ function ProjectState(props) {
   };
 
   const getProducts = async () => {
-    const data = await getAllProduct();
+     const data = await getAllProduct();
     setProduct(
       data.docs.map((doc) => ({
         ...doc.data(),
@@ -199,6 +210,10 @@ function ProjectState(props) {
 
   const deletehandler = async (id) => {
     await deleteProduct(id);
+    toast.success(`Your item was remove`, {
+      position: "top-center",
+      theme: "colored",
+    });
     getProducts();
   };
   const addData = (newBooks) => {
@@ -894,6 +909,11 @@ function ProjectState(props) {
     nationality,
     employedstatus,
     applyasadmin,
+    addressline1,
+    addressline2,
+    landmark,
+    city,
+    pincode,
     aadharupload,
     imageupload
   ) => {
@@ -905,6 +925,11 @@ function ProjectState(props) {
     const fullnameError = fullname.trim() == "";
     const dateofbirthError = dateofbirth.trim() == "";
     const contactnumberError = contactnumber.trim() == "";
+    const addressline1Error = addressline1.trim() == "";
+    const addressline2Error = addressline2.trim() == "";
+    const cityError = city.trim() == "";
+    const landmarkError = landmark.trim() == "";
+    const pincodeError = pincode.trim() == "";
 
     const contactnumberLengthError = contactnumber.trim().length != "10";
     const dateofbirthLengthError = dateofbirth.trim().length != "10";
@@ -920,6 +945,11 @@ function ProjectState(props) {
       password: passwordError,
       fullname: fullnameError,
       contactnumber: contactnumberError,
+      addressline1: addressline1Error,
+      addressline2: addressline2Error,
+      landmark: landmarkError,
+      city: cityError,
+      pincode: pincodeError,
     });
 
     if (
@@ -930,6 +960,11 @@ function ProjectState(props) {
       !errorInregestration.password &&
       !errorInregestration.contactnumber &&
       !errorInregestration.cpassword &&
+      !errorInregestration.addressline1 &&
+      !errorInregestration.addressline2 &&
+      !errorInregestration.landmark &&
+      !errorInregestration.city &&
+      !errorInregestration.pincode &&
       !errorInAadharUpload &&
       !errorInphotoUpload
     ) {
@@ -942,7 +977,12 @@ function ProjectState(props) {
           contactnumber,
           nationality,
           employedstatus,
-          applyasadmin
+          applyasadmin,
+          addressline1,
+          addressline2,
+          landmark,
+          city,
+          pincode
         );
       } else {
         toast.error("Password is not matching", {
@@ -966,16 +1006,13 @@ function ProjectState(props) {
     contactnumber,
     nationality,
     employedstatus,
-    applyasadmin
+    applyasadmin,
+    addressline1,
+    addressline2,
+    landmark,
+    city,
+    pincode
   ) => {
-    console.log(    email,
-      password,
-      fullname,
-      dateofbirth,
-      contactnumber,
-      nationality,
-      employedstatus,
-      applyasadmin)
     try {
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
@@ -989,7 +1026,12 @@ function ProjectState(props) {
         contactnumber,
         nationality,
         employedstatus,
-        applyasadmin
+        applyasadmin,
+        addressline1,
+        addressline2,
+        landmark,
+        city,
+        pincode
       );
       toast.success(`Your account is created successfully.`, {
         position: "top-center",
@@ -1021,16 +1063,15 @@ function ProjectState(props) {
     contactnumber,
     nationality,
     employedstatus,
-    applyasadmin
+    applyasadmin,
+    addressline1,
+    addressline2,
+    landmark,
+    city,
+    pincode
   ) => {
     uploadImage(email);
-    console.log(    fullname,
-      email,
-      dateofbirth,
-      contactnumber,
-      nationality,
-      employedstatus,
-      applyasadmin)
+ 
     const new_user = {
       fullname,
       email,
@@ -1039,6 +1080,11 @@ function ProjectState(props) {
       nationality,
       employedstatus,
       applyasadmin,
+      addressline1,
+      addressline2,
+      landmark,
+      city,
+      pincode
     };
     try {
       await new_user_regestration(new_user);
@@ -1109,6 +1155,8 @@ function ProjectState(props) {
     );
   };
 
+  const aadharRef = ref(storage, `docs/${localStorage.getItem("email")}/aadhar/`);
+
   const imageListRef = ref(
     storage,
     `docs/${localStorage.getItem("email")}/images/`
@@ -1123,11 +1171,26 @@ function ProjectState(props) {
       });
     });
   };
+
+  const fetchAadharfromStorage = () => {
+    listAll(aadharRef).then((response) => {
+      console.log(response);
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setYourAadhar((prev) => [...prev, url]);
+        });
+      });
+    });
+  };
+
+  console.log(yourAadhar)
   return (
     <>
       <Projectcontext.Provider
         value={{
-          imageList, setImageList,
+          fetchAadharfromStorage, yourAadhar,
+          imageList,
+          setImageList,
           fetchImagesfromStorage,
           userforshop,
           getUserForShop,

@@ -18,9 +18,9 @@ function Preview() {
     setAadharupload,
     errorInregestration,
   } = context;
- 
-  console.log(usercredentials)
-   return (
+
+  console.log(usercredentials);
+  return (
     <>
       <div
         class="modal fade"
@@ -159,7 +159,11 @@ function Preview() {
                         {countrname.map((value, index) => {
                           return (
                             <>
-                              <option value={value} key={index} defaultValue="india">
+                              <option
+                                value={value}
+                                key={index}
+                                defaultValue="india"
+                              >
                                 {value}
                               </option>
                             </>
@@ -190,21 +194,104 @@ function Preview() {
                     </div>
                   </div>
 
-               <div className="col-lg-6">
-               <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">
-                    Applying as a admin
-                  </label>
-                  <input
-                    type="text"
-                    value={usercredentials.applyasadmin}
-                    class="form-control preview-input-filled"
-                    id="applyingasacourseowner"
-                    name="applyingasacourseowner"
-                    aria-describedby="emailHelp"
-                  />
-                </div>
-               </div>
+                  <div className="col-lg-6">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Applying as a admin
+                      </label>
+                      <input
+                        type="text"
+                        value={usercredentials.applyasadmin}
+                        class="form-control preview-input-filled"
+                        id="applyingasacourseowner"
+                        name="applyingasacourseowner"
+                        aria-describedby="emailHelp"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">
+                      Address Line 1
+                    </label>
+                    <input
+                      type="text"
+                      value={usercredentials.addressline1}
+                      class="form-control preview-input-filled"
+                      id="addressline1"
+                      name="addressline1"
+                      onChange={onChange}
+                      aria-describedby="emailHelp"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">
+                      Address Line 2
+                    </label>
+                    <input
+                      type="text"
+                      value={usercredentials.addressline2}
+                      class="form-control preview-input-filled"
+                      id="addressline2"
+                      onChange={onChange}
+                      name="addressline2"
+                      aria-describedby="emailHelp"
+                    />
+                  </div>
+
+                  <div className="row">
+                    <div className="col-lg-4">
+                      <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">
+                          Landmark
+                        </label>
+                        <input
+                          type="text"
+                          value={usercredentials.landmark}
+                          class="form-control preview-input-filled"
+                          id="landmark"
+                          name="landmark"
+                          onChange={onChange}
+                          aria-describedby="emailHelp"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-lg-4">
+                      <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">
+                          City
+                        </label>
+                        <input
+                          type="text"
+                          value={usercredentials.city}
+                          class="form-control preview-input-filled"
+                          id="city"
+                          name="city"
+                          onChange={onChange}
+                          aria-describedby="emailHelp"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-lg-4">
+                      <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">
+                          Pincode
+                        </label>
+                        <input
+                          type="text"
+                          value={usercredentials.pincode}
+                          class="form-control preview-input-filled"
+                          id="pincode"
+                          onChange={onChange}
+                          name="pincode"
+                          aria-describedby="emailHelp"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="row">
@@ -387,7 +474,7 @@ function Preview() {
                   </div>
                 </div>
 
-                <div className="col-lg-4">
+                <div className="col-lg-6">
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">
                       Civil Status
@@ -403,8 +490,6 @@ function Preview() {
                     />
                   </div>
                 </div>
-
-        
 
                 <div className="col-lg-6">
                   <div class="mb-3">
@@ -422,8 +507,115 @@ function Preview() {
                     />
                   </div>
                 </div>
+
+                <h5>Address Details</h5>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">
+                    Address Line 1
+                  </label>
+                  <input
+                    type="text"
+                    value={usercredentials.addressline1}
+                    disabled
+                    class="form-control preview-input-filled"
+                    id="addressline1"
+                    name="addressline1"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+                {errorInregestration.addressline1 && (
+                  <small className="text-danger">
+                    Addressline 1 is Required
+                  </small>
+                )}
+
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">
+                    Address Line 2
+                  </label>
+                  <input
+                    type="text"
+                    value={usercredentials.addressline2}
+                    disabled
+                    class="form-control preview-input-filled"
+                    id="addressline2"
+                    name="addressline2"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+                {errorInregestration.addressline2 && (
+                  <small className="text-danger">Second line is Required</small>
+                )}
+
+                <div className="row">
+                  <div className="col-lg-4">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Landmark
+                      </label>
+                      <input
+                        type="text"
+                        value={usercredentials.landmark}
+                        disabled
+                        class="form-control preview-input-filled"
+                        id="landmark"
+                        name="landmark"
+                        aria-describedby="emailHelp"
+                      />
+                    </div>
+                    {errorInregestration.landmark && (
+                      <small className="text-danger">
+                        Landmark is Required
+                      </small>
+                    )}
+                  </div>
+
+                  <div className="col-lg-4">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        City
+                      </label>
+                      <input
+                        type="text"
+                        value={usercredentials.city}
+                        disabled
+                        class="form-control preview-input-filled"
+                        id="city"
+                        name="city"
+                        aria-describedby="emailHelp"
+                      />
+                    </div>
+                    {errorInregestration.city && (
+                      <small className="text-danger">City is Required</small>
+                    )}
+                  </div>
+
+                  <div className="col-lg-4">
+                    <div
+                      className={`mb-3 ${
+                        errorInregestration.pincode ? "has-error" : ""
+                      }`}
+                    >
+                      <label for="exampleInputEmail1" class="form-label">
+                        Pincode
+                      </label>
+                      <input
+                        type="text"
+                        value={usercredentials.pincode}
+                        disabled
+                        class="form-control preview-input-filled"
+                        id="pincode"
+                        name="pincode"
+                        aria-describedby="emailHelp"
+                      />
+                    </div>
+                    {errorInregestration.pincode && (
+                      <small className="text-danger">Pincode is Required</small>
+                    )}
+                  </div>
+                </div>
               </div>
-           
+
               <div className="row">
                 <div className="col-lg-6">
                   <div
@@ -437,7 +629,7 @@ function Preview() {
                     </label>
                     <input
                       type="text"
-                       disabled
+                      disabled
                       class="form-control preview-input-filled"
                       name="profilephoto"
                       id="profilephoto"
@@ -480,8 +672,13 @@ function Preview() {
                     usercredentials.nationality,
                     usercredentials.employedstatus,
                     usercredentials.applyasadmin,
+                    usercredentials.addressline1,
+                    usercredentials.addressline2,
+                    usercredentials.landmark,
+                    usercredentials.city,
+                    usercredentials.pincode,
                     aadharupload,
-                    imageUpload,
+                    imageUpload
                   );
                 }}
                 class="btn user-registartion-button check_out"

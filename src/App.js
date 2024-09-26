@@ -11,7 +11,7 @@ import Feedback from "./About/Feedback";
 import YourCart from "./yourcart/YourCart";
 import MyraisedTicket from "./RaisedTicket/MyraisedTicket";
 import PeopleFeedbacks from "./RaisedTicket/PeopleFeedbacks";
-import MyOrder from "./yourcart/MyOrder";
+import MyOrder from "./YourOrder/MyOrder";
 import UserOrders from "./AdminComponents/AdminServices/UserOrders";
 import UserTickets from "./AdminComponents/AdminServices/UserTickets";
 import Givefeedback from "./About/Givefeedback/Givefeedback";

@@ -8,14 +8,14 @@ import projectContext from "../../projectcontext/projectContext";
 import { listAll, uploadBytes } from "firebase/storage";
 import { ref } from "firebase/database";
 import { storage } from "../Config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Myprofile() {
   const context = useContext(projectContext);
   const {
     getUserForShop,
     userforshop,
-    // fetchAadharfromStorage,
+    fetchAadharfromStorage,
     country,
     // yourProfilePhoto,
     yourAadhar,
@@ -23,24 +23,24 @@ function Myprofile() {
     countrname,
     imageList,
     usercredentials,
-    fetchImagesfromStorage
+    fetchImagesfromStorage,
   } = context;
 
-  console.log(usercredentials)
+  const navigate = useNavigate()
 
   const [filterUser, setFilterUser] = useState([]);
   useEffect(() => {
     getUserForShop();
     fetchImagesfromStorage();
-    // fetchAadharfromStorage();
+    fetchAadharfromStorage();
     country();
   }, []);
 
-  console.log(imageList)
-  
+  console.log(yourAadhar);
+
   useEffect(() => {
     filterYourUser(localStorage.getItem("email"));
-  }, [])
+  }, []);
 
   const [UpdateTheInfo, setUpdateTheInfo] = useState({
     updatedfullname: "",
@@ -66,14 +66,23 @@ function Myprofile() {
     setFilterUser(yourFetchedUser);
   };
 
-  console.log(filterUser)
+  console.log(filterUser);
   const onUpdateEmail = (e) => {
     setUpdateTheInfo({ ...setUpdateTheInfo, [e.target.name]: e.target.value });
   };
   return (
     <>
-       {filterUser.length == 0 ? (
-        <div>Please create the profile - <button onClick={() => {filterYourUser(localStorage.getItem("email"));}}>Click me</button></div>
+      {filterUser.length == 0 ? (
+        <div>
+          Please create the profile -{" "}
+          <button
+            onClick={() => {
+              filterYourUser(localStorage.getItem("email"));
+            }}
+          >
+            Click me
+          </button>
+        </div>
       ) : (
         filterUser.map((value) => {
           console.log(value);
@@ -226,69 +235,41 @@ function Myprofile() {
                         </div>
 
                         <div className="col-lg-9 d-flex justify-content-between">
-                          <h4 className="my-order">My Order</h4>
+                          <h4 className="my-order" onClick={() => {navigate("/myorder")}}>My Order</h4>
                           <ArrowForwardIosIcon className="my-order mt-2" />
                         </div>
                       </div>
                       <hr />
                       <div className="row">
-                      <div className="col-lg-3 d-flex justify-content-center">
+                        <div className="col-lg-3 d-flex justify-content-center">
                           <div className="profile_card">
                             <FolderIcon className="my-order-icon" />
                           </div>
                         </div>
 
                         <div className="col-lg-9 d-flex justify-content-between">
-                          {/* <h4 className="my-order">My Document</h4>
-                          <ArrowForwardIosIcon className="my-order mt-2" /> */}
-
-<div class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <h4 className="my-order">My Document</h4>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-          </ul>
-        </div>
-                        </div>
-                        {/* <div id="accordionExample">
-                          <div class="accordion-item accordion-body">
-                            <h2 class="accordion-header">
-                              <button
-                                class="accordion-button"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne"
-                                aria-expanded="true"
-                                aria-controls="collapseOne"
-                              >
-                                <FolderIcon className="my-order-icon my-doc-icon" />
-                                <h4 className="my-order my-doc">My Document</h4>
-                              </button>
-                            </h2>
-                            <div
-                              id="collapseOne"
-                              class="accordion-collapse collapse show"
-                              data-bs-parent="#accordionExample"
+                          <div class="nav-item dropdown">
+                            <a
+                              class="nav-link dropdown-toggle"
+                              href="#"
+                              role="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
                             >
-                              <div class="accordion-body mt-3">
-                                <div className="d-flex justify-content-between">
-                                  <strong>
-                                    <a
-                                      className="my-doc-name"
-                                      href={yourAadhar}
-                                      target="_blank"
-                                    >
-                                      Your aadhar
-                                    </a>
-                                  </strong>
-                                  <strong className="update_btn">Update</strong>
-                                </div>
-                              </div>
-                            </div>
+                              <h4 className="my-order">My Document</h4>
+                            </a>
+                            <ul class="dropdown-menu">
+                              <li>
+                                  <a class="dropdown-item" href={yourAadhar} target="_blank">Your Aadhar</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="#">
+                                  Another action
+                                </a>
+                              </li>
+                            </ul>
                           </div>
-                        </div> */}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -302,7 +283,7 @@ function Myprofile() {
                         <p
                           className="edit_button"
                           data-bs-toggle="modal"
-                          data-bs-target="#exampleModal" 
+                          data-bs-target="#exampleModal"
                         >
                           Edit
                         </p>
@@ -319,7 +300,7 @@ function Myprofile() {
                               id="exampleInputPassword1"
                             />
                           </div>
-                           <div className="col-lg-6 col-12 col-sm-6 col-md-6">
+                          <div className="col-lg-6 col-12 col-sm-6 col-md-6">
                             <input
                               type="text"
                               value={value.fullname}
@@ -400,6 +381,69 @@ function Myprofile() {
                         />
                       </div>
 
+                      <div className="d-flex">
+                        <h4 className="personame_inforamtion_heading">
+                          Address Details
+                        </h4>
+                        <p className="edit_button">Edit</p>
+                      </div>
+
+                      <div className="d-flex">
+                        <input
+                          type="text"
+                          value={value.addressline1}
+                          disabled
+                          class="form-control input_box"
+                          id="exampleInputPassword1"
+                        />
+                      </div>
+                      <br />
+                      <div className="d-flex">
+                        <input
+                          type="text"
+                          value={value.addressline2}
+                          disabled
+                          class="form-control input_box"
+                          id="exampleInputPassword1"
+                        />
+                      </div>
+<br />
+                      <div className="row">
+                        <div className="col-lg-4">
+                          <div className="d-flex">
+                            <input
+                              type="text"
+                              value={value.landmark}
+                              disabled
+                              class="form-control input_box"
+                              id="exampleInputPassword1"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-lg-4">
+                          <div className="d-flex">
+                            <input
+                              type="text"
+                              value={value.city}
+                              disabled
+                              class="form-control input_box"
+                              id="exampleInputPassword1"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-lg-4">
+                          <div className="d-flex">
+                            <input
+                              type="text"
+                              value={value.pincode}
+                              disabled
+                              class="form-control input_box"
+                              id="exampleInputPassword1"
+                            />
+                          </div>
+                        </div>
+                      </div>
                       <div className="row">
                         <div className="col-lg-4">
                           <div className="d-flex">
@@ -458,58 +502,62 @@ function Myprofile() {
                           </div>
                         </div>
                       </div>
+
+                      <hr />
                       <h4 className="personame_inforamtion_heading">FAQs</h4>
-                      <div className="faq-info-coontainer">
-                        <h6 className="faq-info">
-                          What happens when I update my email address (or mobile
-                          number)?
-                        </h6>
+                      <div className="Faq_Question">
+                        <div className="faq-info-coontainer">
+                          <h6 className="faq-info">
+                            What happens when I update my email address (or
+                            mobile number)?
+                          </h6>
 
-                        <p className="faq-info">
-                          Your login email id (or mobile number) changes,
-                          likewise. You'll receive all your account related
-                          communication on your updated email address (or mobile
-                          number). <hr />
-                        </p>
-                      </div>
-                      <div className="faq-info-coontainer">
-                        <h6 className="faq-info">
-                          What happens when I update my email address (or mobile
-                          number)?
-                        </h6>
+                          <p className="faq-info">
+                            Your login email id (or mobile number) changes,
+                            likewise. You'll receive all your account related
+                            communication on your updated email address (or
+                            mobile number). <hr />
+                          </p>
+                        </div>
+                        <div className="faq-info-coontainer">
+                          <h6 className="faq-info">
+                            What happens when I update my email address (or
+                            mobile number)?
+                          </h6>
 
-                        <p className="faq-info">
-                          Your login email id (or mobile number) changes,
-                          likewise. You'll receive all your account related
-                          communication on your updated email address (or mobile
-                          number). <hr />
-                        </p>
-                      </div>
-                      <div className="faq-info-coontainer">
-                        <h6 className="faq-info">
-                          What happens when I update my email address (or mobile
-                          number)?
-                        </h6>
+                          <p className="faq-info">
+                            Your login email id (or mobile number) changes,
+                            likewise. You'll receive all your account related
+                            communication on your updated email address (or
+                            mobile number). <hr />
+                          </p>
+                        </div>
+                        <div className="faq-info-coontainer">
+                          <h6 className="faq-info">
+                            What happens when I update my email address (or
+                            mobile number)?
+                          </h6>
 
-                        <p className="faq-info">
-                          Your login email id (or mobile number) changes,
-                          likewise. You'll receive all your account related
-                          communication on your updated email address (or mobile
-                          number). <hr />
-                        </p>
-                      </div>
-                      <div className="faq-info-coontainer">
-                        <h6 className="faq-info">
-                          What happens when I update my email address (or mobile
-                          number)?
-                        </h6>
+                          <p className="faq-info">
+                            Your login email id (or mobile number) changes,
+                            likewise. You'll receive all your account related
+                            communication on your updated email address (or
+                            mobile number). <hr />
+                          </p>
+                        </div>
+                        <div className="faq-info-coontainer">
+                          <h6 className="faq-info">
+                            What happens when I update my email address (or
+                            mobile number)?
+                          </h6>
 
-                        <p className="faq-info">
-                          Your login email id (or mobile number) changes,
-                          likewise. You'll receive all your account related
-                          communication on your updated email address (or mobile
-                          number). <hr />
-                        </p>
+                          <p className="faq-info">
+                            Your login email id (or mobile number) changes,
+                            likewise. You'll receive all your account related
+                            communication on your updated email address (or
+                            mobile number). <hr />
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
