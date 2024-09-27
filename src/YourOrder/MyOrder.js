@@ -22,22 +22,17 @@ function MyOrder() {
     getProducts,
     product,
     setProduct,
+    displayhello,
     deletehandler,
-    // Buy_the_product,
+    handlePaymentChange,
+    paymentdetails,
+    setPaymentDetails,
+    validatePaymentDetails,
     proceed_To_pay,
-    // getCartItemsByEmail,
-    // productbyEmail,
+    ErrorInPayment,
+    setErrorInPayment,
   } = context;
 
-  // const proceed_To_pay = (
-    // email,
-    // totalBillToPay,
-    // your_product,
-    // status,
-    // actionby
-  // ) => {
-  //   console.log(email, totalBillToPay, your_product, status, actionby);
-  // };
   useEffect(() => {
     confirm_login();
   }, []);
@@ -98,13 +93,7 @@ function MyOrder() {
   return (
     <>
       <Navbar />
-      <button
-        onClick={() => {
-          getCartItemsByEmail(localStorage.getItem("email"));
-        }}
-      >
-        Click me
-      </button>
+
       <div className="new_myOrder_background">
         <div className="row">
           <div className="col-lg-8">
@@ -141,13 +130,22 @@ function MyOrder() {
 
                           <div className="cart_buttons">
                             <button className="shop_now">Shop Now</button>
-                            <button className="refesh_button">Refresh</button>
+                            <button
+                              className="refesh_button"
+                              onClick={() => {
+                                getCartItemsByEmail(
+                                  localStorage.getItem("email")
+                                );
+                              }}
+                            >
+                              Refresh
+                            </button>
                           </div>
                         </div>
                       </>
                     ) : (
                       productbyEmail.map((value) => {
-                         return (
+                        return (
                           <>
                             <div className="col-lg-3 text-center">
                               <img src={value.imageurl} alt="" />
@@ -179,22 +177,132 @@ function MyOrder() {
                       })
                     )}
 
-                    <div className="place_order">
+                    <div className="place_order" id="Place_order">
                       <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          proceed_To_pay(
-                            localStorage.getItem("email"),
-                            yourTotalBill,
-                            productbyEmail,
-                            "pending",
-                            credentials.actionby
-                          );
+                        onClick={() => {
+                          displayhello();
                         }}
                       >
                         Place Order
                       </button>
                     </div>
+                    <form id="form" className="hidepaymerntform">
+                      <div
+                        className={`${
+                          ErrorInPayment.cardholdername ? "has-error" : ""
+                        }`}
+                      >
+                        {" "}
+                        <label for="exampleInputEmail1" class="form-label">
+                          Card Holder name
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="cardholdername"
+                          name="cardholdername"
+                          onChange={handlePaymentChange}
+                          aria-describedby="emailHelp"
+                        />
+                      </div>
+                      {ErrorInPayment.cardholdername && (
+                        <small className="text-danger">
+                          Card holder name is required
+                        </small>
+                      )}
+
+                      <div
+                        className={`${
+                          ErrorInPayment.cardnumber ? "has-error" : ""
+                        }`}
+                      >
+                        {" "}
+                        <label for="exampleInputPassword1" class="form-label">
+                          Card Number
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          onChange={handlePaymentChange}
+                          id="cardnumber"
+                          name="cardnumber"
+                        />
+                      </div>
+                      {ErrorInPayment.cardnumber && (
+                        <small className="text-danger">
+                          Cardnumber is required
+                        </small>
+                      )}
+                      <div className="row">
+                        <div className="col-lg-6">
+                          <div
+                            className={`${
+                              ErrorInPayment.cvv ? "has-error" : ""
+                            }`}
+                          >
+                            {" "}
+                            <label
+                              for="exampleInputPassword1"
+                              class="form-label"
+                            >
+                              CVV
+                            </label>
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="cvv"
+                              name="cvv"
+                              onChange={handlePaymentChange}
+                            />
+                          </div>
+                          {ErrorInPayment.cvv && (
+                            <small className="text-danger">
+                              CVV is required
+                            </small>
+                          )}
+                        </div>
+
+                        <div className="col-lg-6">
+                          <div class="mb-3">
+                            <label
+                              for="exampleInputPassword1"
+                              class="form-label"
+                            >
+                              Expiary
+                            </label>
+                            <input
+                              type="month"
+                              class="form-control"
+                              id="expiary"
+                              name="expiary"
+                              onChange={handlePaymentChange}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="place_order">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            validatePaymentDetails(
+                              localStorage.getItem("email"),
+                              yourTotalBill,
+                              productbyEmail,
+                              "pending",
+                              credentials.actionby,
+                              paymentdetails.cardholdername,
+                              paymentdetails.cardnumber,
+                              paymentdetails.cvv,
+                              paymentdetails.expiary
+                            );
+                          }}
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Confirm Order
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
 

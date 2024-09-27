@@ -48,7 +48,7 @@ function ProjectState(props) {
   });
 
   const [imageList, setImageList] = useState([]);
-  const [yourAadhar, setYourAadhar] = useState([])
+  const [yourAadhar, setYourAadhar] = useState([]);
 
   const [countrname, setCountrname] = useState([]);
   const [errorLogin, setErrorLogin] = useState({
@@ -72,6 +72,22 @@ function ProjectState(props) {
     city: false,
     pincode: false,
   });
+
+  const [paymentdetails, setPaymentDetails] = useState({
+    cardnumber: "",
+    cardholdername: "",
+    cvv: "",
+    expiary: "",
+  });
+
+  const [ErrorInPayment, setErrorInPayment] = useState({
+    cardholdername: false,
+    cardnumber: false,
+    cvv: false,
+  });
+
+  const { cardholdername, cardnumber, cvv, Expiarydate } = paymentdetails;
+  console.log(paymentdetails);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isComplete, setIscomplete] = useState(false);
@@ -199,7 +215,7 @@ function ProjectState(props) {
   };
 
   const getProducts = async () => {
-     const data = await getAllProduct();
+    const data = await getAllProduct();
     setProduct(
       data.docs.map((doc) => ({
         ...doc.data(),
@@ -207,7 +223,6 @@ function ProjectState(props) {
       }))
     );
   };
-  
 
   const deletehandler = async (id) => {
     await deleteProduct(id);
@@ -241,80 +256,6 @@ function ProjectState(props) {
   const Order_product_collection = (neworder) => {
     return addDoc(orderCollectionRef, neworder);
   };
-
-  const proceed_To_pay = (
-    email,
-    totalBillToPay,
-    your_product,
-    status,
-    actionby
-  ) => {
-    navigate("/paymentconfiramtion");
-    arr.push({
-      email: email,
-      totalBillToPay: totalBillToPay,
-      your_product: your_product,
-      status: status,
-      actionby: actionby,
-    });
-
-    setdeliveryProducts(arr);
-  };
-
-  const Buy_the_product = async (
-    email,
-    totalBillToPay,
-    your_ptoduct,
-    status,
-    actionby,
-    cardnumber,
-    nameoncard,
-    expirydate,
-    CVV,
-    country
-  ) => {
-    console.log(  email,
-      totalBillToPay,
-      your_ptoduct,
-      status,
-      actionby,
-      cardnumber,
-      nameoncard,
-      expirydate,
-      CVV,
-      country)
-    const newItem = {
-      email,
-      totalBillToPay,
-      your_ptoduct,
-      status,
-      actionby,
-      cardnumber,
-      nameoncard,
-      country,
-      expirydate,
-      CVV,
-    };
-
-    try {
-      if (!localStorage.getItem("email")) {
-        toast.error(`Please login first`, {
-          position: "top-center",
-          theme: "colored",
-        });
-        navigate("/adminlogin");
-      } else {
-        await Order_product_collection(newItem);
-        toast.success(`Thank you for Purchase ${productname}`, {
-          position: "top-center",
-          theme: "colored",
-        });
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
   const Cancel_Your_order = (id) => {
     const productDoc = doc(db, "orders", id);
     return deleteDoc(productDoc);
@@ -810,7 +751,6 @@ function ProjectState(props) {
 
   let arr = [];
 
-
   const handleSortChange = (e) => {
     const selectedOption = e.target.value;
 
@@ -880,6 +820,54 @@ function ProjectState(props) {
       .catch((error) => console.log(error));
   };
 
+  const validatePaymentDetails = async (
+    email,
+    totalBillToPay,
+    your_product,
+    status,
+    actionby,
+    cardholdername,
+    cardnumber,
+    cvv,
+    expiary
+  ) => {
+    const your_product_length_error = your_product.length == 0;
+    const cardholdernameError = cardholdername.trim() == "";
+    const cardnumbererror = cardnumber.trim() == "" || cardnumber.length != 16;
+    const cvvError = cvv.trim() == "" || cvv.length != 3;
+
+    setErrorInPayment({
+      cardnumber: cardnumbererror,
+      cardholdername: cardholdernameError,
+      cvv: cvvError,
+    });
+
+    if (!your_product_length_error) {
+      if (!cardholdernameError && !cardnumbererror && !cvvError) {
+        const new_ordered_product = {
+          email,
+          totalBillToPay,
+          your_product,
+          status,
+          actionby,
+          cardnumber,
+          cardholdername,
+          cvv,
+          expiary,
+        };
+        await Order_product_collection(new_ordered_product);
+        toast.success(`Thank you for Placing the order`, {
+          position: "top-center",
+          theme: "colored",
+        });
+      } else {}
+    } else {
+      toast.error(`Please add items`, {
+        position: "top-center",
+        theme: "colored",
+      });
+    }
+  };
   const validateNewUser = (
     fullname,
     email,
@@ -1052,7 +1040,7 @@ function ProjectState(props) {
     pincode
   ) => {
     uploadImage(email);
- 
+
     const new_user = {
       fullname,
       email,
@@ -1065,7 +1053,7 @@ function ProjectState(props) {
       addressline2,
       landmark,
       city,
-      pincode
+      pincode,
     };
     try {
       await new_user_regestration(new_user);
@@ -1136,7 +1124,10 @@ function ProjectState(props) {
     );
   };
 
-  const aadharRef = ref(storage, `docs/${localStorage.getItem("email")}/aadhar/`);
+  const aadharRef = ref(
+    storage,
+    `docs/${localStorage.getItem("email")}/aadhar/`
+  );
 
   const imageListRef = ref(
     storage,
@@ -1164,12 +1155,31 @@ function ProjectState(props) {
     });
   };
 
-  console.log(yourAadhar)
+  const handlePaymentChange = (e) => {
+    console.log(e.target.value, e.target.name);
+    setPaymentDetails({ ...paymentdetails, [e.target.name]: e.target.value });
+  };
+
+  let displayhello = () => {
+    let hello = document.getElementById("form");
+    const place_order = document.getElementById("Place_order")
+    hello.classList.add("showpaymerntform");
+    hello.classList.remove("hidepaymerntform");
+    place_order.classList.add("d-none")
+  };
   return (
     <>
       <Projectcontext.Provider
         value={{
-          fetchAadharfromStorage, yourAadhar,
+          displayhello,
+          ErrorInPayment,
+          setErrorInPayment,
+          validatePaymentDetails,
+          handlePaymentChange,
+          paymentdetails,
+          setPaymentDetails,
+          fetchAadharfromStorage,
+          yourAadhar,
           imageList,
           setImageList,
           fetchImagesfromStorage,
@@ -1198,7 +1208,6 @@ function ProjectState(props) {
           handleSortByPrice,
           sortByPrice,
           productbyEmail,
-          proceed_To_pay,
           deliveryProducts,
           Order_status_for_the_admin,
           updatedOrderStatus,
@@ -1207,8 +1216,7 @@ function ProjectState(props) {
           handleLogin,
           feedback_from_user,
           reopen_the_ticketBy_user,
-          Buy_the_product,
-          Add_To_Cart,
+           Add_To_Cart,
           getFeedbacks,
           feedbackGivenByUser,
           setFeedbackGivenByUser,

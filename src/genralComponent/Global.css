@@ -1157,6 +1157,17 @@ ul {
   max-width: 200px;
   font-weight: bold;
 }
+
+.hidepaymerntform {
+  display: none;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px #878787;
+}
+.showpaymerntform {
+   display: block;
+}
 /* Your order new end */
 /* dummy css */
 
