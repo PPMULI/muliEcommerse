@@ -9,6 +9,8 @@ import { listAll, uploadBytes } from "firebase/storage";
 import { ref } from "firebase/database";
 import { storage } from "../Config";
 import { Link, useNavigate } from "react-router-dom";
+import emptybasket from "../../Images/empty-basket.png";
+import Navbar from "../../genralComponent/Navbar";
 
 function Myprofile() {
   const context = useContext(projectContext);
@@ -26,7 +28,7 @@ function Myprofile() {
     fetchImagesfromStorage,
   } = context;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [filterUser, setFilterUser] = useState([]);
   useEffect(() => {
@@ -72,16 +74,25 @@ function Myprofile() {
   };
   return (
     <>
+    <Navbar />
       {filterUser.length == 0 ? (
-        <div>
-          Please create the profile -{" "}
-          <button
-            onClick={() => {
-              filterYourUser(localStorage.getItem("email"));
-            }}
-          >
-            Click me
-          </button>
+        <div className="profile_absent">
+
+        <div className="empty-basket-image">
+          <img src={emptybasket} className="empty-baset-image" alt="" />
+
+          <div className="cart_buttons">
+            <button className="shop_now">Shop Now</button>
+            <button
+              className="refesh_button"
+              onClick={() => {
+                filterYourUser(localStorage.getItem("email"));
+              }}
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
         </div>
       ) : (
         filterUser.map((value) => {
@@ -235,7 +246,14 @@ function Myprofile() {
                         </div>
 
                         <div className="col-lg-9 d-flex justify-content-between">
-                          <h4 className="my-order" onClick={() => {navigate("/myorder")}}>My Order</h4>
+                          <h4
+                            className="my-order"
+                            onClick={() => {
+                              navigate("/myorder");
+                            }}
+                          >
+                            My Order
+                          </h4>
                           <ArrowForwardIosIcon className="my-order mt-2" />
                         </div>
                       </div>
@@ -260,7 +278,13 @@ function Myprofile() {
                             </a>
                             <ul class="dropdown-menu">
                               <li>
-                                  <a class="dropdown-item" href={yourAadhar} target="_blank">Your Aadhar</a>
+                                <a
+                                  class="dropdown-item"
+                                  href={yourAadhar}
+                                  target="_blank"
+                                >
+                                  Your Aadhar
+                                </a>
                               </li>
                               <li>
                                 <a class="dropdown-item" href="#">
@@ -407,7 +431,7 @@ function Myprofile() {
                           id="exampleInputPassword1"
                         />
                       </div>
-<br />
+                      <br />
                       <div className="row">
                         <div className="col-lg-4">
                           <div className="d-flex">

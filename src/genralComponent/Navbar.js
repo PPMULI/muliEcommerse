@@ -57,13 +57,26 @@ function Navbar() {
                   Product
                 </a>
               </li>
+
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  aria-current="page"
+                  href="#"
+                >
+                          <AddShoppingCartIcon
+                  className="shopping_cart_icon"
+                  onClick={() => {
+                    navigate("/yourcart");
+                  }}
+                />{" "}
+                </a>
+              </li>
+              <li className="nav-item">
+                hello
+       
+              </li>
             </ul>
-            <AddShoppingCartIcon
-              className="shopping_cart_icon"
-              onClick={() => {
-                navigate("/addtocart");
-              }}
-            />{" "}
             <span></span>
             {localStorage.getItem("email") ? (
               <>
@@ -84,7 +97,13 @@ function Navbar() {
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#" onClick={() => {navigate("/myprofile")}}>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                          navigate("/myprofile");
+                        }}
+                      >
                         <ContactPageIcon /> Profile
                       </a>
                     </li>
@@ -92,7 +111,13 @@ function Navbar() {
                       <hr class="dropdown-divider" />
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#" onClick={() => {userSignOut()}}>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                          userSignOut();
+                        }}
+                      >
                         <LockOpenIcon /> Logout
                       </a>
                     </li>

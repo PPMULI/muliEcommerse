@@ -374,48 +374,6 @@ ul {
 }
 /* feedback and raisedticket end */
 
-/* yourcart start */
-.your_cart {
-  padding-top: 90px;
-}
-
-.your_cart_heading {
-  text-align: center;
-  font-family: "Courier New", Courier, monospace;
-}
-
-.cart_table {
-  border: 2px solid black;
-  box-shadow: 2px 5px 2px 2px gray;
-  margin: 10px;
-}
-
-.edit_the_order {
-  margin-right: 5px;
-}
-
-.cart_items {
-  box-shadow: 1px 1px 1px 1px gray;
-
-  margin-bottom: 10px;
-}
-
-.cart_items:hover {
-  cursor: pointer;
-  transform: scale(1.05);
-}
-
-.order_status {
-  text-align: end;
-}
-
-.cancel_order {
-  margin-left: 20px;
-  position: relative;
-  left: 160px;
-}
-/* yourcart end */
-
 /* myraisedticket start */
 .myraisedticket {
   padding-top: 90px;
@@ -454,16 +412,6 @@ ul {
   text-align: center;
 }
 /* PeopleFeedbacks ends */
-
-/* myorder page start */
-.myorder {
-  padding-top: 90px;
-}
-
-.buy_order {
-  margin-top: 10px;
-}
-/* myorder page ends */
 .uiui {
   display: flex;
   position: relative;
@@ -1015,9 +963,16 @@ ul {
 .Faq_Question {
   margin-left: 10px;
 }
+
+.profile_absent {
+  border: 2px solid black;
+  width: 60%;
+  margin-left: 20%;
+  margin-top: 5%;
+}
 /* my profile end */
 
-/* You oerder new start */
+/* Your cart new start */
 .new_myOrder_background {
   background-color: #f1f3f6;
   min-height: 100vh;
@@ -1168,11 +1123,75 @@ ul {
 .showpaymerntform {
    display: block;
 }
-/* Your order new end */
-/* dummy css */
+/* Your cart new end */
+.myorder_filter {
+   font-size: x-large;
+  /*font-weight: bolder; */
+}
 
-/* .col-lg-9 {
-  border: 2px solid red;
+.my_order_filter_section {
+  background-color: #FFFFFF;
+  box-shadow: 1px 1px 1px 1px #ffffff;
+}
+
+.order_status {
+  font-weight: 500;
+}
+
+.search_button {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #2874F0;
+  padding: 8px;
+  color: #FFFFFF;
+  width: 15%;
+}
+
+.search-input {
+  width: 90%;
+  border-radius: 0px;
+}
+
+.your_orders {
+  min-height: 100px;
   display: flex;
-  justify-content: space-between;
-} */
+  justify-content: space-around;
+  background-color: #FFFFFF;
+  margin-top: 10px;
+  padding-top: 20px;
+}
+
+.your_orders:hover {
+  cursor: pointer;
+  box-shadow: 1px 1px 1px 1px #FFFFFF;
+}
+
+.your_orders_image {
+  min-width: 100px;
+  max-width: 100px;
+  min-height: 100px;
+  max-height: 100px;
+  margin-bottom: 15px;
+  border: 2px solid black;
+}
+
+.your_order_details {
+  background-color: #ffffff;
+}
+
+.your_order_details:hover {
+  box-shadow: 1px 1px 1px 1px #ffffff;
+}
+:root {
+  --primary-color: #ffff00;
+} 
+.my_order_status {
+  border: 2px solid black;
+  background-color: var(--primary-color);
+  border-radius: 100px;
+  color: var(--primary-color)
+}
+/* your order new start */
+
+/* your order new end */
+/* dummy css */
