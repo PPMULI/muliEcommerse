@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import { db, auth } from "./Config";
 import { doc, setDoc } from "firebase/firestore";
+import Navbar from "../genralComponent/Navbar"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import projectcontext from "../projectcontext/projectContext";
 function Loginuser() {
@@ -30,6 +31,7 @@ function Loginuser() {
   }, [])
   return (
     <>
+    <Navbar />
       <div className="new_content">
         <button
           className="btn tbn-success"

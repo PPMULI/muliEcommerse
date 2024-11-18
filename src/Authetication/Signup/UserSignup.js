@@ -3,6 +3,7 @@ import KeyboardTabIcon from "@mui/icons-material/KeyboardTab";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import projectcontext from "../../projectcontext/projectContext";
+import Navbar from "../../genralComponent/Navbar";
 function UserSignup({ stepConfig = [] }) {
    const context = useContext(projectcontext);
   const {
@@ -58,6 +59,7 @@ function UserSignup({ stepConfig = [] }) {
 
   return (
     <>
+    <Navbar />
       <div className="container">
         <div className="row">
           <div className="col-lg-2"></div>

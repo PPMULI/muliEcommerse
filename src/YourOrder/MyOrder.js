@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import emptybasket from "../Images/empty-basket.png";
 import projectcontext from "../projectcontext/projectContext";
-import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
+import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
+import Navbar from "../genralComponent/Navbar";
 
 function MyOrder() {
   const context = useContext(projectcontext);
@@ -12,30 +13,31 @@ function MyOrder() {
     setYourOrder,
     Cancel_order_handler,
     confirm_login,
-    // getCartItemsByEmail,
     getProductsThat_You_Buy,
   } = context;
 
   useEffect(() => {
+    confirm_login()
     getProductsThat_You_Buy();
   }, []);
 
   useEffect(() => {
     user_orders(localStorage.getItem("email"));
   }, []);
-  console.log(YourOrder);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [userOrder, setUserOrder] = useState([]);
   const user_orders = async (email) => {
     const orders = await YourOrder.filter((order) => {
       return order.email == email;
     });
     setUserOrder(orders);
-    console.log(orders);
   };
 
-  console.log(userOrder);
   return (
     <>
+    <Navbar />
       <div className="new_myOrder_background">
         <div className="container mt-5">
           <div className="row">
@@ -89,18 +91,6 @@ function MyOrder() {
               <hr />
             </div>
             <div className="col-lg-10">
-              <form class="d-flex" role="search">
-                <input
-                  class="form-control search-input"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button class="search_button" type="submit">
-                  <SearchIcon />
-                  Search
-                </button>
-              </form>
               {userOrder.length == 0 ? (
                 <div className="empty-basket-image">
                   <img src={emptybasket} className="empty-baset-image" alt="" />
@@ -136,14 +126,21 @@ function MyOrder() {
                                   />
                                 </div>
 
-                                <div>{val.productcategory} <br /> {val.productname}</div>
-
                                 <div>
-                                {val.price}
+                                  {val.productcategory} <br /> {val.productname}
                                 </div>
 
+                                <div>{val.price}</div>
+
                                 <div>
-                                  <p id="my_order_status"> <span className="my_order_status">djb</span> {value.status}</p> <p>Your order is pending</p>
+                                  <p id="my_order_status">
+                                    {" "}
+                                    <span className="my_order_status">
+                                      djb
+                                    </span>{" "}
+                                    {value.status}
+                                  </p>{" "}
+                                  <p>Your order is pending</p>
                                 </div>
                               </div>
                               <hr />

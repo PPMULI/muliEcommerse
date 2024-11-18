@@ -24,6 +24,7 @@ function YourCart() {
     setProduct,
     displayhello,
     deletehandler,
+    UpdateContactDetails,
     handlePaymentChange,
     paymentdetails,
     setPaymentDetails,
@@ -31,22 +32,37 @@ function YourCart() {
     proceed_To_pay,
     ErrorInPayment,
     setErrorInPayment,
+    getUserForShop,
+    userforshop,
   } = context;
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [yourAddress, setYouraddress] = useState([]);
 
+  const [contactdetails, setContactdetails] = useState({
+    addressline1: "",
+    addressline2: "",
+    pincode: "",
+    city: "",
+    contactnumber: "",
+  });
+
+  const { addressline1, addressline2, pincode, city, contactnumber } =
+    contactdetails;
+  console.log(contactnumber);
   useEffect(() => {
+    getUserForShop();
     confirm_login();
-  }, []);
-  const { reasonofrejection, actionby } = credentials;
-  useEffect(() => {
     getProducts();
-  }, []);
-
-  useEffect(() => {
     getCartItemsByEmail(localStorage.getItem("email"));
-  }, []);
-  useEffect(() => {
     handleclick();
   }, []);
+
+  useEffect(() => {
+    getYourAddress();
+  }, []);
+  console.log(userforshop);
+  const { reasonofrejection, actionby } = credentials;
 
   const navigate = useNavigate();
   const handle_product_details = () => {
@@ -90,35 +106,214 @@ function YourCart() {
     return yourTotalBill;
   };
 
+  useEffect(() => {
+    const filtered = productbyEmail.filter(
+      (product) =>
+        //console.log(product)
+
+        product.productname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.productid.toString().includes(searchQuery)
+    );
+    setFilteredProducts(filtered);
+  }, [productbyEmail, searchQuery]);
+
+  const getYourAddress = async () => {
+    const yourAddress = await userforshop.filter((customer) => {
+      console.log(customer);
+      return customer.email == localStorage.getItem("email");
+    });
+
+    setYouraddress(yourAddress);
+  };
+
+  const forUpdateAddressInfo = (e) => {
+    console.log(e.target.value);
+    setContactdetails({ ...contactdetails, [e.target.name]: e.target.value });
+  };
   return (
     <>
       <Navbar />
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Update Info
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">
+                    Address Line 1
+                  </label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    onChange={forUpdateAddressInfo}
+                    id="addressline1"
+                    name="addressline1"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
 
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">
+                    Address Line 2
+                  </label>
+                  <input
+                    type="email"
+                    onChange={forUpdateAddressInfo}
+                    class="form-control"
+                    id="addressline2"
+                    name="addressline2"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        City
+                      </label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        onChange={forUpdateAddressInfo}
+                        id="city"
+                        name="city"
+                        aria-describedby="emailHelp"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-lg-6">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Pincode
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="pincode"
+                        name="pincode"
+                        onChange={forUpdateAddressInfo}
+                        aria-describedby="emailHelp"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">
+                    Contact Number
+                  </label>
+                  <input
+                    onChange={forUpdateAddressInfo}
+                    type="number"
+                    class="form-control"
+                    id="contactnumber"
+                    name="contactnumber"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    UpdateContactDetails(
+                      localStorage.getItem("docID"),
+                      contactdetails.addressline1,
+                      contactdetails.addressline2,
+                      contactdetails.city,
+                      contactdetails.pincode,
+                      contactdetails.contactnumber
+                    );
+                  }}
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="new_myOrder_background">
         <div className="row">
           <div className="col-lg-8">
             <div className="container pt-2">
-              <div className="your_order">
-                <div className="order_count_table">MySite - 1 </div>
-
-                <div className="order_count_table">MySite - 2</div>
-              </div>
-
+              <form className="d-flex mb-2" role="search">
+                <input
+                  className="form-control search-input"
+                  type="search"
+                  placeholder="Typee title or ID"
+                  aria-label="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </form>
               <div className="new_deliver_address">
                 <div>
-                  Deliver To: <span className="customer_name">Atharv Muli</span>{" "}
-                  <br /> <p>Garakheda</p>
+                  {yourAddress.length == 0 ? (
+                    <button
+                    className="btn btn-outline-warning"
+                      onClick={() => {
+                        getYourAddress();
+                      }}
+                    >
+                      Click for contact details
+                    </button>
+                  ) : (
+                    yourAddress.map((value) => {
+                      localStorage.setItem("docID", value.id);
+                      return (
+                        <>
+                          Deliver To:{" "}
+                          <span className="customer_name">
+                            {value.fullname}
+                          </span>{" "}
+                          <br />{" "}
+                          <p>
+                            {value.addressline1}, {value.addressline2}
+                          </p>{" "}
+                          <p>
+                            {value.city}, {value.pincode}
+                          </p>
+                          <p>Contact: {value.contactnumber}</p>
+                        </>
+                      );
+                    })
+                  )}
                 </div>
 
                 <div>
-                  <button className="btn change_button">Change</button>
+                  <button
+                    className="btn change_button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    Change
+                  </button>
                 </div>
               </div>
 
               <div className="Your_order_items mt-2">
                 <div className="container">
                   <div className="row">
-                    {productbyEmail.length == 0 ? (
+                    {filteredProducts.length == 0 ? (
                       <>
                         <div className="empty-basket-image">
                           <img
@@ -144,7 +339,7 @@ function YourCart() {
                         </div>
                       </>
                     ) : (
-                      productbyEmail.map((value) => {
+                      filteredProducts.map((value) => {
                         return (
                           <>
                             <div className="col-lg-3 text-center">
@@ -317,7 +512,11 @@ function YourCart() {
 
             <div id="payment_description">
               <div className="payment_description">
-                <div>Product Price (7 item)</div>
+                <div>Total Products</div>
+                <div>{filteredProducts.length}</div>
+              </div>
+              <div className="payment_description">
+                <div>Product Price</div>
                 <div>{totalBill}</div>
               </div>
 
@@ -347,187 +546,3 @@ function YourCart() {
 }
 
 export default YourCart;
-
-// import React, { useContext, useEffect } from "react";
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import Navbar from "../genralComponent/Navbar";
-// import Footer from "../genralComponent/Footer";
-// import projectcontext from "../projectcontext/projectContext";
-// import { db } from "../Authetication/Config";
-// // import { addDoc, collection } from "firebase/firestore";
-
-// function YourCart() {
-//   const [productbyEmail, setProductbyEmail] = useState([]);
-//   const [credentials, setCredentials] = useState({
-//     reasonofrejection: "",
-//     actionby: "",
-//   });
-//   const context = useContext(projectcontext);
-//   const {
-//     handleclick,
-//     myProduct,
-//     confirm_login,
-//     setMyProduct,
-//     getProducts,
-//     product,
-//     setProduct,
-//     deletehandler,
-//     // Buy_the_product,
-//     proceed_To_pay,
-//     // getCartItemsByEmail,
-//     // productbyEmail,
-//   } = context;
-
-
-
-//    useEffect(() => {
-//     confirm_login();
-//   }, []);
-//   const { reasonofrejection, actionby } = credentials;
-//   useEffect( () => {
-//     getProducts();
-//    }, []);
-
-//    useEffect(() => {
-//     getCartItemsByEmail(localStorage.getItem("email"))
-//    }, [])
-//   useEffect(() => {
-//     handleclick();
-//   }, []);
-
-//   const navigate = useNavigate();
-//   const handle_product_details = () => {
-//     navigate("/productdetails");
-//   };
-//   const nextImage = () => {
-//     if (currentImageIndex < myProduct.length - 1) {
-//       setCurrentImageIndex(currentImageIndex + 1);
-//     }
-//   };
-
-//   const previousImage = () => {
-//     if (currentImageIndex > 0) {
-//       setCurrentImageIndex(currentImageIndex - 1);
-//     }
-//   };
-//   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-//   // const bookCollectionRef = collection(db, "order");
-//   const getCartItemsByEmail = async (email) => {
-//     const items = await product.filter((products) => {
-//       return products.email == email;
-//     });
-
-//     setProductbyEmail(items);
-
-//     console.log("items", items);
-//     return items;
-//   };
-
-//   return (
-//     <>
-//       {/* <pre>{JSON.stringify(product, undefined, 2)}</pre> */}
-//       <Navbar />
- 
-//       <div className="your_cart">
-//         <button
-//         className="btn btn-outline-warning"
-//           onClick={() => {
-//             getCartItemsByEmail(localStorage.getItem("email"));
-//           }}
-//         >
-//           Refresh the list
-//         </button>
-
-//         <h4 className="user_orders">Your Cart</h4>
-//         <div className="container">
-//           <div className="row">
-//             {productbyEmail &&
-//               productbyEmail.map((value) => {
-//                 // console.log(value);
-//                 return (
-//                   <>
-//                     {/* <div className="col-lg-1"></div> */}
-//                     <div className="col-lg-11 col-md-11 col-sm-11 col-11">
-//                       <div class="card total_user_order">
-//                         <div className="row">
-//                           <div className="emmil"></div>
-//                           <div className="col-lg-2 col-md-2 col-sm-4 col-12">
-//                             <img
-//                               src={value.imageurl}
-//                               class="card-img-top ordered_product_image"
-//                               alt="..."
-//                             />
-//                           </div>
-//                           {/* <div className="col-sm-3 col-lg-0 col-md-0 col-0"></div> */}
-
-//                           <div className="col-lg-7 col-md-5 col-sm-8 col-12">
-//                             {/* <div className="col-12 detalil"> */}
-//                             <div class="card-body">
-//                               <p class="card-text">
-//                                 <ul className="product_details_list">
-//                                   <h5 class="card-title">Product Details</h5>
-//                                   <li>Product name: {value.productname}</li>
-//                                   <li>Category: {value.productcategory}</li>
-//                                   <li>Price: {value.price}</li>
-//                                   <li>Quantity: {value.quantity}Q</li>
-//                                 </ul>
-//                               </p>
-//                               {/* </div> */}
-//                             </div>
-//                           </div>
-
-//                           {/* <div className="col-sm-2"></div> */}
-//                           <div
-//                             className="col-lg-3 col-md-3 col-sm-12 col-12 action_buttons"
-//                             id="action_button"
-//                           >
-//                             <button
-//                               className="btn btn-outline-success accept_button"
-//                               onClick={(e) => {
-//                                 e.preventDefault();
-//                                 proceed_To_pay(
-//                                   localStorage.getItem("email"),
-//                                   value.price,
-//                                   value.productcategory,
-//                                   value.id,
-//                                   value.productname,
-//                                   value.quantity,
-//                                   credentials.reasonofrejection,
-//                                   "pending",
-//                                   credentials.actionby,
-//                                   value.imageurl
-//                                 );
-//                               }}
-//                             >
-//                                Proceed To Pay
-//                             </button>
-
-//                             <button
-//                               onClick={(e) => {
-//                                 e.preventDefault();
-//                                 deletehandler(value.id);
-//                               }}
-//                               className="btn btn-outline-danger accept_button"
-//                             >
-//                               Remove
-//                             </button>
-//                           </div>
-//                         </div>
-//                       </div>{" "}
-//                     </div>
-
-//                     <div className="col-lg-1"></div>
-//                   </>
-//                 );
-//               })}
-//           </div>
-//         </div>
-//       </div>
-//       <Footer />
-//     </>
-//   );
-// }
-
-// export default YourCart;

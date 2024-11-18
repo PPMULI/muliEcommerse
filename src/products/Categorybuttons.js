@@ -10,7 +10,7 @@ import home from "../Images/home.jpg";
 import phone from "../Images/phone.jpg";
 import allproduct from "../Images/allproduct.jpg";
 import homedecoration from "../Images/home-decoration.jpg";
-import perfumes from "../Images/fregrences'.jpg";
+// import perfumes from "../Images/fregrences'.jpg";
 import myorders from "../Images/myorders.jpeg";
 import mycart from "../Images/th.jpeg";
 import feedback from "../Images/feedback.jpeg";
@@ -74,7 +74,7 @@ function Categorybuttons() {
               product_category("fragrances");
             }}
           >
-            <img src={perfumes} className="icons_images" />
+            {/* <img src={perfumes} className="icons_images" /> */}
             <p className="icon_title">Fragrances</p>
           </div>
 

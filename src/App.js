@@ -26,6 +26,9 @@ import Loginuser from "./Authetication/Loginuser";
 import Preview from "./Authetication/Signup/Preview"
 import UserSignup from "./Authetication/Signup/UserSignup"
 import Myprofile from "./Authetication/profile/Myprofile";
+import NewProductListing from "./products/newProduct/NewProductListing";
+import NewProductDetails from "./products/newProduct/NewProductDetails";
+import DummyProduct from "./products/newProduct/DummyProduct";
 function App() {
   const check_out_step = [
     {
@@ -43,9 +46,12 @@ function App() {
   ];
   return (
     <>
-      <Router>
+    {/* <DummyProduct /> */}
+     <Router>
         <ProjectState>
           <Routes>
+            <Route exact path="/dummy" element={<DummyProduct />} />
+            <Route exact path="/productdetails" element={<NewProductDetails />} />
             <Route exact path="/myprofile" element={<Myprofile />} />
             <Route exact path="/usersignup" element={<UserSignup stepConfig={check_out_step}/>} />
             <Route exact path="/adminhome" element={<Adminhome />} />
@@ -59,11 +65,11 @@ function App() {
             <Route exact path="/aboutus" element={<AboutUs />} />
             <Route exact path="/myorder" element={<MyOrder />} />
             <Route exact path="/confirmation" element={<Confirmation />} />
-            {/* <Route
+            <Route
               exact
-              path="/productcategory"
-              element={<ProductCategory />}
-            /> */}
+              path="/products"
+              element={<NewProductListing/>}
+            />
             <Route exact path="/userlogin" element={<Loginuser />} />
             <Route exact path="/userticketstatus" element={<UserTicketStatus />} />
             <Route exact path="/admin" element={<Admin />} />
@@ -77,7 +83,7 @@ function App() {
           </Routes>
         </ProjectState>
       </Router>
-    </>
+    </> 
   );
 }
 

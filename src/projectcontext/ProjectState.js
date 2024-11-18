@@ -120,8 +120,11 @@ function ProjectState(props) {
     marginRight: 0,
   });
 
+  const [detailsofProduct, setDetailsOfProduct] = useState([]);
   const [userforshop, setUserforshop] = useState([]);
   const [value, setValue] = useState("");
+
+  const [filterProductSection, setFilterProductSection] = useState([]);
 
   const { email, status, productcategory, productname, quantity, productid } =
     credentials;
@@ -719,15 +722,20 @@ function ProjectState(props) {
 
   // Function to handle sorting by price
   const handleSortByPrice = () => {
-    alert("ok");
     const sortedProducts = [...myProduct];
     sortedProducts.sort((a, b) => b.price - a.price); // Sort from high to low
     setMyProduct(sortedProducts);
     setSortByPrice("highToLow");
   };
 
+  const handlePriceLowToHigh = () => {
+    const sortedProducts = [...myProduct];
+    sortedProducts.sort((a, b) => a.price - b.price); // Sort from high to low
+    setMyProduct(sortedProducts);
+    setSortByPrice("highToLow");
+  };
+
   const handleProductBySortedCategory = () => {
-    alert("category");
     const sortedByCategory = [...showCategorywiseProduct];
     sortedByCategory.sort((a, b) => b.price - a.price);
     setShowCategorywiseProduct(sortedByCategory);
@@ -735,14 +743,12 @@ function ProjectState(props) {
   };
 
   const handleSortByRatingsByCategory = () => {
-    alert("ok22");
     const sortedProductsCategoryByRaings = [...showCategorywiseProduct];
     sortedProductsCategoryByRaings.sort((a, b) => b.rating - a.rating);
     setShowCategorywiseProduct(sortedProductsCategoryByRaings);
     setSortByRating("highToLow");
   };
   const handleSortByRatings = () => {
-    alert("ok2");
     const sortedProductsByRaings = [...myProduct];
     sortedProductsByRaings.sort((a, b) => b.rating - a.rating);
     setMyProduct(sortedProductsByRaings);
@@ -758,6 +764,8 @@ function ProjectState(props) {
       handleSortByPrice();
     } else if (selectedOption == "byRating") {
       handleSortByRatings();
+    } else if (selectedOption == "LowToHigh") {
+      handlePriceLowToHigh();
     } else {
       // Handle other sorting options (e.g., by rating)
     }
@@ -860,7 +868,8 @@ function ProjectState(props) {
           position: "top-center",
           theme: "colored",
         });
-      } else {}
+      } else {
+      }
     } else {
       toast.error(`Please add items`, {
         position: "top-center",
@@ -1124,6 +1133,43 @@ function ProjectState(props) {
     );
   };
 
+  const UpdateContactDetails = async (
+    docID,
+    addressline1,
+    addressline2,
+    city,
+    pincode,
+    contactnumber
+  ) => {
+    try {
+      console.log(  docID,
+        addressline1,
+        addressline2,
+        city,
+        pincode,
+        contactnumber)
+      // Reference to the specific document
+      const update_new_user_regestration_collection = doc(
+        new_user_regestration_collection,
+        docID
+      );
+
+      // Update the status field of the specific document
+      await updateDoc(update_new_user_regestration_collection, {
+        addressline1: addressline1,
+        addressline2: addressline2,
+        city: city,
+        pincode: pincode,
+        contactnumber: contactnumber,
+      });
+      toast.success(`Congractulation! Your info is updated successfully`, {
+        position: "top-center",
+        theme: "colored",
+      });
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
   const aadharRef = ref(
     storage,
     `docs/${localStorage.getItem("email")}/aadhar/`
@@ -1162,15 +1208,38 @@ function ProjectState(props) {
 
   let displayhello = () => {
     let hello = document.getElementById("form");
-    const place_order = document.getElementById("Place_order")
+    const place_order = document.getElementById("Place_order");
     hello.classList.add("showpaymerntform");
     hello.classList.remove("hidepaymerntform");
-    place_order.classList.add("d-none")
+    place_order.classList.add("d-none");
   };
+
+  let productarr = [];
+  const filterProduct = async () => {
+    await myProduct.map((value) => {
+      if (!productarr.includes(value.category)) {
+        productarr.push(value.category);
+      }
+      setFilterProductSection(productarr);
+    });
+  };
+
+  const showProductDetails = async (id) => {
+    const productDetails = await myProduct.filter((productID) => {
+      return productID.id == id;
+    });
+    setDetailsOfProduct(productDetails);
+  };
+
   return (
     <>
       <Projectcontext.Provider
         value={{
+          UpdateContactDetails,
+          detailsofProduct,
+          showProductDetails,
+          filterProduct,
+          filterProductSection,
           displayhello,
           ErrorInPayment,
           setErrorInPayment,
@@ -1216,7 +1285,7 @@ function ProjectState(props) {
           handleLogin,
           feedback_from_user,
           reopen_the_ticketBy_user,
-           Add_To_Cart,
+          Add_To_Cart,
           getFeedbacks,
           feedbackGivenByUser,
           setFeedbackGivenByUser,
