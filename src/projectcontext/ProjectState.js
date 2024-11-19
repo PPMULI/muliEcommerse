@@ -87,8 +87,7 @@ function ProjectState(props) {
   });
 
   const { cardholdername, cardnumber, cvv, Expiarydate } = paymentdetails;
-  console.log(paymentdetails);
-
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentStep, setCurrentStep] = useState(1);
   const [isComplete, setIscomplete] = useState(false);
 
@@ -114,6 +113,14 @@ function ProjectState(props) {
     pincode: "",
     isadmin: false,
     isCourseowner: false,
+  });
+
+  const [complaint, setComplaint] = useState({
+    fullname: "",
+    email: localStorage.getItem("email"),
+    contactnumber: "",
+    yourcomplaint: "",
+    suggestedsolution: "",
   });
   const [margin, setMargin] = useState({
     marginLeft: 0,
@@ -382,24 +389,23 @@ function ProjectState(props) {
     return addDoc(raisedTicketCollectionRef, newraisedticket);
   };
   const Reais_ticket_from_here = async (
+    fullname,
     email,
-    name,
-    subject,
-    concern,
-    status,
-    reasonofissue,
-    solution,
-    actionby
+    contactnumber,
+    yourcomplaint,
+    suggestedsolution
   ) => {
-    const Your_raised_ticket = {
+    console.log( fullname,
       email,
-      name,
-      subject,
-      concern,
-      status,
-      reasonofissue,
-      solution,
-      actionby,
+      contactnumber,
+      yourcomplaint,
+      suggestedsolution)
+    const Your_raised_ticket = {
+      fullname,
+      email,
+      contactnumber,
+      yourcomplaint,
+      suggestedsolution,
     };
 
     try {
@@ -1142,12 +1148,14 @@ function ProjectState(props) {
     contactnumber
   ) => {
     try {
-      console.log(  docID,
+      console.log(
+        docID,
         addressline1,
         addressline2,
         city,
         pincode,
-        contactnumber)
+        contactnumber
+      );
       // Reference to the specific document
       const update_new_user_regestration_collection = doc(
         new_user_regestration_collection,
@@ -1231,10 +1239,29 @@ function ProjectState(props) {
     setDetailsOfProduct(productDetails);
   };
 
+  const filterProductByCategory = async (category) => {
+    console.log(category);
+    const your_category_product = await myProduct.filter((product) => {
+      // console.log(product)
+      return product.category == category;
+    });
+
+    console.log(your_category_product);
+
+    setFilteredProducts(your_category_product);
+  };
+
+  const onComplaint = (e) => {
+    console.log(e.target.name, e.target.value);
+    setComplaint({ ...complaint, [e.target.name]: e.target.value });
+  };
   return (
     <>
       <Projectcontext.Provider
         value={{
+          complaint, onComplaint, 
+          filterProductByCategory,
+          filterProduct,
           UpdateContactDetails,
           detailsofProduct,
           showProductDetails,

@@ -3,7 +3,6 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import ProjectState from "./projectcontext/ProjectState";
-import Home from "./home/Home";
 import Admin from "./AdminComponents/Admin";
 import AboutUs from "./About/AboutUs";
 import RaisedTicket from "./About/RaisedTicket";
@@ -29,6 +28,8 @@ import Myprofile from "./Authetication/profile/Myprofile";
 import NewProductListing from "./products/newProduct/NewProductListing";
 import NewProductDetails from "./products/newProduct/NewProductDetails";
 import DummyProduct from "./products/newProduct/DummyProduct";
+import Newhome from  "./newHome/Newhome"
+import Complainent from "./Complaint/Complainent";
 function App() {
   const check_out_step = [
     {
@@ -60,7 +61,7 @@ function App() {
             <Route exact path="/peoplefeedback" element={<PeopleFeedbacks />} />
             <Route exact path="/myraisedticket" element={<MyraisedTicket />} />
             <Route exact path="/yourcart" element={<YourCart />} />
-            <Route exact path="/raisedticket" element={<RaisedTicket />} />
+            <Route exact path="/raisedticket" element={<Complainent />} />
             <Route exact path="/feedback" element={<Feedback />} />
             <Route exact path="/aboutus" element={<AboutUs />} />
             <Route exact path="/myorder" element={<MyOrder />} />
@@ -75,7 +76,7 @@ function App() {
             <Route exact path="/admin" element={<Admin />} />
             <Route exact path="/userorders" element={<UserOrders />} />
             <Route exact path="/usertickets" element={<UserTickets />} />
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/" element={<Newhome />} />
             {/* <Route exact path="/productdetails" element={<ProductinfoCard />} />
             <Route exact path="/products" element={<Products />} /> */}
             <Route exact path="/givefeedback" element={<Givefeedback />} />

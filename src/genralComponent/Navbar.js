@@ -7,12 +7,14 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import projectcontext from "../projectcontext/projectContext";
+import { Phone } from "@mui/icons-material";
 
 function Navbar() {
   const navigate = useNavigate();
   const context = useContext(projectcontext);
   const { userSignOut } = context;
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [dropdownforServoce, setDropdownforService] = useState(false);
 
   return (
     <>
@@ -85,7 +87,65 @@ function Navbar() {
                   My Order
                 </a>
               </li>
-              <li className="nav-item">
+
+              <li
+                className="nav-item dropdown active_user_email"
+                onMouseEnter={() => setDropdownforService(true)}
+                onMouseLeave={() => setDropdownforService(false)}
+              >
+                <a
+                  className={`nav-link dropdown-toggle ${
+                    dropdownforServoce ? "show" : ""
+                  }`}
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded={dropdownforServoce}
+                >
+                  My Request
+                </a> 
+                <div
+                  className={`dropdown-menu navbar_dropdown ${
+                    dropdownforServoce ? "show" : ""
+                  }`}
+                >
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => {
+                        navigate("/raisedticket");
+                      }}
+                    >
+                      <ContactPageIcon /> Raise Ticket
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => {
+                        navigate("/userticketstatus");
+                      }}
+                    >
+                      <ContactPageIcon /> My Raised Ticket
+                    </a>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                    >
+                     <Phone /> Contact
+                    </a>
+                  </li>
+                </div>
+              </li>
+              {/* <li className="nav-item">
                 <a
                   className="nav-link active"
                   onClick={() => {
@@ -96,7 +156,7 @@ function Navbar() {
                 >
                   Contact
                 </a>
-              </li>
+              </li> */}
               <li
                 className="nav-item dropdown active_user_email"
                 onMouseEnter={() => setDropdownVisible(true)}
@@ -120,7 +180,6 @@ function Navbar() {
                         dropdownVisible ? "show" : ""
                       }`}
                     >
-                     
                       <li>
                         <a
                           className="dropdown-item"

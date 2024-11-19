@@ -96,7 +96,6 @@ function Myprofile() {
         </div>
       ) : (
         filterUser.map((value) => {
-          console.log(value);
           return (
             <>
               <div
