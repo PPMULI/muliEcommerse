@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {getAuth, GoogleAuthProvider} from "firebase/auth"
+import {getAuth, GoogleAuthProvider, RecaptchaVerifier } from "firebase/auth"
 import {getFirestore} from "firebase/firestore"
 import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
@@ -24,5 +24,5 @@ const database = getDatabase(app);
 const db = getFirestore(app)
 const storage = getStorage(app)
 
-export {auth, provider, getFirestore, storage, db}
+export {auth, provider, getFirestore, storage, db, RecaptchaVerifier}
 
